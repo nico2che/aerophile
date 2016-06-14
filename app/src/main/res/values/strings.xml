@@ -1,0 +1,101 @@
+<resources>
+    <string name="aerophile">Aérophile</string>
+    <string name="enregistrer">Enregistrer</string>
+
+    <string name="title_vol_detail">Vol Detail</string>
+    <string name="test">Test</string>
+    <string name="valider">Valider</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- AccueilActivity -->
+    <string name="accueil_code">Entrez le code de sécurité :</string>
+    <string name="accueil_valider">Valider</string>
+    <string name="title_activity_reglages">ReglagesActivity</string>
+
+    <!-- ReglagesActivity -->
+    <string name="reglages_titre">Réglages de l\'application</string>
+    <string name="reglages_lieu">Lieu d\'installation</string>
+    <string name="reglages_immatriculation">Immatriculation</string>
+    <string name="reglages_1_email">Première liste d\'emails, séparées par des virgules</string>
+    <string name="reglages_2_email">Seconde liste d\'emails, séparées par des virgules</string>
+
+    <!-- DemarrageActivity -->
+    <string name="title_activity_demarrage">Nouvelle journée</string>
+    <string name="demarrage_date">Date</string>
+    <string name="demarrage_date_holder">JJ/MM/YYYY</string>
+    <string name="demarrage_date_change">Changer de date</string>
+    <string name="demarrage_pdf">Visualiser le PDF</string>
+    <string name="demarrage_lift">Lift (kN)</string>
+    <string name="demarrage_lms">LMS</string>
+    <string name="demarrage_temperature">Température (°C)</string>
+    <string name="demarrage_validation">Validation quotidienne</string>
+    <string name="demarage_pilote_validation">Pilote de validation</string>
+    <string name="demarage_horaires_site">Horaires du site</string>
+    <string name="demarrage_heure_holder">H:m</string>
+    <string name="demarrage_pasdevol">Pas de vol</string>
+    <string name="demarrage_signature">Signature du pilote</string>
+    <string name="demarrage_effacer">Effacer</string>
+    <string name="demarrage_debut_journee">Commencer la journée</string>
+    <string name="demarrage_modifier_journee">Modifier la journée</string>
+    <string name="demarrage_charger_journee">Charger la journée</string>
+
+    <!-- VolDetailFragment -->
+    <string name="vol_nouveau">Nouveau vol</string>
+    <string name="vol_pas_aujourdhui">Pas de vol aujourd\'hui</string>
+    <string name="vol_decollage">Décollage</string>
+    <string name="vol_heure_holder">%1$s:%2$s</string>
+    <string name="vol_modifier_heure">Modifier l\'heure</string>
+    <string name="vol_pilote">Pilote</string>
+    <string name="vol_nombre_passagers">Nombre de passagers</string>
+    <string name="vol_vitesse_vent">Vitesse du vent (m/s)</string>
+    <string name="vol_pasvol_commentaires">Commentaires…</string>
+    <string name="vol_choix_commentaires_holder">Insérer un commentaire type</string>
+    <string-array name="vol_choix_commentaires">
+        <item>Insérer un commentaire type</item>
+        <item>Vol à 300m</item>
+        <item>Arrêt des vols</item>
+        <item>Vent limite</item>
+        <item>Vol pub</item>
+        <item>Vol test</item>
+    </string-array>
+    <string name="vol_commentaires">Commentaires</string>
+    <string name="vol_atterrissage">Atterrissage</string>
+    <string name="vol_supprimer">Supprimer ce vol</string>
+    <string name="vol_fin_journee">Fin de journée</string>
+    <string name="vol_immatriculation_ballon">Immatriculation du ballon : %s</string>
+    <string name="vol_stats">%1$d vols (%3$s) - %2$d passagers au total</string>
+    <string name="vol_parametre_journee">Paramètres de la journée</string>
+    <string name="vol_parametre_application">Paramètres de l\'application</string>
+    <string name="vol_apercu_journee">Aperçu de la journée</string>
+    <string name="vol_commentaire_journee">Commentaire général</string>
+    <string name="vol_commentaire_journee_titre">Ce commentaire apparaîtra dans le rapport de la
+        journée.
+    </string>
+
+    <!-- ApercuActivity -->
+    <string name="apercu_heures">Heures</string>
+    <string name="apercu_heures_format">%1$s - %2$s</string>
+    <string name="apercu_pilote">Pilote</string>
+    <string name="apercu_passagers">Nombre de passagers</string>
+    <string name="apercu_vent">Vitesse de vent</string>
+    <string name="apercu_vent_format">%s m/s</string>
+    <string name="apercu_commentaires">Commentaires</string>
+    <string name="apercu_footer_vols">%d vols</string>
+    <string name="apercu_footer_heures">%s de vols</string>
+    <string name="apercu_footer_passagers">%d passagers</string>
+
+    <!-- EnvoieActivity -->
+    <string name="title_activity_envoie">EnvoieActivity</string>
+    <string name="envoie_retour">Retour</string>
+    <string name="envoie_voir_pdf">Pré-visualiser le PDF de la journée</string>
+    <string name="envoie_email_objet">Objet de l\'email :</string>
+    <string name="envoie_email_objet_string">[%1$s] Rapport de vol du %2$s</string>
+    <string name="envoie_envoyer_a">Envoyer à :</string>
+    <string name="envoie_premiere_liste">Première liste d\'email</string>
+    <string name="envoie_seconde_liste">Seconde liste d\'email</string>
+    <string name="envoie_quitter">Quitter la journée</string>
+    <string name="envoie_envoyer_rapport">Envoyer le rapport</string>
+
+</resources>
