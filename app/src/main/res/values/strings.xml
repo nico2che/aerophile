@@ -1,13 +1,7 @@
 <resources>
     <string name="aerophile">Aérophile</string>
     <string name="enregistrer">Enregistrer</string>
-
-    <string name="title_vol_detail">Vol Detail</string>
-    <string name="test">Test</string>
     <string name="valider">Valider</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
     <!-- AccueilActivity -->
     <string name="accueil_code">Entrez le code de sécurité :</string>

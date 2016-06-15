@@ -76,7 +76,7 @@ tools:context="com.aerophile.app.VolListActivity"
                     android:layout_row="1"
                     android:layout_column="1"
                     android:layout_columnSpan="2"
-                    android:inputType="textCapSentences">
+                    android:inputType="textCapCharacters">
                 </AutoCompleteTextView>
 
                 <TextView
@@ -120,7 +120,8 @@ tools:context="com.aerophile.app.VolListActivity"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="2"
-                    android:inputType="numberDecimal"/>
+                    android:inputType="numberDecimal"
+                    android:text="0" />
 
                 <TextView
                     android:text="@string/vol_commentaires"
