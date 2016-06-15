@@ -10,22 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Vol;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
-import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.ResourceAccessException;
 
-import java.io.IOException;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.List;
 
 @EActivity

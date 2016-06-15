@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Vol;
 
 import java.util.List;
 

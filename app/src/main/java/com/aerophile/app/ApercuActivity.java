@@ -2,10 +2,11 @@ package com.aerophile.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Vol;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -14,10 +15,8 @@ import org.androidannotations.annotations.ViewById;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @EActivity(R.layout.activity_apercu)
 public class ApercuActivity extends AppCompatActivity {

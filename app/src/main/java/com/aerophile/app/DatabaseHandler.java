@@ -2,11 +2,11 @@ package com.aerophile.app;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Vol;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.aerophile.app.modeles.Journee;
+
 /**
  * Created by Nicolas on 12/05/2016.
  */
