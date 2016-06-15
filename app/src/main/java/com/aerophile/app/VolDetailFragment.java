@@ -359,23 +359,30 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	    inputPilote.setAdapter(adapter);
 	    inputPilote.setThreshold(0);
-	    inputPilote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-		    @Override
-		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			    vol.setPilote(inputPilote.getText().toString());
-			    daoVol.modifierVol(vol, DatabaseHandler.VOL_PILOTE, inputPilote.getText().toString());
-		    }
-		    @Override
-		    public void onNothingSelected(AdapterView<?> parent) {}
-	    });
-	    inputPilote.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-		    @Override
-		    public void onFocusChange(View v, boolean hasFocus) {
-			    if (hasFocus) {
-				    inputPilote.setText("");
-			    }
-		    }
-	    });
+		inputPilote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				vol.setPilote(inputPilote.getText().toString());
+				daoVol.modifierVol(vol, DatabaseHandler.VOL_PILOTE, inputPilote.getText().toString());
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {}
+		});
+		inputPilote.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus)
+					inputPilote.setText("");
+			}
+		});
+		inputVent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus)
+					if(inputVent.getText().toString().equals("0"))
+						inputVent.setText("");
+			}
+		});
     }
 
 	@Override
@@ -383,7 +390,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		super.onResume();
 		if(!changeHeure && idVol == 0) {
 			miseAJourHeureDecollage();
-			Log.d("DEBUG", "mise a jour de l'heure de décollage");
 		}
 	}
 
