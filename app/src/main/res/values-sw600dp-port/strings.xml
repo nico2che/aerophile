@@ -1,0 +1,7 @@
+<resources>
+    <string name="vol_immatriculation_ballon">Ballon : %s</string>
+    <string name="vol_stats">%1$d vols (%3$s) - %2$d passagers</string>
+
+    <string name="apercu_passagers">Passagers</string>
+    <string name="apercu_vent">Vent</string>
+</resources>
