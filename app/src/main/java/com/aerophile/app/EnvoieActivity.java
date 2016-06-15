@@ -5,6 +5,8 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -113,6 +115,8 @@ public class EnvoieActivity extends AppCompatActivity {
 		if(isOnline()) {
 			MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
 			try {
+				PackageManager manager = this.getPackageManager();
+				PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
 				ObjectMapper mapper = new ObjectMapper();
 				String donnees = mapper.writeValueAsString(journeeCourante);
 				SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
@@ -126,8 +130,8 @@ public class EnvoieActivity extends AppCompatActivity {
 				data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID) );
 				data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
 				data.add("lieu", reglages.getString("LIEU", "?"));
+				data.add("version", info.versionName);
 				data.add("journee", URLEncoder.encode(donnees, "utf-8"));
-
 				String json = restJournee.envoieJournee(data, type);
 				mapper = new ObjectMapper();
 				JsonNode retour = mapper.readTree(json);
