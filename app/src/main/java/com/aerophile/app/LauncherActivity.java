@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.aerophile.app.dao.JourneeDAO;
+import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 import com.fasterxml.jackson.databind.JsonNode;

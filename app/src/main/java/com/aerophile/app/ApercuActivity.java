@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aerophile.app.dao.JourneeDAO;
+import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 

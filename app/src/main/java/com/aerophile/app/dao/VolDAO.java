@@ -1,4 +1,4 @@
-package com.aerophile.app;
+package com.aerophile.app.dao;
 
 /**
  * Created by Nicolas on 22/02/2016.
@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.aerophile.app.DatabaseHandler;
 import com.aerophile.app.modeles.Vol;
 
 public class VolDAO {

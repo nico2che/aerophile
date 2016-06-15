@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.modeles.Journee;
 
 /**
