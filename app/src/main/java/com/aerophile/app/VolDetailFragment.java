@@ -179,7 +179,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 				// On remet à zéro les valeurs
 				inputPilote.setText(pilote);
 				inputPassagers.setText("");
-				inputVent.setText("");
+				inputVent.setText("0");
 				inputCommentaires.setText("");
 				changeHeure = false;
 			}

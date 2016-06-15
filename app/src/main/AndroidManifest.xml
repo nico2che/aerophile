@@ -43,7 +43,6 @@
 		</activity>
 		<activity
 			android:name=".VolDetailActivity"
-			android:label="@string/title_vol_detail"
 			android:parentActivityName=".VolListActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

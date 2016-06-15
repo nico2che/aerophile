@@ -137,32 +137,23 @@ public class DrawView extends View {
                 path.moveTo(eventX, eventY);
                 lastTouchX = eventX;
                 lastTouchY = eventY;
-                // There is no end point yet, so don't waste cycles invalidating.
                 return true;
 
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                // Start tracking the dirty region.
                 resetDirtyRect(eventX, eventY);
-                // When the hardware tracks events faster than they are delivered, the
-                // event will contain a history of those skipped points.
                 int historySize = event.getHistorySize();
-                Log.d("DRAW", "size: " + historySize);
                 for (int i = 0; i < historySize; i++) {
-                    Log.d("DRAW", "x: " + event.getHistoricalX(i));
-                    Log.d("DRAW", "y: " + event.getHistoricalY(i));
                     float historicalX = event.getHistoricalX(i);
                     float historicalY = event.getHistoricalY(i);
                     expandDirtyRect(historicalX, historicalY);
                     path.lineTo(historicalX, historicalY);
                 }
-                // After replaying history, connect the line to the touch point.
                 path.lineTo(eventX, eventY);
                 empty = false;
                 break;
 
             default:
-                Log.d("DrawView", "Ignored touch event: " + event.toString());
                 return false;
         }
 
@@ -182,7 +173,6 @@ public class DrawView extends View {
     @Override
     public Parcelable onSaveInstanceState()
     {
-        System.out.println("save instance");
         Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_STATE, super.onSaveInstanceState());
         bundle.putParcelableArrayList(EXTRA_EVENT_LIST, eventList);
