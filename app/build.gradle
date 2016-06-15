@@ -8,8 +8,8 @@ android {
         applicationId "com.aerophile.app"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 18
-        versionName "1.4.13"
+        versionCode 19
+        versionName "1.4.14"
     }
     buildTypes {
         release {
