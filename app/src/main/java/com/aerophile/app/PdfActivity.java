@@ -22,7 +22,7 @@ public class PdfActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle("Pré-visualisation du PDF");
+		setTitle(getString(R.string.pdf_titre));
 	}
 
 	@AfterViews
@@ -33,7 +33,7 @@ public class PdfActivity extends AppCompatActivity {
 		if(extra.getString("LIEN_PDF") != null) {
 
 			final ProgressDialog dialog = new ProgressDialog(this);
-			dialog.setMessage("Chargement du PDF...");
+			dialog.setMessage(getString(R.string.pdf_chargement));
 			dialog.setCancelable(false);
 			dialog.show();
 			webView.setWebViewClient(new WebViewClient(){

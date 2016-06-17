@@ -52,7 +52,7 @@ public class ApercuActivity extends AppCompatActivity {
 		daoVol.open();
 		List<Vol> vols = daoVol.getVolsByJournee(journeeCourante.getId());
 
-		setTitle("Aperçu de la journée du " + journeeCourante.getDate());
+		setTitle(String.format(getResources().getString(R.string.apercu_titre), journeeCourante.getDate()));
 
 		int passagers = 0;
 		int temps = 0;
@@ -88,7 +88,7 @@ public class ApercuActivity extends AppCompatActivity {
 		Vol vol = new Vol();
 		vols.add(vol);
 
-		String commentaire = "Aucun commentaire général";
+		String commentaire = getResources().getString(R.string.apercu_aucun_commentaire);
 		if(journeeCourante.getCommentaire() != null && !journeeCourante.getCommentaire().isEmpty()) {
 			commentaire = journeeCourante.getCommentaire();
 		}

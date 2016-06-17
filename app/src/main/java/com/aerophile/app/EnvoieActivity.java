@@ -82,7 +82,7 @@ public class EnvoieActivity extends AppCompatActivity {
 		}
 
 		// Chagement du titre
-		setTitle("Journée du " + journeeCourante.getDate());
+		setTitle(String.format(getString(R.string.envoie_titre), journeeCourante.getDate()));
 	}
 
 	@AfterViews
@@ -96,7 +96,7 @@ public class EnvoieActivity extends AppCompatActivity {
 	@Click
 	void buttonPdf() {
 		pDialog = new ProgressDialog(this);
-		pDialog.setMessage("Génération du PDF en cours...");
+		pDialog.setMessage(getString(R.string.envoie_generation_pdf));
 		pDialog.setCancelable(false);
 		pDialog.show();
 		requete("pdf");
@@ -145,18 +145,18 @@ public class EnvoieActivity extends AppCompatActivity {
 				} else {
 					if (pDialog.isShowing())
 						pDialog.dismiss();
-					message("Erreur serveur : " + retour.get("message").asText());
+					message(String.format(getString(R.string.envoie_erreur_serveur_details), retour.get("message").asText()));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				if (pDialog.isShowing())
 					pDialog.dismiss();
-				message("Impossible de contacter le serveur, vérifiez votre connexion internet");
+				message(getString(R.string.envoie_erreur_connexion));
 			}
 		} else {
 			if (pDialog.isShowing())
 				pDialog.dismiss();
-			message("Vérifiez votre connexion internet");
+			message(getString(R.string.envoie_erreur_connexion));
 		}
 		if(type.equals("email")) {
 			if(checkPremiereListe.isChecked() && checkSecondeListe.isChecked())
@@ -179,7 +179,6 @@ public class EnvoieActivity extends AppCompatActivity {
 			pDialog.dismiss();
 		Intent pdfActivity = new Intent(this, PdfActivity_.class);
 		pdfActivity.putExtra("LIEN_PDF", lienPDF);
-		Log.d("LIEN", lienPDF);
 		startActivity(pdfActivity);
 	}
 
@@ -188,25 +187,25 @@ public class EnvoieActivity extends AppCompatActivity {
 		if(checkPremiereListe.isChecked() || checkSecondeListe.isChecked()) {
 
 			pDialog = new ProgressDialog(this);
-			pDialog.setMessage("Envoi du mail en cours...");
+			pDialog.setMessage(getString(R.string.envoie_envoie_mail));
 			pDialog.setCancelable(false);
 			pDialog.show();
 
 			requete("email");
 
 		} else {
-			message("Merci de préciser au moins une liste d'email");
+			message(getString(R.string.envoie_erreur_liste_email));
 		}
 	}
 
 	@UiThread
 	void resultat(int code) {
 		if(code == 0) {
-			message("Mail bien envoyé");
+			message(getString(R.string.envoie_mail_envoye));
 		} else {
 			journeeCourante.setObjetAttente(inputObjetEmail.getText().toString());
 			journeeCourante.setAttente(code);
-			message("Envoie impossible, mail mis en attente");
+			message(getString(R.string.envoie_erreur_attente_email));
 		}
 		journeeCourante.setEnCours(0);
 		daoJournee.modifierJournee(journeeCourante);

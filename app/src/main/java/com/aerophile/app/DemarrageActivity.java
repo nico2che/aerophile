@@ -167,7 +167,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	    if (enCours) {
 
 		    // Alors on indique qu'on veut la modifier
-		    setTitle("Modifier la journée");
+		    setTitle(getString(R.string.demarrage_modifier_journee));
 		    buttonSave.setText(getString(R.string.demarrage_modifier_journee));
 
 		    // On récupère les informations de cette journée en cours
@@ -323,7 +323,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 				if(nouvelleJournee.getId() != journeeCourante.getId()) {
 
-					setTitle("Charger la journée");
+					setTitle(getString(R.string.demarrage_charger_journee));
 					buttonSave.setText(getString(R.string.demarrage_charger_journee));
 
 					// On remet la bonne date
@@ -335,7 +335,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 				} else {
 
-					setTitle("Modifier la journée");
+					setTitle(getString(R.string.demarrage_modifier_journee));
 					buttonSave.setText(getString(R.string.demarrage_modifier_journee));
 
 					// On remet la bonne date
@@ -348,7 +348,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 			} else {
 
-				setTitle("Charger la journée");
+				setTitle(getString(R.string.demarrage_charger_journee));
 				buttonSave.setText(getString(R.string.demarrage_charger_journee));
 
 				// On remet la bonne date
@@ -368,7 +368,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			// Seulement si la journée est en cours
 			if(enCours) {
 
-				setTitle("Modifier la journée");
+				setTitle(getString(R.string.demarrage_modifier_journee));
 				buttonSave.setText(getString(R.string.demarrage_modifier_journee));
 
 				journeeCourante.setDate(date);
@@ -378,7 +378,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 			} else {
 
-				setTitle("Commencer la journée");
+				setTitle(getString(R.string.demarrage_debut_journee));
 				buttonSave.setText(getString(R.string.demarrage_debut_journee));
 
 				// On remet les champs vide
@@ -436,7 +436,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 				}
 				daoJournee.modifierJournee(nouvelleJournee);
 
-				Toast.makeText(DemarrageActivity.this, "Chargement d'une journée effectué", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DemarrageActivity.this, getString(R.string.demarrage_chargement_effectue), Toast.LENGTH_SHORT).show();
 
 				if(enCours) {
 
@@ -468,7 +468,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			        journeeCourante.setSignature(nouvelleSignature);
 		        }
 		        daoJournee.modifierJournee(journeeCourante);
-		        Toast.makeText(DemarrageActivity.this, "Données enregistrées", Toast.LENGTH_SHORT).show();
+		        Toast.makeText(DemarrageActivity.this, getString(R.string.demarrage_donnees_enregistrees), Toast.LENGTH_SHORT).show();
 				setResult(MODIFICATION);
 		        finish();
 
@@ -491,14 +491,14 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
         } else {
 
-            Toast.makeText(DemarrageActivity.this, "Tous les champs sont obligatoires", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DemarrageActivity.this, getString(R.string.demarrage_champs_obligatoires), Toast.LENGTH_SHORT).show();
         }
     }
 
 	@Click
 	void buttonPdf() {
 		pDialog = new ProgressDialog(this);
-		pDialog.setMessage("Génération du PDF en cours...");
+		pDialog.setMessage(getString(R.string.envoie_generation_pdf));
 		pDialog.setCancelable(false);
 		pDialog.show();
 		requete();
@@ -515,21 +515,21 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		} else if(enCours) {
 			journeeEnvoie = journeeCourante;
 		} else {
-			message("Cette journée n'existe pas");
+			message(getString(R.string.envoie_erreur_journee_existe_pas));
 			return;
 		}
 
 		if(daoVol.getDernierVol(journeeEnvoie.getId()).getEnCours() == 1) {
 			if (pDialog.isShowing())
 				pDialog.dismiss();
-			message("Un vol est en cours dans cette journée");
+			message(getString(R.string.envoie_erreur_vol_en_cours));
 			return;
 		}
 
 		if(!isOnline()) {
 			if (pDialog.isShowing())
 				pDialog.dismiss();
-			message("Vérifiez votre connexion internet");
+			message(getString(R.string.envoie_erreur_connexion));
 			return;
 		}
 
@@ -555,13 +555,13 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			} else {
 				if (pDialog.isShowing())
 					pDialog.dismiss();
-				message("Erreur serveur : " + retour.get("message").asText());
+				message(String.format(getString(R.string.envoie_erreur_serveur_details), retour.get("message").asText()));
 			}
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			if (pDialog.isShowing())
 				pDialog.dismiss();
-			message("Impossible de contacter le serveur");
+			message(getString(R.string.envoie_erreur_serveur));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -591,7 +591,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		Date date_courante = c.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
 		if(date_entree.compareTo(date_courante) > 0) {
-			message("Impossible de postdater la journée");
+			message(getString(R.string.envoie_erreur_date));
 			return sdf.format(date_courante);
 		}
 		annee = day;

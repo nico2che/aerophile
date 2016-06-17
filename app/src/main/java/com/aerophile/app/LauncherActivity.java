@@ -28,6 +28,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Locale;
 
 @EActivity
 public class LauncherActivity extends AppCompatActivity {
@@ -46,6 +47,14 @@ public class LauncherActivity extends AppCompatActivity {
         String code = reglages.getString("CODE_SECURITE", "KO");
         String lieu = reglages.getString("LIEU", "KO");
         String immatriculation = reglages.getString("IMMATRICULATION", "KO");
+
+        String langue = reglages.getString("LANGUE", Locale.getDefault().toString());
+        Locale locale = new Locale(langue);
+        Locale.setDefault(locale);
+        android.content.res.Configuration config = new android.content.res.Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
         daoJournee = new JourneeDAO(this);
         daoJournee.open();
         Intent ecranDemarrage = new Intent(this, DemarrageActivity_.class);
@@ -63,6 +72,7 @@ public class LauncherActivity extends AppCompatActivity {
         if(envoieAttente) {
             journeeAttente = daoJournee.getJourneeEnAttente();
 	        if(journeeAttente.getAttente() != 0) {
+                message(getString(R.string.envoie_mail_attente));
 		        requete();
 	        } else {
 		        daoJournee.close();
@@ -111,14 +121,14 @@ public class LauncherActivity extends AppCompatActivity {
                     resultat(0);
 	                return;
                 } else {
-                    message("Email en attente :\nErreur serveur : " + retour.get("message").asText());
+                    message(String.format(getString(R.string.envoie_erreur_attente_serveur_details), retour.get("message").asText()));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                message("Email toujours en attente :\nImpossible de contacter le serveur");
+                message(getString(R.string.envoie_erreur_attente_serveur));
             }
         } else {
-            message("Email en attente :\nVérifiez votre connexion internet");
+            message(getString(R.string.envoie_erreur_attente_connexion));
         }
         resultat(1);
     }
@@ -126,12 +136,12 @@ public class LauncherActivity extends AppCompatActivity {
     @UiThread
     void resultat(int code) {
         if(code == 0) {
-            message("Mail bien envoyé");
+            message(getString(R.string.envoie_mail_envoye));
             journeeAttente.setAttente(0);
             daoJournee.modifierJournee(journeeAttente);
 	        daoJournee.close();
         } else {
-            message("Email en attente :\nImpossible d'envoyer le mail, réessayez plus tard");
+            message(getString(R.string.envoie_erreur_attente_reessayez));
         }
     }
 

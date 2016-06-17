@@ -443,7 +443,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			idVol = 0;
 			initialisation();
 		} else {
-			Toast.makeText(getContext(), "Le pilote et le nombre de passager doivent être renseignés", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), getString(R.string.vol_champs_erreur), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -482,7 +482,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 				daoVol.modifierVol(vol, DatabaseHandler.VOL_DATE_ATTERRISSAGE, nouvelleHeure);
 				rListener.onRafraichirListe(vol.getId());
 			} else {
-				Toast.makeText(getContext(), "L'heure d'atterrissage doit être supérieure à l'heure de décollage", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), getString(R.string.vol_date_erreur), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -502,9 +502,9 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			}
 		};
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setMessage("Voulez-vous vraiment supprimer ce vol ?\nCette action ne peut être annulée")
-				.setPositiveButton("Oui", dialogClickListener)
-				.setNegativeButton("Non", dialogClickListener).setCancelable(false).show();
+		builder.setMessage(getString(R.string.vol_supprimer_confirmation))
+				.setPositiveButton(getString(R.string.oui), dialogClickListener)
+				.setNegativeButton(getString(R.string.non), dialogClickListener).setCancelable(false).show();
 	}
 
 	public String afficheHeure(TextView widget, int heure, int minute) {

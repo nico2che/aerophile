@@ -1,0 +1,111 @@
+<resources>
+    <string name="accueil_valider">Validate</string>
+    <string name="apercu_commentaires">Comments</string>
+    <string name="accueil_code">Enter the password</string>
+    <string name="apercu_footer_heures">%s flight hours</string>
+    <string name="apercu_footer_passagers">%d passengers</string>
+    <string name="apercu_heures">Hours</string>
+    <string name="apercu_footer_vols">%d flights</string>
+    <string name="apercu_passagers">Passengers</string>
+    <string name="apercu_pilote">Pilot</string>
+    <string name="apercu_vent">Wind</string>
+    <string name="demarage_horaires_site">Opening hour of the site</string>
+    <string name="demarage_pilote_validation">Name of the pilot</string>
+    <string name="demarrage_charger_journee">Load a day</string>
+    <string name="demarrage_date">Date</string>
+    <string name="demarrage_date_change">Date change</string>
+    <string name="demarrage_debut_journee">Start a day</string>
+    <string name="demarrage_effacer">Delete</string>
+    <string name="demarrage_modifier_journee">Modify a day</string>
+    <string name="demarrage_pasdevol">No flight</string>
+    <string name="demarrage_pdf">PDF view</string>
+    <string name="demarrage_signature">Pilot signature</string>
+    <string name="demarrage_temperature">Temperature (°C)</string>
+    <string name="demarrage_validation">Daily replay</string>
+    <string name="demarrage_champs_obligatoires">All fields are required</string>
+    <string name="enregistrer">Save</string>
+    <string name="envoie_email_objet">Mail subject</string>
+    <string name="envoie_email_objet_string">[%1$s] Flight report of %2$s</string>
+    <string name="envoie_envoyer_a">Send to :</string>
+    <string name="envoie_envoyer_rapport">Send report</string>
+    <string name="envoie_premiere_liste">First mailing list</string>
+    <string name="envoie_quitter">Quit the day</string>
+    <string name="envoie_retour">Back</string>
+    <string name="envoie_seconde_liste">Second mailing list</string>
+    <string name="envoie_voir_pdf">PDF report overview</string>
+    <string name="reglages_1_email">First mailing list, separated by coma</string>
+    <string name="vol_commentaire_journee_titre">This comment will appear in the final daily report</string>
+    <string name="vol_commentaires">Comments</string>
+    <string name="vol_decollage">Take off</string>
+    <string name="vol_supprimer">Delete flight</string>
+    <string name="vol_vitesse_vent">Wind speed</string>
+    <string name="vol_stats">%1$d flights (%3$s) - %2$d total passengers</string>
+    <string name="vol_commentaire_journee">General comment</string>
+    <string name="vol_atterrissage">Landing</string>
+    <string name="reglages_immatriculation">Balloon registration number</string>
+    <string name="reglages_2_email">Second mailing list, separated by coma</string>
+    <string name="reglages_lieu">Place of installation</string>
+    <string name="title_activity_demarrage">New day</string>
+    <string name="reglages_titre">Application settings</string>
+    <string name="reglages_langue_label">Language</string>
+    <string name="reglages_langue">English</string>
+    <string-array name="reglages_langue_choix">
+        <item>French</item>
+        <item>English</item>
+    </string-array>
+    <string name="vol_pilote">Pilot</string>
+    <string name="vol_pasvol_commentaires">Comments</string>
+    <string name="vol_pas_aujourdhui">No flight today</string>
+    <string name="vol_parametre_journee">Settings of the current day</string>
+    <string name="vol_parametre_application">Application settings</string>
+    <string name="valider">Validate</string>
+    <string name="vol_apercu_journee">Day overview</string>
+    <string name="vol_choix_commentaires_holder">Add a comment</string>
+    <string name="vol_fin_journee">End of the day</string>
+    <string name="vol_immatriculation_ballon">Balloon registration : %s</string>
+    <string name="vol_modifier_heure">Change time</string>
+    <string name="vol_nombre_passagers">Number of passengers</string>
+    <string name="vol_nouveau">New flight</string>
+    <string-array name="vol_choix_commentaires">
+        <item>Add a comment</item>
+        <item>300 meter flight</item>
+        <item>Stop flight</item>
+        <item>Limit wind</item>
+        <item>Advertisement flight</item>
+        <item>Test flight</item>
+    </string-array>
+    <string name="apercu_aucun_commentaire">No comment</string>
+    <string name="apercu_titre">Overview of %s</string>
+    <string name="accueil_code_incorrect">Incorrect security code</string>
+    <string name="apercu_vol_actuel">Current</string>
+    <string name="demarrage_chargement_effectue">Day loaded</string>
+    <string name="demarrage_donnees_enregistrees">Data saved</string>
+    <string name="envoie_envoie_mail">Sending email in progress…</string>
+    <string name="envoie_erreur_journee_existe_pas">Email waiting: Check your Internet connection</string>
+    <string name="pdf_chargement">Loading PDF</string>
+    <string name="envoie_erreur_attente_serveur_details">Email waiting: Server Error: %s</string>
+    <string name="envoie_erreur_attente_reessayez">Email waiting: Unable to send email, try again later</string>
+    <string name="envoie_erreur_attente_connexion">Email waiting: Check your Internet connection</string>
+    <string name="envoie_erreur_attente_serveur">Mail still waiting: Unable to contact the server</string>
+    <string name="envoie_mail_attente">Send an email waiting…</string>
+    <string name="envoie_erreur_attente_email">Sends impossible, queued email</string>
+    <string name="envoie_erreur_connexion">Check your internet connection</string>
+    <string name="envoie_erreur_date">Unable to post-date the day</string>
+    <string name="envoie_erreur_liste_email">Thank you to specify at least one email list</string>
+    <string name="envoie_erreur_serveur">Unable to contact the server</string>
+    <string name="envoie_erreur_serveur_details">Server error: %s</string>
+    <string name="envoie_erreur_vol_en_cours">There is an ongoing flight in this day</string>
+    <string name="envoie_generation_pdf">Creating PDF…</string>
+    <string name="envoie_mail_envoye">Mail sent well</string>
+    <string name="envoie_titre">Day of %s</string>
+    <string name="non">No</string>
+    <string name="oui">Yes</string>
+    <string name="pdf_titre">Preview PDF</string>
+    <string name="vol_champs_erreur">The pilot and the number of passengers must be informed</string>
+    <string name="vol_date_erreur">The landing time should be greater than the take-off time</string>
+    <string name="vol_passagers_erreur">The number of passenger must be entered before changing flight</string>
+    <string name="vol_pilote_erreur">The pilot must be informed before changing flight</string>
+    <string name="vol_supprimer_confirmation">Do you really want to delete this flight? This action can not be undone</string>
+    <string name="vol_vent_erreur">The wind speed must be entered before changing flight</string>
+    <string name="vol_vols_erreur">All flights must land before ending the day</string>
+</resources>

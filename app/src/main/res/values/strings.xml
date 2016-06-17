@@ -1,12 +1,15 @@
 <resources>
-    <string name="aerophile">Aérophile</string>
+    <string name="aerophile" translatable="false">Aérophile</string>
     <string name="enregistrer">Enregistrer</string>
     <string name="valider">Valider</string>
+    <string name="oui">Oui</string>
+    <string name="non">Non</string>
 
     <!-- AccueilActivity -->
     <string name="accueil_code">Entrez le code de sécurité :</string>
     <string name="accueil_valider">Valider</string>
-    <string name="title_activity_reglages">ReglagesActivity</string>
+    <string name="accueil_code_incorrect">Code de sécurité incorrect</string>
+    <string name="title_activity_reglages" translatable="false">ReglagesActivity</string>
 
     <!-- ReglagesActivity -->
     <string name="reglages_titre">Réglages de l\'application</string>
@@ -14,32 +17,41 @@
     <string name="reglages_immatriculation">Immatriculation</string>
     <string name="reglages_1_email">Première liste d\'emails, séparées par des virgules</string>
     <string name="reglages_2_email">Seconde liste d\'emails, séparées par des virgules</string>
+    <string name="reglages_langue_label">Langue</string>
+    <string name="reglages_langue">Français</string>
+    <string-array name="reglages_langue_choix">
+        <item>Français</item>
+        <item>Anglais</item>
+    </string-array>
 
     <!-- DemarrageActivity -->
     <string name="title_activity_demarrage">Nouvelle journée</string>
     <string name="demarrage_date">Date</string>
-    <string name="demarrage_date_holder">JJ/MM/YYYY</string>
+    <string name="demarrage_date_holder" translatable="false">JJ/MM/YYYY</string>
     <string name="demarrage_date_change">Changer de date</string>
     <string name="demarrage_pdf">Visualiser le PDF</string>
-    <string name="demarrage_lift">Lift (kN)</string>
-    <string name="demarrage_lms">LMS</string>
+    <string name="demarrage_lift" translatable="false">Lift (kN)</string>
+    <string name="demarrage_lms" translatable="false">LMS</string>
     <string name="demarrage_temperature">Température (°C)</string>
     <string name="demarrage_validation">Validation quotidienne</string>
     <string name="demarage_pilote_validation">Pilote de validation</string>
     <string name="demarage_horaires_site">Horaires du site</string>
-    <string name="demarrage_heure_holder">H:m</string>
+    <string name="demarrage_heure_holder" translatable="false">H:m</string>
     <string name="demarrage_pasdevol">Pas de vol</string>
     <string name="demarrage_signature">Signature du pilote</string>
     <string name="demarrage_effacer">Effacer</string>
     <string name="demarrage_debut_journee">Commencer la journée</string>
     <string name="demarrage_modifier_journee">Modifier la journée</string>
     <string name="demarrage_charger_journee">Charger la journée</string>
+    <string name="demarrage_chargement_effectue">Chargement d\'une journée effectué</string>
+    <string name="demarrage_champs_obligatoires">Tous les champs sont obligatoires</string>
+    <string name="demarrage_donnees_enregistrees">Données enregistrées</string>
 
     <!-- VolDetailFragment -->
     <string name="vol_nouveau">Nouveau vol</string>
     <string name="vol_pas_aujourdhui">Pas de vol aujourd\'hui</string>
     <string name="vol_decollage">Décollage</string>
-    <string name="vol_heure_holder">%1$s:%2$s</string>
+    <string name="vol_heure_holder" translatable="false">%1$s:%2$s</string>
     <string name="vol_modifier_heure">Modifier l\'heure</string>
     <string name="vol_pilote">Pilote</string>
     <string name="vol_nombre_passagers">Nombre de passagers</string>
@@ -57,6 +69,8 @@
     <string name="vol_commentaires">Commentaires</string>
     <string name="vol_atterrissage">Atterrissage</string>
     <string name="vol_supprimer">Supprimer ce vol</string>
+    <string name="vol_supprimer_confirmation">Voulez-vous vraiment supprimer ce vol ?
+Cette action ne peut être annulée</string>
     <string name="vol_fin_journee">Fin de journée</string>
     <string name="vol_immatriculation_ballon">Immatriculation du ballon : %s</string>
     <string name="vol_stats">%1$d vols (%3$s) - %2$d passagers au total</string>
@@ -67,23 +81,40 @@
     <string name="vol_commentaire_journee_titre">Ce commentaire apparaîtra dans le rapport de la
         journée.
     </string>
+    <string name="vol_date_erreur">L\'heure d\'atterrissage doit être supérieure à l\'heure de décollage</string>
+    <string name="vol_champs_erreur">Le pilote et le nombre de passager doivent être renseignés</string>
+    <string name="vol_vols_erreur">Tous les vols doivent atterrir avant de terminer la journée</string>
+    <string name="vol_pilote_erreur">Le pilote doit être renseigné avant de changer de vol</string>
+    <string name="vol_passagers_erreur">Le nombre de passager doit être renseigné avant de changer de vol</string>
+    <string name="vol_vent_erreur">La vitesse du vent doit être renseignée avant de changer de vol</string>
 
     <!-- ApercuActivity -->
+    <string name="apercu_titre">Aperçu de la journée du %s</string>
     <string name="apercu_heures">Heures</string>
-    <string name="apercu_heures_format">%1$s - %2$s</string>
+    <string name="apercu_vol_actuel">Actuel</string>
+    <string name="apercu_heures_format" translatable="false">%1$s - %2$s</string>
     <string name="apercu_pilote">Pilote</string>
     <string name="apercu_passagers">Nombre de passagers</string>
     <string name="apercu_vent">Vitesse de vent</string>
-    <string name="apercu_vent_format">%s m/s</string>
+    <string name="apercu_vent_format" translatable="false">%s m/s</string>
     <string name="apercu_commentaires">Commentaires</string>
     <string name="apercu_footer_vols">%d vols</string>
     <string name="apercu_footer_heures">%s de vols</string>
     <string name="apercu_footer_passagers">%d passagers</string>
+    <string name="apercu_aucun_commentaire">Aucun commentaire général</string>
 
     <!-- EnvoieActivity -->
-    <string name="title_activity_envoie">EnvoieActivity</string>
+    <string name="title_activity_envoie" translatable="false">EnvoieActivity</string>
+    <string name="envoie_titre">Journée du %s</string>
     <string name="envoie_retour">Retour</string>
     <string name="envoie_voir_pdf">Pré-visualiser le PDF de la journée</string>
+    <string name="envoie_generation_pdf">Génération du PDF en cours…</string>
+    <string name="envoie_erreur_journee_existe_pas">Cette journée n\'existe pas</string>
+    <string name="envoie_erreur_vol_en_cours">Un vol est en cours dans cette journée</string>
+    <string name="envoie_erreur_connexion">Vérifiez votre connexion internet</string>
+    <string name="envoie_erreur_serveur">Impossible de contacter le serveur</string>
+    <string name="envoie_erreur_serveur_details">Erreur serveur : %s</string>
+    <string name="envoie_erreur_date">Impossible de postdater la journée</string>
     <string name="envoie_email_objet">Objet de l\'email :</string>
     <string name="envoie_email_objet_string">[%1$s] Rapport de vol du %2$s</string>
     <string name="envoie_envoyer_a">Envoyer à :</string>
@@ -91,5 +122,22 @@
     <string name="envoie_seconde_liste">Seconde liste d\'email</string>
     <string name="envoie_quitter">Quitter la journée</string>
     <string name="envoie_envoyer_rapport">Envoyer le rapport</string>
+    <string name="envoie_envoie_mail">Envoi du mail en cours…</string>
+    <string name="envoie_mail_envoye">Mail bien envoyé</string>
+    <string name="envoie_erreur_liste_email">Merci de préciser au moins une liste d\'email</string>
+    <string name="envoie_erreur_attente_email">Envoie impossible, mail mis en attente</string>
+
+    <string name="envoie_mail_attente">Envoie d\'un mail en attente…</string>
+    <string name="envoie_erreur_attente_serveur_details">Email en attente :
+Erreur serveur : %s</string>
+    <string name="envoie_erreur_attente_serveur">Email toujours en attente :
+Impossible de contacter le serveur</string>
+    <string name="envoie_erreur_attente_connexion">Email en attente :
+Vérifiez votre connexion internet</string>
+    <string name="envoie_erreur_attente_reessayez">Email en attente :
+        Impossible d\'envoyer le mail, réessayez plus tard</string>
+
+    <string name="pdf_titre">Pré-visualisation du PDF</string>
+    <string name="pdf_chargement">Chargement du PDF…</string>
 
 </resources>

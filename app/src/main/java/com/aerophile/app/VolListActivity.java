@@ -93,7 +93,7 @@ public class VolListActivity extends AppCompatActivity
 			        @Override
 			        public void onClick(View v) {
 				        if(daoVol.getDernierVol(journeeCourante.getId()).getEnCours() == 1) {
-					        Toast.makeText(getApplicationContext(), "Tous les vols doivent atterrir avant de terminer la journée", Toast.LENGTH_SHORT).show();
+					        Toast.makeText(getApplicationContext(), getString(R.string.vol_vols_erreur), Toast.LENGTH_SHORT).show();
 				        } else {
 					        Intent ecranEnvoie = new Intent(VolListActivity.this, EnvoieActivity_.class);
 					        startActivityForResult(ecranEnvoie, CALLBACK_ENVOIE);
@@ -193,11 +193,10 @@ public class VolListActivity extends AppCompatActivity
 			}
 		}
 		if (requestCode == CALLBACK_APP) {
-			SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-			TextView textImmatriculation = (TextView) findViewById(R.id.textBottomImmat);
-			if(textImmatriculation != null) {
-				textImmatriculation.setText(String.format(getString(R.string.vol_immatriculation_ballon), reglages.getString("IMMATRICULATION", "?")));
-			}
+			Intent restartVols = new Intent();
+			restartVols.setClass(this, this.getClass());
+			startActivity(restartVols);
+			finish();
 		}
 		if (requestCode == CALLBACK_ENVOIE) {
 			if(resultCode == EnvoieActivity.FINISH) {
@@ -265,17 +264,17 @@ public class VolListActivity extends AppCompatActivity
 		if(fragment != null) {
 			if(fragment.idVol != 0 && !fragment.buttonAtterrissage.isEnabled()) {
 				if(fragment.inputPilote.getText().toString().equals("")) {
-					Toast.makeText(this, "Le pilote doit être renseigné avant de changer de vol", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.vol_pilote_erreur), Toast.LENGTH_SHORT).show();
 					list.setActivatedPosition(positionActuelle);
 					return;
 				}
 				if(fragment.inputPassagers.getText().toString().equals("")) {
-					Toast.makeText(this, "Le nombre de passager doit être renseigné avant de changer de vol", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.vol_passagers_erreur), Toast.LENGTH_SHORT).show();
 					list.setActivatedPosition(positionActuelle);
 					return;
 				}
 				if(fragment.inputVent.getText().toString().equals("")) {
-					Toast.makeText(this, "La vitesse du vent doit être renseignée avant de changer de vol", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.vol_vent_erreur), Toast.LENGTH_SHORT).show();
 					list.setActivatedPosition(positionActuelle);
 					return;
 				}

@@ -59,7 +59,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 		    // Nouveau vol en haut
 		    Vol nouveauVol = new Vol();
 		    nouveauVol.setId(0);
-		    nouveauVol.setDateDecollage("Nouveau vol");
+		    nouveauVol.setDateDecollage(getString(R.string.vol_nouveau));
 		    journeeCourante.addVol(nouveauVol);
 	    }
 
@@ -107,7 +107,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 			    // Nouveau vol en haut
 			    Vol nouveauVol = new Vol();
 			    nouveauVol.setId(0);
-			    nouveauVol.setDateDecollage("Nouveau vol");
+			    nouveauVol.setDateDecollage(getString(R.string.vol_nouveau));
 			    journeeCourante.addVol(nouveauVol);
                 i = 1;
 		    }
@@ -122,7 +122,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 	    } else {
 		    Vol nouveauVol = new Vol();
 		    nouveauVol.setId(0);
-		    nouveauVol.setDateDecollage("Nouveau vol");
+		    nouveauVol.setDateDecollage(getString(R.string.vol_nouveau));
 		    journeeCourante.addVol(nouveauVol);
 	    }
 	    adapter.notifyDataSetChanged();
@@ -144,7 +144,6 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-            Log.d("tourne", "OOOOH ! : " + savedInstanceState.getString("nbre_passagers"));
         }
     }
 

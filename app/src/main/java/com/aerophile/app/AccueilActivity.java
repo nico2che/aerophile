@@ -35,7 +35,7 @@ public class AccueilActivity extends AppCompatActivity {
                     startActivity(ecranReglages);
                     finish();
                 } else {
-                    Toast.makeText(AccueilActivity.this, "Code de sécurité incorrect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AccueilActivity.this, getString(R.string.accueil_code_incorrect), Toast.LENGTH_SHORT).show();
                 }
             }
         });
