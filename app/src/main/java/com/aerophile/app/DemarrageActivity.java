@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -56,6 +57,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	public static int CHANGEMENT = 1;
 	private static int MODIFICATION = 2;
+	public final static int CALLBACK_APP = 1;
 
 	private int annee;
 	private int mois;
@@ -652,12 +654,23 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("CALLBACK", String.valueOf(requestCode));
+		if (requestCode == CALLBACK_APP) {
+			Intent restartDemarrage = new Intent();
+			restartDemarrage.setClass(this, this.getClass());
+			startActivity(restartDemarrage);
+			finish();
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_action_reglages:
 				Intent ecranParametreApplication = new Intent(this, ReglagesActivity_.class);
 				ecranParametreApplication.putExtra("EN_COURS", 1);
-				startActivity(ecranParametreApplication);
+				startActivityForResult(ecranParametreApplication, CALLBACK_APP);
 				return true;
 			default:
 				return false;
