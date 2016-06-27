@@ -8,12 +8,12 @@ android {
         applicationId "com.aerophile.app"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 21
-        versionName "1.5"
+        versionCode 22
+        versionName "1.5.1"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
