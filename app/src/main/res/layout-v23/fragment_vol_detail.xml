@@ -120,8 +120,8 @@ tools:context="com.aerophile.app.VolListActivity"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_columnSpan="2"
-                    android:inputType="numberDecimal"
-                    android:text="0" />
+                    android:text="0"
+                    android:inputType="number" />
 
                 <TextView
                     android:text="@string/vol_commentaires"
