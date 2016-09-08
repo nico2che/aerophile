@@ -136,7 +136,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@AfterViews
 	public void initialisation() {
-		inputVent.setKeyListener(DigitsKeyListener.getInstance("0123456789,"));
+		// inputVent.setKeyListener(DigitsKeyListener.getInstance("0123456789,"));
 	    horlogeAtterrissage = new Handler();
 	    horlogeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
@@ -230,6 +230,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 		        }
 	        });
+			spinnerCommentaires.setSelection(0);
 
         } else { // Vol déjà présent
 
