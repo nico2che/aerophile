@@ -80,7 +80,7 @@ public class VolListActivity extends AppCompatActivity
 	        daoJournee.open();
 
 	        journeeCourante = daoJournee.getJourneeEnCours();
-	        setTitle("Aérophile - " + journeeCourante.getDate());
+	        setTitle(journeeCourante.getDate());
 
 
 	        ecranPrincipal = findViewById(R.id.ecranPrincipal);
