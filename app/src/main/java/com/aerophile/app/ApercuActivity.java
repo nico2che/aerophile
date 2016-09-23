@@ -1,7 +1,11 @@
 package com.aerophile.app;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -85,15 +89,19 @@ public class ApercuActivity extends AppCompatActivity {
 		labelTotalHeures.setText(String.format(getString(R.string.apercu_footer_heures), heures));
 		labelTotalPassagers.setText(String.format(getString(R.string.apercu_footer_passagers), passagers));
 
-		Vol vol = new Vol();
-		vols.add(vol);
-
 		String commentaire = getResources().getString(R.string.apercu_aucun_commentaire);
 		if(journeeCourante.getCommentaire() != null && !journeeCourante.getCommentaire().isEmpty()) {
 			commentaire = journeeCourante.getCommentaire();
 		}
 
-		ApercuAdapter adapter = new ApercuAdapter(this, R.layout.listview_apercu, vols, commentaire);
+		ApercuAdapter adapter = new ApercuAdapter(this, R.layout.listview_apercu, vols);
 		listView.setAdapter(adapter);
+
+		View view = getLayoutInflater().inflate(R.layout.listview_commentaire, null);
+		if(view != null) {
+			TextView textCommentaire = (TextView) view.findViewById(R.id.textCommentaireGeneral);
+			if(textCommentaire != null) textCommentaire.setText(commentaire);
+		}
+		listView.addFooterView(view);
 	}
 }

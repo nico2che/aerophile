@@ -119,6 +119,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		changeHeure = false;
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             idVol = getArguments().getLong(ARG_ITEM_ID);
+            // Log.d("AEROBUG", "Fragment onCreate: " + idVol);
 	        daoVol = new VolDAO(getContext());
 	        daoVol.open();
         } else {
@@ -136,6 +137,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@AfterViews
 	public void initialisation() {
+        // Log.d("AEROBUG", "Fragment initialisation: " + idVol);
 	    horlogeAtterrissage = new Handler();
 	    horlogeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
@@ -441,7 +443,8 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			buttonAtterrissage.setEnabled(false);
 			rListener.onRafraichirListe(0);
 			idVol = 0;
-			initialisation();
+            getActivity().getSupportFragmentManager().popBackStack();
+            initialisation();
 		} else {
 			Toast.makeText(getContext(), getString(R.string.vol_champs_erreur), Toast.LENGTH_SHORT).show();
 		}
