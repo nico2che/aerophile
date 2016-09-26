@@ -40,7 +40,7 @@ public class ApercuAdapter extends ArrayAdapter<Vol> {
 		Vol vol = data.get(position);
 		heures.setText(String.format(getContext().getResources().getString(R.string.apercu_heures_format), vol.getDateDecollage(), (vol.getDateAtterrissage() != null && !vol.getDateAtterrissage().isEmpty() ? vol.getDateAtterrissage() : getContext().getResources().getString(R.string.apercu_vol_actuel))));
 		pilote.setText(vol.getPilote());
-		passagers.setText(vol.getNombrePassagers());
+		passagers.setText(String.valueOf(vol.getNombrePassagers()));
 		vent.setText(vol.getVitesseVent() != null && !vol.getVitesseVent().isEmpty() ? String.format(getContext().getResources().getString(R.string.apercu_vent_format), vol.getVitesseVent()) : "-");
 		commentaires.setText(vol.getCommentaires() != null && !vol.getCommentaires().isEmpty() ? vol.getCommentaires() : "-");
 		return convertView;

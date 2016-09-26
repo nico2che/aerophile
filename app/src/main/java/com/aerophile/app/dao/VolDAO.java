@@ -66,6 +66,13 @@ public class VolDAO {
 		return true;
 	}
 
+	public boolean modifierVol(Vol vol, String champ, int value) {
+		ContentValues values = new ContentValues();
+		values.put(champ, value);
+		database.update(DatabaseHandler.VOL_TABLE_NAME, values, DatabaseHandler.VOL_KEY + " = ?", new String[]{String.valueOf(vol.getId())});
+		return true;
+	}
+
 	public void supprimerVol(long idVol) {
 		System.out.println("Vol deleted with id: " + idVol);
 		database.delete(DatabaseHandler.VOL_TABLE_NAME, DatabaseHandler.VOL_KEY
@@ -124,7 +131,9 @@ public class VolDAO {
 	public boolean existeVolEnCours(){
 		Cursor cursor = database.query(DatabaseHandler.VOL_TABLE_NAME, new String[]{DatabaseHandler.VOL_KEY}, DatabaseHandler.VOL_ENCOURS + " = 1", null, null, null, null);
 		cursor.moveToFirst();
-		return !cursor.isAfterLast();
+		boolean response = !cursor.isAfterLast();
+		cursor.close();
+		return response;
 	}
 
 	public static Vol cursorToVol(Cursor cursor) {
@@ -136,7 +145,7 @@ public class VolDAO {
 		vol.setDateDecollage(cursor.getString(4));
 		vol.setPilote(cursor.getString(5));
 		vol.setCommentaires(cursor.getString(6));
-		vol.setNombrePassagers(cursor.getString(7));
+		vol.setNombrePassagers(cursor.getInt(7));
 		vol.setVitesseVent(cursor.getString(8));
 		return vol;
 	}

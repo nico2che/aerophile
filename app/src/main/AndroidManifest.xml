@@ -42,13 +42,6 @@
 			android:windowSoftInputMode="adjustPan">
 		</activity>
 		<activity
-			android:name=".VolDetailActivity"
-			android:parentActivityName=".VolListActivity">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.aerophile.app.VolListActivity"/>
-		</activity>
-		<activity
 			android:name=".EnvoieActivity_"
 			android:label="@string/title_activity_envoie"
 			android:parentActivityName=".VolListActivity">

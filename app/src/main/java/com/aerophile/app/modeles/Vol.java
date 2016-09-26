@@ -17,7 +17,7 @@ public class Vol {
 	private String dateAtterrissage;
 	private int enCours;
 	private String pilote;
-	private String nombrePassagers;
+	private int nombrePassagers;
 	private String vitesseVent;
 	private String commentaires;
 
@@ -63,10 +63,10 @@ public class Vol {
 		return this.dateDecollage;
 	}
 
-	public void setNombrePassagers(String nombrePassagers) {
+	public void setNombrePassagers(int nombrePassagers) {
 		this.nombrePassagers = nombrePassagers;
 	}
-	public String getNombrePassagers() {
+	public int getNombrePassagers() {
 		return nombrePassagers;
 	}
 

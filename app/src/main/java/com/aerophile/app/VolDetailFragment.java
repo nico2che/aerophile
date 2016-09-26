@@ -33,11 +33,11 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * A fragment representing a single Vol detail screen.
  * This fragment is either contained in a {@link VolListActivity}
- * in two-pane mode (on tablets) or a {@link VolDetailActivity}
  * on handsets.
  */
 
@@ -119,7 +119,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		changeHeure = false;
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             idVol = getArguments().getLong(ARG_ITEM_ID);
-            // Log.d("AEROBUG", "Fragment onCreate: " + idVol);
+            Log.d("AEROBUG", "Fragment onCreate: " + idVol);
 	        daoVol = new VolDAO(getContext());
 	        daoVol.open();
         } else {
@@ -137,7 +137,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@AfterViews
 	public void initialisation() {
-        // Log.d("AEROBUG", "Fragment initialisation: " + idVol);
+        Log.d("AEROBUG", "Fragment initialisation: " + idVol);
 	    horlogeAtterrissage = new Handler();
 	    horlogeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
@@ -166,11 +166,12 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 				changeHeure = getArguments().getBoolean(ARG_CHANGEMENT);
 				heureDecollage = getArguments().getInt(ARG_DECOLLAGE_HEURE);
 				minuteDecollage = getArguments().getInt(ARG_DECOLLAGE_MINUTE);
-				if(getArguments().getString(ARG_PILOTE) != null && !getArguments().getString(ARG_PILOTE).equals("")) {
+				if(getArguments().getString(ARG_PILOTE) != null && getArguments().getString(ARG_PILOTE) != "") {
+					inputPilote.setText(getArguments().getString(ARG_PILOTE));
 				} else {
 					inputPilote.setText(pilote);
 				}
-				inputPassagers.setText(getArguments().getString(ARG_PASSAGERS));
+				inputPassagers.setText(String.valueOf(getArguments().getInt(ARG_PASSAGERS)));
 				inputVent.setText(getArguments().getString(ARG_VENT));
 				inputCommentaires.setText(getArguments().getString(ARG_COMMENTAIRE));
 				afficheHeure(textHeureDecollage, heureDecollage, minuteDecollage);
@@ -179,7 +180,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 				// On remet à zéro les valeurs
 				inputPilote.setText(pilote);
-				inputPassagers.setText("");
+				inputPassagers.setText("0");
 				inputVent.setText("0");
 				inputCommentaires.setText("");
 				changeHeure = false;
@@ -297,11 +298,12 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		        public void onTextChanged(CharSequence s, int start, int before, int count) {
 		        }
 	        });
-	        inputPassagers.setText(vol.getNombrePassagers());
+	        inputPassagers.setText(String.valueOf(vol.getNombrePassagers()));
 	        inputPassagers.addTextChangedListener(new TextWatcher() {
 		        public void afterTextChanged(Editable s) {
-			        vol.setNombrePassagers(s.toString());
-			        daoVol.modifierVol(vol, DatabaseHandler.VOL_NBRE_PASSAGER, s.toString());
+                    int nbrePas = s.toString().equals("") ? 0 : Integer.parseInt(s.toString());
+			        vol.setNombrePassagers(nbrePas);
+			        daoVol.modifierVol(vol, DatabaseHandler.VOL_NBRE_PASSAGER, nbrePas);
 			        ((VolListActivity) getActivity()).refreshBottomPassagers(idVol);
 		        }
 
@@ -377,14 +379,22 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 					inputPilote.setText("");
 			}
 		});
-		inputVent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus)
-					if(inputVent.getText().toString().equals("0"))
-						inputVent.setText("");
-			}
-		});
+        inputVent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    if(inputVent.getText().toString().equals("0"))
+                        inputVent.setText("");
+            }
+        });
+        inputPassagers.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    if(inputPassagers.getText().toString().equals("0"))
+                        inputPassagers.setText("");
+            }
+        });
     }
 
 	@Override
@@ -415,7 +425,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	        horlogeDecollage.removeCallbacksAndMessages(null);
 	        vol.setPilote(inputPilote.getText().toString());
 	        vol.setDateDecollage(textHeureDecollage.getText().toString());
-	        vol.setNombrePassagers(inputPassagers.getText().toString());
+	        vol.setNombrePassagers(inputPassagers.getText().toString().equals("") ? 0 : Integer.parseInt(inputPassagers.getText().toString()));
 	        vol.setVitesseVent(inputVent.getText().toString());
 	        vol.setCommentaires(inputCommentaires.getText().toString());
 	        // On enregistre le vol
@@ -427,7 +437,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@Click
 	void buttonAtterrissage() {
-		if(vol.getPilote() != null && !vol.getPilote().isEmpty() && vol.getNombrePassagers() != null &&  !vol.getNombrePassagers().isEmpty()) {
+		if(vol.getPilote() != null && !vol.getPilote().isEmpty() && inputPassagers.getText().toString() != "") {
 			horlogeAtterrissage.removeCallbacksAndMessages(null);
 			if(vol.getDateAtterrissage() == null) {
 				final Calendar c = Calendar.getInstance();
@@ -529,6 +539,5 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		outState.putString("vent", inputVent.getText().toString());
 		outState.putString("commentaire", inputCommentaires.getText().toString());
 	}
-
 }
 

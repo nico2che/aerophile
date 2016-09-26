@@ -61,8 +61,8 @@ public class ApercuActivity extends AppCompatActivity {
 		int passagers = 0;
 		int temps = 0;
 		for(Vol vol : vols) {
-			if(vol.getNombrePassagers() != null && !vol.getNombrePassagers().isEmpty()) {
-				passagers += Integer.parseInt(vol.getNombrePassagers());
+			if(vol.getNombrePassagers() != 0) {
+				passagers += vol.getNombrePassagers();
 			}
 			if (vol.getDateDecollage() != null && vol.getDateAtterrissage() != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);

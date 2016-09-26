@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,8 +30,6 @@ import java.util.Locale;
 public class VolListActivity extends AppCompatActivity
         implements VolListFragment.Callbacks {
 
-    private boolean mTwoPane;
-
 	public VolListFragment list;
 
 	View ecranPrincipal;
@@ -47,7 +46,7 @@ public class VolListActivity extends AppCompatActivity
 	private int heureDecollage;
 	private int minuteDecollage;
 	private String pilote;
-	private String nombrePassagers;
+	private int nombrePassagers;
 	private String vent;
 	private String commentaire;
 	public int positionActuelle;
@@ -70,7 +69,6 @@ public class VolListActivity extends AppCompatActivity
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
 			saving = false;
 
 	        daoVol = new VolDAO(this);
@@ -149,8 +147,8 @@ public class VolListActivity extends AppCompatActivity
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);
 		if(volsJournee.size() > 0) {
 			for (Vol vol : volsJournee) {
-				if(vol.getNombrePassagers() != null && !vol.getNombrePassagers().isEmpty()) {
-					nombrePassagers += Integer.parseInt(vol.getNombrePassagers());
+				if(vol.getNombrePassagers() != 0) {
+					nombrePassagers += vol.getNombrePassagers();
 				}
 				if(vol.getDateAtterrissage() != null && vol.getDateDecollage() != null && !vol.getDateDecollage().isEmpty() && !vol.getDateAtterrissage().isEmpty()) {
 					Date heureAtterrissage = new Date();
@@ -261,7 +259,9 @@ public class VolListActivity extends AppCompatActivity
 
     @Override
     public void onItemSelected(long id) {
+
 		if(fragment != null) {
+
 			if(fragment.idVol != 0 && !fragment.buttonAtterrissage.isEnabled()) {
 				if(fragment.inputPilote.getText().toString().equals("")) {
 					Toast.makeText(this, getString(R.string.vol_pilote_erreur), Toast.LENGTH_SHORT).show();
@@ -279,39 +279,32 @@ public class VolListActivity extends AppCompatActivity
 					return;
 				}
 			}
-		}
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-			positionActuelle = list.positionActuelle;
-	        itemSelected = id;
-            Bundle arguments = new Bundle();
-            arguments.putLong(VolDetailFragment.ARG_ITEM_ID, id);
-			if(saving) {
-				arguments.putBoolean(VolDetailFragment.ARG_CHANGEMENT, changeHeure);
-				arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_HEURE, heureDecollage);
-				arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_MINUTE, minuteDecollage);
-				arguments.putString(VolDetailFragment.ARG_PILOTE, pilote);
-				arguments.putString(VolDetailFragment.ARG_PASSAGERS, nombrePassagers);
-				arguments.putString(VolDetailFragment.ARG_VENT, vent);
-				arguments.putString(VolDetailFragment.ARG_COMMENTAIRE, commentaire);
-				saving = false;
-			}
-            fragment = new VolDetailFragment_();
-            fragment.setArguments(arguments);
-            fragment.setRafraichirListe(list);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.vol_detail_container, fragment)
-                    .commit();
 
-        } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, VolDetailActivity.class);
-            detailIntent.putExtra(VolDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
+		}
+
+        positionActuelle = list.positionActuelle;
+        itemSelected = id;
+        Bundle arguments = new Bundle();
+        arguments.putLong(VolDetailFragment.ARG_ITEM_ID, id);
+
+        if(saving) {
+            arguments.putBoolean(VolDetailFragment.ARG_CHANGEMENT, changeHeure);
+            arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_HEURE, heureDecollage);
+            arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_MINUTE, minuteDecollage);
+            arguments.putString(VolDetailFragment.ARG_PILOTE, pilote);
+            arguments.putInt(VolDetailFragment.ARG_PASSAGERS, nombrePassagers);
+            arguments.putString(VolDetailFragment.ARG_VENT, vent);
+            arguments.putString(VolDetailFragment.ARG_COMMENTAIRE, commentaire);
         }
+        saving = false;
+
+        fragment = new VolDetailFragment_();
+        fragment.setArguments(arguments);
+        fragment.setRafraichirListe(list);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.vol_detail_container, fragment)
+                .commit();
+
     }
 
 	@Override
@@ -323,7 +316,7 @@ public class VolListActivity extends AppCompatActivity
 			outState.putInt("heure_decollage", fragment.heureDecollage);
 			outState.putInt("minute_decollage", fragment.minuteDecollage);
 			outState.putString("pilote", fragment.inputPilote.getText().toString());
-			outState.putString("nbre_passagers", fragment.inputPassagers.getText().toString());
+			outState.putInt("nbre_passagers", fragment.inputPassagers.getText().toString().equals("") ? 0 : Integer.parseInt(fragment.inputPassagers.getText().toString()));
 			outState.putString("vent", fragment.inputVent.getText().toString());
 			outState.putString("commentaire", fragment.inputCommentaires.getText().toString());
 		}
@@ -336,7 +329,7 @@ public class VolListActivity extends AppCompatActivity
 		heureDecollage = savedState.getInt("heure_decollage");
 		minuteDecollage = savedState.getInt("minute_decollage");
 		pilote = savedState.getString("pilote");
-		nombrePassagers = savedState.getString("nbre_passagers");
+		nombrePassagers = savedState.getInt("nbre_passagers");
 		vent = savedState.getString("vent");
 		commentaire = savedState.getString("commentaire");
 		saving = true;
