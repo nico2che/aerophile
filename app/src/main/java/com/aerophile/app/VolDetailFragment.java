@@ -236,6 +236,8 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
         } else { // Vol déjà présent
 
+            Log.d("AEROBUG", String.valueOf(idVol));
+
 	        // On récupère le vol déjà présent dans la base de données
 	        vol = daoVol.getVol(idVol);
 
@@ -506,7 +508,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 					case DialogInterface.BUTTON_POSITIVE:
-						idVol = rListener.onSupprimerVol(idVol);
+                        idVol = rListener.onSupprimerVol(idVol);
 						horlogeAtterrissage.removeCallbacksAndMessages(null);
 						horlogeDecollage.removeCallbacksAndMessages(null);
 						initialisation();

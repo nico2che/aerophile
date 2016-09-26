@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -310,7 +311,8 @@ public class VolListActivity extends AppCompatActivity
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putLong("item", itemSelected);
+        Log.d("AEROBUG", "saveInstance, idVol = " + fragment.idVol);
+		outState.putLong("item", fragment.idVol);
 		if(fragment != null) {
 			outState.putBoolean("changement", fragment.changeHeure);
 			outState.putInt("heure_decollage", fragment.heureDecollage);
