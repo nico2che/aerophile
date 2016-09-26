@@ -48,6 +48,9 @@ public class VolDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.vol_detail_container, fragment)
                     .commit();
+            Log.d("AEROBUG", "savedInstanceState NULL");
+        } else {
+            Log.d("AEROBUG", "savedInstanceState NON NULL");
         }
     }
 
@@ -66,5 +69,10 @@ public class VolDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
