@@ -311,9 +311,9 @@ public class VolListActivity extends AppCompatActivity
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-        Log.d("AEROBUG", "saveInstance, idVol = " + fragment.idVol);
-		outState.putLong("item", fragment.idVol);
+		outState.putLong("item", -1);
 		if(fragment != null) {
+			outState.putLong("item", fragment.idVol);
 			outState.putBoolean("changement", fragment.changeHeure);
 			outState.putInt("heure_decollage", fragment.heureDecollage);
 			outState.putInt("minute_decollage", fragment.minuteDecollage);
@@ -327,14 +327,16 @@ public class VolListActivity extends AppCompatActivity
 	@Override
 	protected void onRestoreInstanceState(Bundle savedState) {
 		super.onRestoreInstanceState(savedState);
-		changeHeure = savedState.getBoolean("changement");
-		heureDecollage = savedState.getInt("heure_decollage");
-		minuteDecollage = savedState.getInt("minute_decollage");
-		pilote = savedState.getString("pilote");
-		nombrePassagers = savedState.getInt("nbre_passagers");
-		vent = savedState.getString("vent");
-		commentaire = savedState.getString("commentaire");
-		saving = true;
-		onItemSelected(savedState.getLong("item"));
+		if(savedState.getLong("item") != -1) {
+			changeHeure = savedState.getBoolean("changement");
+			heureDecollage = savedState.getInt("heure_decollage");
+			minuteDecollage = savedState.getInt("minute_decollage");
+			pilote = savedState.getString("pilote");
+			nombrePassagers = savedState.getInt("nbre_passagers");
+			vent = savedState.getString("vent");
+			commentaire = savedState.getString("commentaire");
+			saving = true;
+			onItemSelected(savedState.getLong("item"));
+		}
 	}
 }

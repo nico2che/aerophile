@@ -16,7 +16,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "aerophile.db";
-	private static final int DATABASE_VERSION = 18;
+	private static final int DATABASE_VERSION = 19;
 
 	private static final boolean DATABASE_ERASE_ALL = false;
 
@@ -36,6 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String JOURNEE_HEURE_FERMETURE = "heure_fermeture";
 	public static final String JOURNEE_ATTENTE = "envoie_attente";
 	public static final String JOURNEE_ATTENTE_OBJET = "attente_objet";
+	public static final String JOURNEE_DATE_ENVOIE = "date_envoie";
 
 	public static final String JOURNEE_TABLE_CREATE =
 			"CREATE TABLE " + JOURNEE_TABLE_NAME + " (" +
@@ -52,7 +53,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					JOURNEE_HEURE_OUVERTURE + " TEXT, " +
 					JOURNEE_HEURE_FERMETURE + " TEXT, " +
 					JOURNEE_ATTENTE + " INTEGER, " +
-					JOURNEE_ATTENTE_OBJET + " TEXT);";
+					JOURNEE_ATTENTE_OBJET + " TEXT " +
+					JOURNEE_DATE_ENVOIE + " DATETIME);";
 
 	// Vol
 	public static final String VOL_TABLE_NAME = "vol";

@@ -2,6 +2,8 @@ package com.aerophile.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aerophile.app.R;
@@ -43,6 +46,9 @@ public class ReglagesActivity extends AppCompatActivity {
     @ViewById
     Spinner spinnerLangue;
 
+    @ViewById
+    TextView textVersion;
+
     public void onBackPressed() {
         if(enCours)
             this.finish();
@@ -57,6 +63,13 @@ public class ReglagesActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            textVersion.setText(String.format(getString(R.string.reglages_version), info.versionName));
+        } catch (Exception e) {
+            textVersion.setVisibility(View.INVISIBLE);
+        }
         SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
         inputLieu.setText(reglages.getString("LIEU", ""));
         inputImmatriculation.setText(reglages.getString("IMMATRICULATION", ""));

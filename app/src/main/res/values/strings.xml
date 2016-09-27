@@ -23,6 +23,7 @@
         <item>Français</item>
         <item>Anglais</item>
     </string-array>
+    <string name="reglages_version">v%s - Aérophile - Tous droits réservés</string>
 
     <!-- DemarrageActivity -->
     <string name="title_activity_demarrage">Nouvelle journée</string>

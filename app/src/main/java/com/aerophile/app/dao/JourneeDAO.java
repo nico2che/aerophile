@@ -13,6 +13,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.aerophile.app.DatabaseHandler;
 import com.aerophile.app.modeles.Journee;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class JourneeDAO {
 
 	// Champs de la base de données
@@ -31,7 +36,8 @@ public class JourneeDAO {
 			DatabaseHandler.JOURNEE_HEURE_OUVERTURE,
 			DatabaseHandler.JOURNEE_HEURE_FERMETURE,
 			DatabaseHandler.JOURNEE_ATTENTE,
-			DatabaseHandler.JOURNEE_ATTENTE_OBJET };
+			DatabaseHandler.JOURNEE_ATTENTE_OBJET,
+			DatabaseHandler.JOURNEE_DATE_ENVOIE };
 
 	public JourneeDAO(Context context) {
 		dbHelper = new DatabaseHandler(context);
@@ -60,6 +66,7 @@ public class JourneeDAO {
 		values.put(DatabaseHandler.JOURNEE_HEURE_FERMETURE, journee.getHeureFermeture());
 		values.put(DatabaseHandler.JOURNEE_ATTENTE, journee.getAttente());
 		values.put(DatabaseHandler.JOURNEE_ATTENTE_OBJET, journee.getObjetAttente());
+		values.put(DatabaseHandler.JOURNEE_DATE_ENVOIE, dateToString(journee.getDateEnvoie()));
 		return values;
 	}
 
@@ -96,7 +103,10 @@ public class JourneeDAO {
 
 	public boolean isJourneeEnCours(){
 		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, new String[] { DatabaseHandler.JOURNEE_KEY }, DatabaseHandler.JOURNEE_ENCOURS + " = 1", null, null, null, null);
-		return ((cursor != null) && (cursor.getCount() > 0));
+		boolean response = (cursor != null) && (cursor.getCount() > 0);
+		if(cursor != null)
+			cursor.close();
+		return response;
 	}
 
 	public Journee getJourneeEnAttente(){
@@ -124,6 +134,20 @@ public class JourneeDAO {
 		return journee;
 	}
 
+	public static String dateToString(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+		return dateFormat.format(date);
+	}
+
+	public static Date stringToDate(String date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+		try {
+			return format.parse(date);
+		} catch (ParseException e) {
+			return new Date(); // COMPLETEMENT CON
+		}
+	}
+
 	public static Journee cursorToJournee(Cursor cursor) {
 		Journee journee = new Journee();
 		journee.setId(cursor.getLong(0));
@@ -148,6 +172,9 @@ public class JourneeDAO {
 		if(cursor.getColumnCount() < 14)
 			return journee;
 		journee.setObjetAttente(cursor.getString(13));
+		if(cursor.getColumnCount() < 15)
+			return journee;
+		journee.setDateEnvoie(stringToDate(cursor.getString(14)));
 		return journee;
 	}
 }

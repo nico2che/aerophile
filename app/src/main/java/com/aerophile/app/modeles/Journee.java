@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class Journee implements Serializable {
     private String heureFermeture;
     private int attente;
     private String objetAttente;
+    private Date dateEnvoie;
     @JsonProperty("vols")
     public List<Vol> VOLS;
 
@@ -134,6 +136,13 @@ public class Journee implements Serializable {
     }
     public String getObjetAttente() {
         return this.objetAttente;
+    }
+
+    public void setDateEnvoie(Date dateEnvoie) {
+        this.dateEnvoie = dateEnvoie;
+    }
+    public Date getDateEnvoie() {
+        return this.dateEnvoie;
     }
 
     public void addVol(Vol vol) {

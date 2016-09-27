@@ -127,7 +127,7 @@ public class EnvoieActivity extends AppCompatActivity {
 					if(checkSecondeListe.isChecked())
 						data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
 				}
-				data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID) );
+				data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
 				data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
 				data.add("lieu", reglages.getString("LIEU", "?"));
 				data.add("version", info.versionName);

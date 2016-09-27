@@ -456,7 +456,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			rListener.onRafraichirListe(0);
 			idVol = 0;
             getActivity().getSupportFragmentManager().popBackStack();
-            initialisation();
+            // initialisation();
 		} else {
 			Toast.makeText(getContext(), getString(R.string.vol_champs_erreur), Toast.LENGTH_SHORT).show();
 		}

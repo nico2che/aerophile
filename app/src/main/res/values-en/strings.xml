@@ -34,6 +34,7 @@
     <string name="envoie_seconde_liste">Second mailing list</string>
     <string name="envoie_voir_pdf">PDF report overview</string>
     <string name="reglages_1_email">First mailing list, separated by coma</string>
+    <string name="reglages_version">v%s - Aérophile - Copyright</string>
     <string name="vol_commentaire_journee_titre">This comment will appear in the final daily report</string>
     <string name="vol_commentaires">Comments</string>
     <string name="vol_decollage">Take off</string>
