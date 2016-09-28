@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,12 +29,19 @@ import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.BackgroundExecutor;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -64,6 +73,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	private String bouton;
 	private Handler horlogeDecollage;
 	private Handler horlogeAtterrissage;
+	private Handler timeDecollage;
 
 	RafraichirListener rListener;
 
@@ -94,6 +104,9 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@ViewById
 	Button buttonHeureAtterrissage;
+
+	@ViewById
+	Chronometer chronometre;
 
 	@ViewById
 	AutoCompleteTextView inputPilote;
@@ -139,7 +152,8 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	public void initialisation() {
         Log.d("AEROBUG", "Fragment initialisation: " + idVol);
 	    horlogeAtterrissage = new Handler();
-	    horlogeDecollage = new Handler();
+		horlogeDecollage = new Handler();
+		timeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
 	    journeeCourante.open();
 	    Journee journee = journeeCourante.getJourneeEnCours();
@@ -188,6 +202,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	        // On cache les informations d'atterrissage
 	        buttonAtterrissage.setVisibility(View.INVISIBLE);
+			toggleChronometre(false);
 	        textHeureAtterrissage.setVisibility(View.INVISIBLE);
 	        buttonHeureAtterrissage.setVisibility(View.INVISIBLE);
 	        buttonSupprimerVol.setVisibility(View.INVISIBLE);
@@ -250,11 +265,8 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	        buttonSupprimerVol.setVisibility(View.VISIBLE);
 
 	        // En cours ? Sinon on désactive l'atterrissage
-	        if(vol.getEnCours() == 0) {
-		        buttonAtterrissage.setEnabled(false);
-	        } else {
-		        buttonAtterrissage.setEnabled(true);
-	        }
+			buttonAtterrissage.setEnabled(vol.getEnCours() != 0);
+			toggleChronometre(vol.getEnCours() != 0);
 
 	        // On initialise l'heure de décollage
 	        String horaireDecollage = vol.getDateDecollage();
@@ -430,6 +442,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	        vol.setNombrePassagers(inputPassagers.getText().toString().equals("") ? 0 : Integer.parseInt(inputPassagers.getText().toString()));
 	        vol.setVitesseVent(inputVent.getText().toString());
 	        vol.setCommentaires(inputCommentaires.getText().toString());
+			vol.setTimeDecollage(String.valueOf(SystemClock.elapsedRealtime()));
 	        // On enregistre le vol
 	        idVol = rListener.onNouveauVolListe(vol);
 	        // On relance avec le vol
@@ -437,8 +450,17 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
         }
     }
 
-	void toggleChronometre() {
-
+	void toggleChronometre(boolean actif) {
+		if(actif) {
+			chronometre.setVisibility(View.VISIBLE);
+			if(vol.getTimeDecollage() != null) {
+				chronometre.setBase(Long.valueOf(vol.getTimeDecollage()));
+				chronometre.start();
+			}
+		} else {
+			chronometre.setVisibility(View.INVISIBLE);
+			chronometre.stop();
+		}
 	}
 
 	@Click
@@ -460,7 +482,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			rListener.onRafraichirListe(0);
 			idVol = 0;
             getActivity().getSupportFragmentManager().popBackStack();
-            // initialisation();
+            initialisation();
 		} else {
 			Toast.makeText(getContext(), getString(R.string.vol_champs_erreur), Toast.LENGTH_SHORT).show();
 		}

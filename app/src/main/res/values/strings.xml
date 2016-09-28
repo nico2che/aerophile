@@ -88,6 +88,8 @@ Cette action ne peut être annulée</string>
     <string name="vol_pilote_erreur">Le pilote doit être renseigné avant de changer de vol</string>
     <string name="vol_passagers_erreur">Le nombre de passager doit être renseigné avant de changer de vol</string>
     <string name="vol_vent_erreur">La vitesse du vent doit être renseignée avant de changer de vol</string>
+    <string name="vol_chronometre">Durée du vol: %s</string>
+
 
     <!-- ApercuActivity -->
     <string name="apercu_titre">Aperçu de la journée du %s</string>

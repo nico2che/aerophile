@@ -190,6 +190,15 @@ tools:context="com.aerophile.app.VolListActivity"
                     android:layout_column="2"
                     />
 
+                <Chronometer
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chronometre"
+                    android:format="@string/vol_chronometre"
+                    android:layout_row="10"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_column="2" />
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

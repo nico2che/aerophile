@@ -109,4 +109,7 @@
     <string name="vol_supprimer_confirmation">Do you really want to delete this flight? This action can not be undone</string>
     <string name="vol_vent_erreur">The wind speed must be entered before changing flight</string>
     <string name="vol_vols_erreur">All flights must land before ending the day</string>
+    <string name="vol_chronometre">Flight duration: %s</string>
+    <string name="envoie_mail_date_envoie_ko">Unsent report</string>
+    <string name="envoie_mail_date_envoie_ok">Report already sent : %s</string>
 </resources>

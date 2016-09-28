@@ -288,16 +288,6 @@ public class VolListActivity extends AppCompatActivity
         Bundle arguments = new Bundle();
         arguments.putLong(VolDetailFragment.ARG_ITEM_ID, id);
 
-        if(saving) {
-            arguments.putBoolean(VolDetailFragment.ARG_CHANGEMENT, changeHeure);
-            arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_HEURE, heureDecollage);
-            arguments.putInt(VolDetailFragment.ARG_DECOLLAGE_MINUTE, minuteDecollage);
-            arguments.putString(VolDetailFragment.ARG_PILOTE, pilote);
-            arguments.putInt(VolDetailFragment.ARG_PASSAGERS, nombrePassagers);
-            arguments.putString(VolDetailFragment.ARG_VENT, vent);
-            arguments.putString(VolDetailFragment.ARG_COMMENTAIRE, commentaire);
-        }
-        saving = false;
 
         fragment = new VolDetailFragment_();
         fragment.setArguments(arguments);
