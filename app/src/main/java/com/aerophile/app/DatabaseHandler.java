@@ -16,7 +16,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "aerophile.db";
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 20;
 
 	private static final boolean DATABASE_ERASE_ALL = false;
 
@@ -53,7 +53,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					JOURNEE_HEURE_OUVERTURE + " TEXT, " +
 					JOURNEE_HEURE_FERMETURE + " TEXT, " +
 					JOURNEE_ATTENTE + " INTEGER, " +
-					JOURNEE_ATTENTE_OBJET + " TEXT " +
+					JOURNEE_ATTENTE_OBJET + " TEXT, " +
 					JOURNEE_DATE_ENVOIE + " DATETIME);";
 
 	// Vol
@@ -61,8 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String VOL_KEY = "id";
 	public static final String VOL_JOURNEE = "id_journee";
 	public static final String VOL_ENCOURS = "en_cours";
-	public static final String VOL_DATE_ATTERRISSAGE = "sate_atterrissage";
+	public static final String VOL_DATE_ATTERRISSAGE = "date_atterrissage";
 	public static final String VOL_DATE_DECOLLAGE = "date_decollage";
+	public static final String VOL_TIME_DECOLLAGE = "time_decollage";
 	public static final String VOL_PILOTE = "pilote";
 	public static final String VOL_NBRE_PASSAGER = "nombre_passager";
 	public static final String VOL_VITESSE_VENT = "vitesse_vent";
@@ -77,7 +78,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					VOL_PILOTE + " TEXT, " +
 					VOL_COMMENTAIRES + " TEXT, " +
 					VOL_NBRE_PASSAGER + " INTEGER, " +
-					VOL_VITESSE_VENT + " INTEGER);";
+					VOL_VITESSE_VENT + " INTEGER, " +
+					VOL_TIME_DECOLLAGE + " TEXT);";
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

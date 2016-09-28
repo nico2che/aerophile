@@ -27,7 +27,8 @@ public class VolDAO {
 			DatabaseHandler.VOL_PILOTE,
 			DatabaseHandler.VOL_COMMENTAIRES,
 			DatabaseHandler.VOL_NBRE_PASSAGER,
-			DatabaseHandler.VOL_VITESSE_VENT };
+			DatabaseHandler.VOL_VITESSE_VENT,
+			DatabaseHandler.VOL_TIME_DECOLLAGE };
 
 	public VolDAO(Context context) {
 		dbHelper = new DatabaseHandler(context);
@@ -51,6 +52,7 @@ public class VolDAO {
 		values.put(DatabaseHandler.VOL_COMMENTAIRES, vol.getCommentaires());
 		values.put(DatabaseHandler.VOL_NBRE_PASSAGER, vol.getNombrePassagers());
 		values.put(DatabaseHandler.VOL_VITESSE_VENT, vol.getVitesseVent());
+		values.put(DatabaseHandler.VOL_TIME_DECOLLAGE, vol.getTimeDecollage());
 		return values;
 	}
 
@@ -147,6 +149,9 @@ public class VolDAO {
 		vol.setCommentaires(cursor.getString(6));
 		vol.setNombrePassagers(cursor.getInt(7));
 		vol.setVitesseVent(cursor.getString(8));
+		if(cursor.getColumnCount() < 10)
+			return vol;
+		vol.setTimeDecollage(cursor.getString(9));
 		return vol;
 	}
 }

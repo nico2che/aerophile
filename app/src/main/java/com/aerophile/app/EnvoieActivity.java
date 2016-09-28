@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aerophile.app.dao.JourneeDAO;
@@ -37,6 +38,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 @EActivity(R.layout.activity_envoie)
@@ -61,6 +63,9 @@ public class EnvoieActivity extends AppCompatActivity {
 
 	@ViewById
 	CheckBox checkSecondeListe;
+
+	@ViewById
+	TextView textDateEnvoie;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,11 @@ public class EnvoieActivity extends AppCompatActivity {
 		SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
 		String immatriculation = reglages.getString("IMMATRICULATION", "?");
 		inputObjetEmail.setText(String.format(getString(R.string.envoie_email_objet_string), immatriculation, journeeCourante.getDate()));
+		if(journeeCourante.getDateEnvoie() != null) {
+			textDateEnvoie.setText(String.format(getString(R.string.envoie_mail_date_envoie_ok), JourneeDAO.dateToStringHuman(journeeCourante.getDateEnvoie())));
+		} else {
+			textDateEnvoie.setText(getString(R.string.envoie_mail_date_envoie_ko));
+		}
 	}
 
 	@Click
@@ -202,6 +212,7 @@ public class EnvoieActivity extends AppCompatActivity {
 	void resultat(int code) {
 		if(code == 0) {
 			message(getString(R.string.envoie_mail_envoye));
+			journeeCourante.setDateEnvoie(new Date());
 		} else {
 			journeeCourante.setObjetAttente(inputObjetEmail.getText().toString());
 			journeeCourante.setAttente(code);

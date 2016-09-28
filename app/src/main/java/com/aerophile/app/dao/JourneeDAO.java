@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.aerophile.app.DatabaseHandler;
 import com.aerophile.app.modeles.Journee;
@@ -136,15 +137,27 @@ public class JourneeDAO {
 
 	public static String dateToString(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+		if(date == null)
+			return null;
+		return dateFormat.format(date);
+	}
+
+	public static String dateToStringHuman(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm", Locale.getDefault());
+		if(date == null)
+			return null;
 		return dateFormat.format(date);
 	}
 
 	public static Date stringToDate(String date) {
+		if(date == null)
+			return null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 		try {
 			return format.parse(date);
 		} catch (ParseException e) {
-			return new Date(); // COMPLETEMENT CON
+			Log.e("AEROBUG", "Date non parsable");
+			return null;
 		}
 	}
 

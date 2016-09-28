@@ -437,6 +437,10 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
         }
     }
 
+	void toggleChronometre() {
+
+	}
+
 	@Click
 	void buttonAtterrissage() {
 		if(vol.getPilote() != null && !vol.getPilote().isEmpty() && inputPassagers.getText().toString() != "") {

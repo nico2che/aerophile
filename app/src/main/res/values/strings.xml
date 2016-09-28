@@ -123,6 +123,8 @@ Cette action ne peut être annulée</string>
     <string name="envoie_seconde_liste">Seconde liste d\'email</string>
     <string name="envoie_quitter">Quitter la journée</string>
     <string name="envoie_envoyer_rapport">Envoyer le rapport</string>
+    <string name="envoie_mail_date_envoie_ko">Rapport non envoyé</string>
+    <string name="envoie_mail_date_envoie_ok">Rapport déjà envoyé le %s</string>
     <string name="envoie_envoie_mail">Envoi du mail en cours…</string>
     <string name="envoie_mail_envoye">Mail bien envoyé</string>
     <string name="envoie_erreur_liste_email">Merci de préciser au moins une liste d\'email</string>

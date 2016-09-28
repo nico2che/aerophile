@@ -13,6 +13,7 @@ public class Vol {
 	private long idJournee;
 	@JsonProperty("dateDecollage")
 	private String dateDecollage;
+	private String timeDecollage;
 	@JsonProperty("dateAtterrissage")
 	private String dateAtterrissage;
 	private int enCours;
@@ -61,6 +62,13 @@ public class Vol {
 	}
 	public String getDateDecollage() {
 		return this.dateDecollage;
+	}
+
+	public void setTimeDecollage(String timeDecollage) {
+		this.timeDecollage = timeDecollage;
+	}
+	public String getTimeDecollage() {
+		return this.timeDecollage;
 	}
 
 	public void setNombrePassagers(int nombrePassagers) {
