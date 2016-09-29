@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -274,12 +273,9 @@ public class VolListActivity extends AppCompatActivity
 					return;
 				}
 			}
-
 		}
 
 		if(fragment == null || (id == 0 && itemSelected != 0) || id != 0) {
-
-			Log.d("AEROBUG", "Activity fragment creation ! ========== id : " + id);
 
 			positionActuelle = list.positionActuelle;
 			itemSelected = id;

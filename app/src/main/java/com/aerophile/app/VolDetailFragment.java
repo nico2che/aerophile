@@ -1,6 +1,5 @@
 package com.aerophile.app;
 
-import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,20 +28,12 @@ import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.NonConfigurationInstance;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.api.BackgroundExecutor;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * A fragment representing a single Vol detail screen.
