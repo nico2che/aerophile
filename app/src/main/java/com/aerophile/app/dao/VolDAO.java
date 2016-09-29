@@ -138,6 +138,17 @@ public class VolDAO {
 		return response;
 	}
 
+	public Vol getVolEnCours(){
+		Cursor cursor = database.query(DatabaseHandler.VOL_TABLE_NAME, allColumns, DatabaseHandler.VOL_ENCOURS + " = 1", null, null, null, null);
+		cursor.moveToFirst();
+		Vol vol = new Vol();
+		vol.setId(0);
+		if(!cursor.isAfterLast())
+			vol = cursorToVol(cursor);
+		cursor.close();
+		return vol;
+	}
+
 	public static Vol cursorToVol(Cursor cursor) {
 		Vol vol = new Vol();
 		vol.setId(cursor.getLong(0));

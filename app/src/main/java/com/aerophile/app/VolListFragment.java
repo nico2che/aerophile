@@ -3,7 +3,6 @@ package com.aerophile.app;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -133,7 +132,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 
     public long onSupprimerVol(long idVol) {
         daoVol.supprimerVol(idVol);
-        return onRafraichirListe(0);
+        return onRafraichirListe(daoVol.getVolEnCours().getId());
     }
 
     @Override

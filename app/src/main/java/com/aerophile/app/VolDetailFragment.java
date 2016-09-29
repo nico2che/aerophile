@@ -1,5 +1,6 @@
 package com.aerophile.app;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -54,13 +55,6 @@ import java.util.Objects;
 public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTimeSetListener {
 
 	public static final String ARG_ITEM_ID = "item_id";
-	public static final String ARG_CHANGEMENT = "item_changement";
-	public static final String ARG_DECOLLAGE_HEURE = "item_minute";
-	public static final String ARG_DECOLLAGE_MINUTE = "item_heure";
-	public static final String ARG_PILOTE = "item_pilote";
-	public static final String ARG_PASSAGERS = "item_passagers";
-	public static final String ARG_VENT = "item_vent";
-	public static final String ARG_COMMENTAIRE = "item_commentaire";
 
     public long idVol;
 	private Vol vol;
@@ -73,7 +67,8 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	private String bouton;
 	private Handler horlogeDecollage;
 	private Handler horlogeAtterrissage;
-	private Handler timeDecollage;
+
+	private Bundle savedInstance;
 
 	RafraichirListener rListener;
 
@@ -81,7 +76,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
     }
 
     public interface RafraichirListener {
-	    long onRafraichirListe(long idVolSelected);
+		long onRafraichirListe(long idVolSelected);
 	    long onSupprimerVol(long idVolSelected);
 	    long onNouveauVolListe(Vol vol);
     }
@@ -132,6 +127,12 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		changeHeure = false;
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             idVol = getArguments().getLong(ARG_ITEM_ID);
+			if(savedInstanceState != null) {
+				idVol = savedInstanceState.getLong("id_vol");
+				if(idVol == 0) {
+					savedInstance = savedInstanceState;
+				}
+			}
             Log.d("AEROBUG", "Fragment onCreate: " + idVol);
 	        daoVol = new VolDAO(getContext());
 	        daoVol.open();
@@ -153,7 +154,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
         Log.d("AEROBUG", "Fragment initialisation: " + idVol);
 	    horlogeAtterrissage = new Handler();
 		horlogeDecollage = new Handler();
-		timeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
 	    journeeCourante.open();
 	    Journee journee = journeeCourante.getJourneeEnCours();
@@ -175,19 +175,19 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		        }
 	        }
 
-			if (getArguments().containsKey(ARG_PASSAGERS)) {
+			if (savedInstance != null) {
 
-				changeHeure = getArguments().getBoolean(ARG_CHANGEMENT);
-				heureDecollage = getArguments().getInt(ARG_DECOLLAGE_HEURE);
-				minuteDecollage = getArguments().getInt(ARG_DECOLLAGE_MINUTE);
-				if(getArguments().getString(ARG_PILOTE) != null && getArguments().getString(ARG_PILOTE) != "") {
-					inputPilote.setText(getArguments().getString(ARG_PILOTE));
+				changeHeure = savedInstance.getBoolean("changement");
+				heureDecollage = savedInstance.getInt("heure_decollage");
+				minuteDecollage = savedInstance.getInt("minute_decollage");
+				if(savedInstance.getString("pilote") != null && savedInstance.getString("pilote") != "") {
+					inputPilote.setText(savedInstance.getString("pilote"));
 				} else {
 					inputPilote.setText(pilote);
 				}
-				inputPassagers.setText(String.valueOf(getArguments().getInt(ARG_PASSAGERS)));
-				inputVent.setText(getArguments().getString(ARG_VENT));
-				inputCommentaires.setText(getArguments().getString(ARG_COMMENTAIRE));
+				inputPassagers.setText(savedInstance.getString("nbre_passagers"));
+				inputVent.setText(savedInstance.getString("vent"));
+				inputCommentaires.setText(savedInstance.getString("commentaire"));
 				afficheHeure(textHeureDecollage, heureDecollage, minuteDecollage);
 
 			} else {
@@ -537,6 +537,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
                         idVol = rListener.onSupprimerVol(idVol);
 						horlogeAtterrissage.removeCallbacksAndMessages(null);
 						horlogeDecollage.removeCallbacksAndMessages(null);
+						Log.d("AEROBUG", "Suppression ! " + idVol);
 						initialisation();
 						break;
 				}
@@ -563,6 +564,11 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		outState.putLong("id_vol", idVol);
+		outState.putBoolean("changement", changeHeure);
+		outState.putInt("heure_decollage", heureDecollage);
+		outState.putInt("minute_decollage", minuteDecollage);
+		outState.putString("pilote", inputPilote.getText().toString());
 		outState.putString("nbre_passagers", inputPassagers.getText().toString());
 		outState.putString("vent", inputVent.getText().toString());
 		outState.putString("commentaire", inputCommentaires.getText().toString());
