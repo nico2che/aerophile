@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+              android:layout_height="match_parent"
+	android:gravity="center_vertical|center_horizontal">
 
-	<ImageView
-		android:layout_width="match_parent"
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/imageView2"
-		android:src="@android:drawable/progress_indeterminate_horizontal"
-		android:layout_gravity="center"/>
+		android:layout_weight="1"
+		android:id="@+id/layoutOffline"
+		android:gravity="center_horizontal"
+		android:visibility="gone">
+
+		<TextView
+            android:text="@string/erreur_connexion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textOffline"
+            android:layout_weight="1"
+			android:gravity="center_horizontal" />
+
+		<Button
+			android:text="@string/reessayer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/buttonOffline"
+			android:layout_weight="1" />
+	</LinearLayout>
+
+	<ProgressBar
+		style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/chargement"
+		android:layout_weight="1"
+		tools:ignore="InefficientWeight"
+		android:progress="@android:integer/config_mediumAnimTime" />
+
 </LinearLayout>

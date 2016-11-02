@@ -28,6 +28,14 @@
             android:layout_marginBottom="30dp"
             android:contentDescription="@string/aerophile" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accueil_code"
+            android:id="@+id/textView"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="30dp" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -35,26 +43,20 @@
             android:weightSum="1"
             android:gravity="center_horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/accueil_code"
-                android:id="@+id/textView" />
-
             <EditText
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/code"
-                android:layout_weight="0.15"
                 android:inputType="text"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:layout_width="300dp" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/accueil_valider"
                 android:onClick="verificationCode"
-                android:id="@+id/valider" />
+                android:id="@+id/valider"
+                android:layout_marginLeft="15dp" />
         </LinearLayout>
 
     </LinearLayout>

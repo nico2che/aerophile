@@ -275,6 +275,8 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
     @Click
     void buttonDate() {
         DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this, annee, mois, jour);
+		long annee = System.currentTimeMillis() / 1000 - 365 * 24 * 60 * 60;
+		date.getDatePicker().setMinDate(annee * 1000);
         date.show();
     }
 
@@ -586,7 +588,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
     private String formatDate(int day, int month, int year) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(0);
-        cal.set(year, month, day);
+        cal.set(year, month, day, 0, 0, 0);
         Date date_entree = cal.getTime();
 		Calendar c = Calendar.getInstance();
 		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
@@ -639,7 +641,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		buttonOuverture.setText(savedState.getString("heureOuverture"));
 		buttonFermeture.setText(savedState.getString("heureFermeture"));
 		checkPasdeVol.setChecked(savedState.getInt("pasdevol") == 1);
-		canvasDrawer.setVisibility((savedState.getInt("signature") == 0 ? View.INVISIBLE : View.VISIBLE));
+		canvasDrawer.setVisibility((savedState.getInt("signature") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE));
 	}
 
 	public boolean isOnline() {

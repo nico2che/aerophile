@@ -123,7 +123,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 					savedInstance = savedInstanceState;
 				}
 			}
-            Log.d("AEROBUG", "Fragment onCreate: " + idVol);
 	        daoVol = new VolDAO(getContext());
 	        daoVol.open();
         } else {
@@ -141,7 +140,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
 	@AfterViews
 	public void initialisation() {
-        Log.d("AEROBUG", "Fragment initialisation: " + idVol);
 	    horlogeAtterrissage = new Handler();
 		horlogeDecollage = new Handler();
 	    JourneeDAO journeeCourante = new JourneeDAO(getContext());
@@ -241,8 +239,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 
         } else { // Vol déjà présent
 
-            Log.d("AEROBUG", String.valueOf(idVol));
-
 	        // On récupère le vol déjà présent dans la base de données
 	        vol = daoVol.getVol(idVol);
 
@@ -293,7 +289,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		        public void afterTextChanged(Editable s) {
 			        vol.setPilote(s.toString());
 			        daoVol.modifierVol(vol, DatabaseHandler.VOL_PILOTE, s.toString());
-			        Log.d("Pilotes", daoVol.getPilotes(vol.getIdJournee()).toString());
 		        }
 
 		        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -471,6 +466,7 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			buttonAtterrissage.setEnabled(false);
 			rListener.onRafraichirListe(0);
 			idVol = 0;
+			savedInstance = null;
             getActivity().getSupportFragmentManager().popBackStack();
             initialisation();
 		} else {
@@ -497,12 +493,28 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 		if(bouton.equals("decollage")) {
 			// On arrête la mise à jour automatique de l'heure de décollage
 			horlogeDecollage.removeCallbacksAndMessages(null);
+			// On a changé l'heure (pour la rotation de l'écran et ne pas remettre l'heure auto)
 			changeHeure = true;
+			// On met à jour le chronomètre
+			Calendar ancienChrono = Calendar.getInstance();
+			ancienChrono.set(Calendar.HOUR_OF_DAY, heureDecollage);
+			ancienChrono.set(Calendar.MINUTE, minuteDecollage);
+			Calendar nouveauChrono = Calendar.getInstance();
+			nouveauChrono.set(Calendar.HOUR_OF_DAY, nouvelle_heure);
+			nouveauChrono.set(Calendar.MINUTE, nouvelle_minute);
+			long nouvelleBase = Long.valueOf(vol.getTimeDecollage()) - (ancienChrono.getTimeInMillis() - nouveauChrono.getTimeInMillis());
+			vol.setTimeDecollage(String.valueOf(nouvelleBase));
+			daoVol.modifierVol(vol, DatabaseHandler.VOL_TIME_DECOLLAGE, vol.getTimeDecollage());
+			chronometre.setBase(nouvelleBase);
+			// On stock les nouvelles heures
 			heureDecollage = nouvelle_heure;
 			minuteDecollage = nouvelle_minute;
+			// On affiche avec un format lisible la nouvelle heure
 			nouvelleHeure = afficheHeure(textHeureDecollage, heureDecollage, minuteDecollage);
+			// On enregistre la nouvelle heure
 			vol.setDateDecollage(nouvelleHeure);
 			daoVol.modifierVol(vol, DatabaseHandler.VOL_DATE_DECOLLAGE, nouvelleHeure);
+			// On met à jour la liste des vols en précisant celui qui est actif
 			rListener.onRafraichirListe(vol.getId());
 		} else {
 			if(nouvelle_heure > heureDecollage || (nouvelle_heure == heureDecollage && nouvelle_minute >= minuteDecollage)) {
@@ -527,7 +539,6 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
                         idVol = rListener.onSupprimerVol(idVol);
 						horlogeAtterrissage.removeCallbacksAndMessages(null);
 						horlogeDecollage.removeCallbacksAndMessages(null);
-						Log.d("AEROBUG", "Suppression ! " + idVol);
 						initialisation();
 						break;
 				}

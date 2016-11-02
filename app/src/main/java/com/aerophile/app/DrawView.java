@@ -183,13 +183,14 @@ public class DrawView extends View {
     @Override
     public void onRestoreInstanceState(Parcelable state)
     {
-        if (state instanceof Bundle)
-        {
+        if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             super.onRestoreInstanceState(bundle.getParcelable(EXTRA_STATE));
             eventList = bundle.getParcelableArrayList(EXTRA_EVENT_LIST);
             if (eventList == null) {
                 eventList = new ArrayList<>();
+            } else {
+                empty = false;
             }
             for (MotionEvent event : eventList) {
                 tracer(event);

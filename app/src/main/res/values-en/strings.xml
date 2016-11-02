@@ -112,4 +112,7 @@
     <string name="vol_chronometre">Flight duration: %s</string>
     <string name="envoie_mail_date_envoie_ko">Unsent report</string>
     <string name="envoie_mail_date_envoie_ok">Report already sent : %s</string>
+    <string name="erreur_connexion">Unable to connect to the internet.\nPlease check your connection in order to start the application.</string>
+    <string name="reessayer">Try again</string>
+    <string name="chargement">Loading…</string>
 </resources>

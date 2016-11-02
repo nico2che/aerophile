@@ -22,7 +22,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".AccueilActivity"
+			android:name=".AccueilActivity_"
 			android:label="@string/aerophile"
 			android:noHistory="true"
 			android:windowSoftInputMode="adjustPan">
@@ -52,8 +52,6 @@
 		<activity android:name=".PdfActivity_">
 		</activity>
 		<activity android:name=".ApercuActivity_">
-		</activity>
-		<activity android:name=".TimePickerActivity">
 		</activity>
 	</application>
 

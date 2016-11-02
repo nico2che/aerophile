@@ -10,6 +10,10 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aerophile.app.dao.JourneeDAO;
@@ -20,8 +24,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -30,24 +37,32 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
-@EActivity
+@EActivity(R.layout.activity_launcher)
 public class LauncherActivity extends AppCompatActivity {
 
     private JourneeDAO daoJournee;
     private Journee journeeAttente;
 
+    private String code;
+
     @RestService
     JourneeClient restJournee;
+
+    @ViewById
+    LinearLayout layoutOffline;
+
+    @ViewById
+    ProgressBar chargement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean envoieAttente = true;
         SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-        String code = reglages.getString("CODE_SECURITE", "KO");
-        String lieu = reglages.getString("LIEU", "KO");
-        String immatriculation = reglages.getString("IMMATRICULATION", "KO");
 
+        // On récupère le code de sécurité
+        code = reglages.getString("CODE_SECURITE", "KO");
+
+        // Mise en place de la langue de l'application
         String langue = reglages.getString("LANGUE", Locale.getDefault().toString());
         Locale locale = new Locale(langue);
         Locale.setDefault(locale);
@@ -55,30 +70,75 @@ public class LauncherActivity extends AppCompatActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
+        // On vérifie si le code existe et s'il est correct
+        if(code.equals("KO")) {
+            startAerophile(new Intent(this, AccueilActivity_.class), false);
+        } else {
+            checkCode();
+        }
+    }
+
+    @Background
+    @Click(R.id.buttonOffline)
+    void checkCode() {
+        toggleLayouts(true);
+        if(isOnline()) {
+            MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
+            data.add("code", code);
+            String json = restJournee.envoieJournee(data, "code");
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                JsonNode retour = mapper.readTree(json);
+                if (retour.get("statut").asInt(1) == 0) {
+                    codeBon();
+                } else {
+                    startAerophile(new Intent(this, AccueilActivity_.class), false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                toggleLayouts(false);
+            }
+        } else {
+            toggleLayouts(false);
+        }
+    }
+
+    @UiThread
+    void toggleLayouts(boolean enLigne) {
+        if(enLigne) {
+            chargement.setVisibility(View.VISIBLE);
+            layoutOffline.setVisibility(View.GONE);
+        } else {
+            chargement.setVisibility(View.GONE);
+            layoutOffline.setVisibility(View.VISIBLE);
+        }
+    }
+
+    void codeBon() {
+        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
+        String lieu = reglages.getString("LIEU", "KO");
+        String immatriculation = reglages.getString("IMMATRICULATION", "KO");
         daoJournee = new JourneeDAO(this);
         daoJournee.open();
-        Intent ecranDemarrage = new Intent(this, DemarrageActivity_.class);
         if(daoJournee.isJourneeEnCours()) {
-            ecranDemarrage = new Intent(this, VolListActivity.class);
+            startAerophile(new Intent(this, VolListActivity.class), false);
         }
         if(lieu.equals("KO") || immatriculation.equals("KO")) {
-            ecranDemarrage = new Intent(this, ReglagesActivity_.class);
-            envoieAttente = false;
+            startAerophile(new Intent(this, ReglagesActivity_.class), false);
         }
-        if(code.equals("KO")) {
-            ecranDemarrage = new Intent(this, AccueilActivity.class);
-            envoieAttente = false;
-        }
-        if(envoieAttente) {
+        startAerophile(new Intent(this, DemarrageActivity_.class), true);
+    }
+
+    @UiThread
+    void startAerophile(Intent ecranDemarrage, boolean envoieAttente) {
+        if(envoieAttente && daoJournee != null) {
             journeeAttente = daoJournee.getJourneeEnAttente();
-	        if(journeeAttente.getAttente() != 0) {
+            if(journeeAttente.getAttente() != 0) {
                 message(getString(R.string.envoie_mail_attente));
-		        requete();
-	        } else {
-		        daoJournee.close();
-	        }
-        } else {
-	        daoJournee.close();
+                requete();
+            } else {
+                daoJournee.close();
+            }
         }
         startActivity(ecranDemarrage);
         finish();

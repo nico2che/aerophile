@@ -1,7 +1,10 @@
 <resources>
     <string name="aerophile" translatable="false">Aérophile</string>
+    <string name="erreur_connexion">Impossible de se connecter à internet.\nVeuillez vérifier votre connexion afin de démarrer l\'application.</string>
     <string name="enregistrer">Enregistrer</string>
     <string name="valider">Valider</string>
+    <string name="reessayer">Réessayer</string>
+    <string name="chargement">Chargement…</string>
     <string name="oui">Oui</string>
     <string name="non">Non</string>
 
