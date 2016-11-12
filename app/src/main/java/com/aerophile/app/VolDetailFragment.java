@@ -495,17 +495,19 @@ public class VolDetailFragment extends Fragment implements TimePickerDialog.OnTi
 			horlogeDecollage.removeCallbacksAndMessages(null);
 			// On a changé l'heure (pour la rotation de l'écran et ne pas remettre l'heure auto)
 			changeHeure = true;
-			// On met à jour le chronomètre
-			Calendar ancienChrono = Calendar.getInstance();
-			ancienChrono.set(Calendar.HOUR_OF_DAY, heureDecollage);
-			ancienChrono.set(Calendar.MINUTE, minuteDecollage);
-			Calendar nouveauChrono = Calendar.getInstance();
-			nouveauChrono.set(Calendar.HOUR_OF_DAY, nouvelle_heure);
-			nouveauChrono.set(Calendar.MINUTE, nouvelle_minute);
-			long nouvelleBase = Long.valueOf(vol.getTimeDecollage()) - (ancienChrono.getTimeInMillis() - nouveauChrono.getTimeInMillis());
-			vol.setTimeDecollage(String.valueOf(nouvelleBase));
-			daoVol.modifierVol(vol, DatabaseHandler.VOL_TIME_DECOLLAGE, vol.getTimeDecollage());
-			chronometre.setBase(nouvelleBase);
+			if(vol.getTimeDecollage() != null) {
+				// On met à jour le chronomètre
+				Calendar ancienChrono = Calendar.getInstance();
+				ancienChrono.set(Calendar.HOUR_OF_DAY, heureDecollage);
+				ancienChrono.set(Calendar.MINUTE, minuteDecollage);
+				Calendar nouveauChrono = Calendar.getInstance();
+				nouveauChrono.set(Calendar.HOUR_OF_DAY, nouvelle_heure);
+				nouveauChrono.set(Calendar.MINUTE, nouvelle_minute);
+				long nouvelleBase = Long.valueOf(vol.getTimeDecollage()) - (ancienChrono.getTimeInMillis() - nouveauChrono.getTimeInMillis());
+				vol.setTimeDecollage(String.valueOf(nouvelleBase));
+				daoVol.modifierVol(vol, DatabaseHandler.VOL_TIME_DECOLLAGE, vol.getTimeDecollage());
+				chronometre.setBase(nouvelleBase);
+			}
 			// On stock les nouvelles heures
 			heureDecollage = nouvelle_heure;
 			minuteDecollage = nouvelle_minute;

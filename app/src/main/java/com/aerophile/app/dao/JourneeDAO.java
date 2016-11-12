@@ -78,16 +78,19 @@ public class JourneeDAO {
 				allColumns, DatabaseHandler.JOURNEE_KEY + " = " + insertId, null,
 				null, null, null);
 		cursor.moveToFirst();
-		Journee nouvelleJournee = cursorToJournee(cursor);
+		if(!cursor.isAfterLast())
+			journee = cursorToJournee(cursor);
 		cursor.close();
-		return nouvelleJournee;
+		return journee;
 	}
 
 	public Journee getJourneeEnCours() {
 		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME,
 				allColumns, DatabaseHandler.JOURNEE_ENCOURS + " = 1", null, null, null, null);
+		Journee nouvelleJournee = new Journee();
 		cursor.moveToFirst();
-		Journee nouvelleJournee = cursorToJournee(cursor);
+		if(!cursor.isAfterLast())
+			nouvelleJournee = cursorToJournee(cursor);
 		cursor.close();
 		return nouvelleJournee;
 	}
