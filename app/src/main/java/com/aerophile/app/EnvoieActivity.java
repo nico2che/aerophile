@@ -5,15 +5,11 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,16 +20,17 @@ import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
+import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -52,8 +49,8 @@ public class EnvoieActivity extends AppCompatActivity {
 
 	private ProgressDialog pDialog;
 
-	@RestService
-	JourneeClient restJournee;
+	@Bean
+	Api api;
 
 	@ViewById
 	EditText inputObjetEmail;
@@ -125,8 +122,6 @@ public class EnvoieActivity extends AppCompatActivity {
 		if(isOnline()) {
 			MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
 			try {
-				PackageManager manager = this.getPackageManager();
-				PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
 				ObjectMapper mapper = new ObjectMapper();
 				String donnees = mapper.writeValueAsString(journeeCourante);
 				SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
@@ -137,12 +132,10 @@ public class EnvoieActivity extends AppCompatActivity {
 					if(checkSecondeListe.isChecked())
 						data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
 				}
-				data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
 				data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
 				data.add("lieu", reglages.getString("LIEU", "?"));
-				data.add("version", info.versionName);
 				data.add("journee", URLEncoder.encode(donnees, "utf-8"));
-				String json = restJournee.envoieJournee(data, type);
+				String json = api.post(this, data, type);
 				mapper = new ObjectMapper();
 				JsonNode retour = mapper.readTree(json);
 				if(retour.get("statut").asInt(1) == 0) {

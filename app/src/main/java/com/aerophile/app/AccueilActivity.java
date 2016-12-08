@@ -8,20 +8,20 @@ import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -30,8 +30,8 @@ public class AccueilActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
 
-    @RestService
-    JourneeClient restJournee;
+    @Bean
+    Api api;
 
     @ViewById
     EditText code;
@@ -64,7 +64,7 @@ public class AccueilActivity extends AppCompatActivity {
         if(isOnline()) {
             MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
             data.add("code", codeEntre);
-            String json = restJournee.envoieJournee(data, "code");
+            String json = api.post(this, data, "code");
             ObjectMapper mapper = new ObjectMapper();
             try {
                 JsonNode retour = mapper.readTree(json);

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,17 +28,18 @@ import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
+import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -71,14 +71,17 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	private ProgressDialog pDialog;
 
-	@RestService
-	JourneeClient restJournee;
+	@Bean
+	Api api;
 
     @ViewById
     TextView textDateHolder;
 
 	@ViewById
 	CheckBox checkLms;
+
+	@ViewById
+	TextView textLms;
 
 	@ViewById
 	TextView textLift;
@@ -196,6 +199,12 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 				toggleLift();
 			}
 		});
+		checkPasdeVol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				togglePasDeVol();
+			}
+		});
     }
 
 	public void miseAJourInputs(Journee journee) {
@@ -244,6 +253,8 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		} else {
 			checkPasdeVol.setChecked(false);
 		}
+		togglePasDeVol();
+
 		// Pilote
 		inputPiloteValidation.setText(journee.getPiloteValidation());
 		// Signature
@@ -422,6 +433,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		String piloteValidation = inputPiloteValidation.getText().toString();
 		String nouvelleSignature = DrawView.exportTo64(canvasDrawer);
 		int pasDeVol = (checkPasdeVol.isChecked() ? 1 : 0);
+		if(pasDeVol == 1) {
+			liftJournee = "N/A";
+		}
 
 		if(!dateJournee.isEmpty() && !liftJournee.isEmpty() && !temperatureJournee.isEmpty() && checkValidation.isChecked() && !piloteValidation.isEmpty() && !canvasDrawer.empty) {
 
@@ -547,11 +561,10 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			ObjectMapper mapper = new ObjectMapper();
 			String donnees = mapper.writeValueAsString(journeeEnvoie);
 			SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-			data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID) );
 			data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
 			data.add("lieu", reglages.getString("LIEU", "?"));
 			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
-			String json = restJournee.envoieJournee(data, "pdf");
+			String json = api.post(this, data, "pdf");
 			mapper = new ObjectMapper();
 			JsonNode retour = mapper.readTree(json);
 			if(retour.get("statut").asInt(1) == 0) {
@@ -615,6 +628,20 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		} else {
 			inputLift.setVisibility(View.VISIBLE);
 			textLift.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void togglePasDeVol() {
+		if(checkPasdeVol.isChecked()) {
+			textLms.setVisibility(View.INVISIBLE);
+			checkLms.setVisibility(View.INVISIBLE);
+			textLift.setVisibility(View.INVISIBLE);
+			inputLift.setVisibility(View.INVISIBLE);
+		} else {
+			textLms.setVisibility(View.VISIBLE);
+			checkLms.setVisibility(View.VISIBLE);
+			textLift.setVisibility(View.VISIBLE);
+			inputLift.setVisibility(View.VISIBLE);
 		}
 	}
 

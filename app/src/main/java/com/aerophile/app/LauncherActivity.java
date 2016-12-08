@@ -3,14 +3,10 @@ package com.aerophile.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -20,6 +16,7 @@ import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
+import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,7 +26,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -45,8 +41,8 @@ public class LauncherActivity extends AppCompatActivity {
 
     private String code;
 
-    @RestService
-    JourneeClient restJournee;
+    @Bean
+    Api api;
 
     @ViewById
     LinearLayout layoutOffline;
@@ -85,7 +81,7 @@ public class LauncherActivity extends AppCompatActivity {
         if(isOnline()) {
             MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
             data.add("code", code);
-            String json = restJournee.envoieJournee(data, "code");
+            String json = api.post(this, data, "code");
             ObjectMapper mapper = new ObjectMapper();
             try {
                 JsonNode retour = mapper.readTree(json);
@@ -155,16 +151,12 @@ public class LauncherActivity extends AppCompatActivity {
 		        journeeAttente.addVol(vol);
 	        }
             try {
-                PackageManager manager = this.getPackageManager();
-                PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
                 ObjectMapper mapper = new ObjectMapper();
                 String donnees = mapper.writeValueAsString(journeeAttente);
                 SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
                 data.add("objet_email", journeeAttente.getObjetAttente());
-                data.add("appareil", Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID) );
                 data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
                 data.add("lieu", reglages.getString("LIEU", "?"));
-                data.add("version", info.versionName);
                 data.add("journee", URLEncoder.encode(donnees, "utf-8"));
                 if(journeeAttente.getAttente() == 3) {
                     data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
@@ -174,7 +166,7 @@ public class LauncherActivity extends AppCompatActivity {
                 } else if(journeeAttente.getAttente() == 1) {
                     data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
                 }
-                String json = restJournee.envoieJournee(data, "email");
+                String json = api.post(this, data, "email");
                 mapper = new ObjectMapper();
                 JsonNode retour = mapper.readTree(json);
                 if(retour.get("statut").asInt(1) == 0) {

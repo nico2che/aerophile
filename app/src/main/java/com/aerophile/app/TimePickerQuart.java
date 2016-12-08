@@ -9,6 +9,7 @@ import android.widget.TimePicker;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TimePickerQuart extends TimePickerDialog {
 
@@ -49,7 +50,7 @@ public class TimePickerQuart extends TimePickerDialog {
 			mMinuteSpinner.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
 			List<String> displayedValues = new ArrayList<String>();
 			for (int i = 0; i < 60; i += TIME_PICKER_INTERVAL) {
-				displayedValues.add(String.format("%02d", i));
+				displayedValues.add(String.format(Locale.FRENCH, "%02d", i));
 			}
 			mMinuteSpinner.setDisplayedValues(displayedValues
 					.toArray(new String[0]));

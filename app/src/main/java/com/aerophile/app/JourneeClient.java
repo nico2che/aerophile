@@ -14,6 +14,6 @@ import org.springframework.util.MultiValueMap;
 @Rest(rootUrl = "http://www.fev.aerophile.com", converters = { FormHttpMessageConverter.class, StringHttpMessageConverter.class } )
 public interface JourneeClient {
 
-    @Post("/index.php?{typeDonnees}")
-    String envoieJournee(@Body MultiValueMap<String, Object> data, @Path String typeDonnees);
+    @Post("/index.php?{typeDonnees}&lang={langue}")
+    String envoieJournee(@Body MultiValueMap<String, Object> data, @Path String typeDonnees, @Path String langue);
 }
