@@ -9,13 +9,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.aerophile.app.DatabaseHandler;
 import com.aerophile.app.modeles.Journee;
-
-import java.text.ParseException;
+import com.aerophile.app.utils.Dates;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -55,7 +54,7 @@ public class JourneeDAO {
 	public static ContentValues preparerJournee(Journee journee) {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseHandler.JOURNEE_ENCOURS, journee.getEnCours());
-		values.put(DatabaseHandler.JOURNEE_DATE, journee.getDate());
+		values.put(DatabaseHandler.JOURNEE_DATE, journee.getDate().getTime());
 		values.put(DatabaseHandler.JOURNEE_LIFT, journee.getLift());
 		values.put(DatabaseHandler.JOURNEE_TEMPERATURE, journee.getTemperature());
 		values.put(DatabaseHandler.JOURNEE_PASDEVOL, journee.getPasdeVol());
@@ -95,8 +94,16 @@ public class JourneeDAO {
 		return nouvelleJournee;
 	}
 
-	public Journee getJourneeByDate(String date) {
-		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, allColumns, DatabaseHandler.JOURNEE_DATE + " = '" + date + "'", null, null, null, null);
+	public Journee getJourneeByDate(Long date) {
+		Calendar jour = Calendar.getInstance();
+		jour.setTimeInMillis(date);
+		jour.set(Calendar.HOUR, 0);
+		jour.set(Calendar.MINUTE, 0);
+		jour.set(Calendar.MILLISECOND, 0);
+		Long debutDate = jour.getTimeInMillis();
+		jour.add(Calendar.DATE, 1);
+		Long finDate = jour.getTimeInMillis();
+		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, allColumns, DatabaseHandler.JOURNEE_DATE + " BETWEEN " + debutDate + " AND " + finDate, null, null, null, null);
 		Journee journee = new Journee();
 		cursor.moveToFirst();
 		if(!cursor.isAfterLast())
@@ -145,30 +152,11 @@ public class JourneeDAO {
 		return dateFormat.format(date);
 	}
 
-	public static String dateToStringHuman(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy à HH:mm", Locale.getDefault());
-		if(date == null)
-			return null;
-		return dateFormat.format(date);
-	}
-
-	public static Date stringToDate(String date) {
-		if(date == null)
-			return null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-		try {
-			return format.parse(date);
-		} catch (ParseException e) {
-			Log.e("AEROBUG", "Date non parsable");
-			return null;
-		}
-	}
-
 	public static Journee cursorToJournee(Cursor cursor) {
 		Journee journee = new Journee();
 		journee.setId(cursor.getLong(0));
 		journee.setEnCours(cursor.getInt(1));
-		journee.setDate(cursor.getString(2));
+		journee.setDate(Dates.stringToDate(cursor.getString(2)));
 		journee.setLift(cursor.getString(3));
 		journee.setTemperature(cursor.getInt(4));
 		journee.setPasDeVol(cursor.getInt(5));
@@ -190,7 +178,7 @@ public class JourneeDAO {
 		journee.setObjetAttente(cursor.getString(13));
 		if(cursor.getColumnCount() < 15)
 			return journee;
-		journee.setDateEnvoie(stringToDate(cursor.getString(14)));
+		journee.setDateEnvoie(Dates.stringToDate(cursor.getString(14)));
 		return journee;
 	}
 }

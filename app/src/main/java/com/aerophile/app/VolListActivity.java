@@ -19,6 +19,7 @@ import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
+import com.aerophile.app.utils.Dates;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,7 +69,7 @@ public class VolListActivity extends AppCompatActivity
 	        daoJournee.open();
 
 	        journeeCourante = daoJournee.getJourneeEnCours();
-	        setTitle(journeeCourante.getDate());
+	        setTitle(Dates.dateToReadable(journeeCourante.getDate()));
 
 
 	        ecranPrincipal = findViewById(R.id.ecranPrincipal);

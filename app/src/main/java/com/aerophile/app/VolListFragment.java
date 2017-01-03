@@ -75,7 +75,6 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
                 journeeCourante.getVols());
 
 	    setListAdapter(adapter);
-        //setActivatedPosition(1);
     }
 
 	// Ajout d'un nouveau vol dans la liste

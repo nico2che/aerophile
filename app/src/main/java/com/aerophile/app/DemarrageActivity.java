@@ -29,6 +29,7 @@ import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
+import com.aerophile.app.utils.Dates;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,10 +60,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	private static int MODIFICATION = 2;
 	public final static int CALLBACK_APP = 1;
 
-	private int annee;
-	private int mois;
-	private int jour;
-
 	private int heureOuverture;
 	private int minuteOuverture;
 
@@ -70,6 +67,15 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	private int minuteFermeture;
 
 	private ProgressDialog pDialog;
+
+	private Journee journeeCourante;
+	private JourneeDAO daoJournee;
+	private boolean enCours;
+	private boolean changement;
+
+	private Calendar dateSelectionnee;
+
+	private Journee nouvelleJournee;
 
 	@Bean
 	Api api;
@@ -119,13 +125,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	@ViewById
 	Button buttonSave;
 
-	private Journee journeeCourante;
-    private JourneeDAO daoJournee;
-	private boolean enCours;
-	private boolean changement;
-
-	private Journee nouvelleJournee;
-
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,17 +139,17 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
     void init() {
 
 	    // On récupère la date actuelle
-	    final Calendar c = Calendar.getInstance();
-	    annee = c.get(Calendar.YEAR);
-	    mois = c.get(Calendar.MONTH);
-	    jour = c.get(Calendar.DAY_OF_MONTH);
+	    dateSelectionnee = Calendar.getInstance();
+		Log.d("AEROBUG", dateSelectionnee.getTime() + "");
 
 	    // On ouvre la base de données
 	    daoJournee = new JourneeDAO(this);
 	    daoJournee.open();
 
+		// On récupère les informations de la dernière journée
 	    Journee derniereJournee = daoJournee.getDerniereJournee();
 
+		// Si on des horaires d'ouverture/fermeture de cette dernière journée, on les applique
 	    if(derniereJournee.getHeureOuverture() != null && !derniereJournee.getHeureOuverture().isEmpty()) {
 
 		    heureOuverture = Integer.parseInt(derniereJournee.getHeureOuverture().substring(0, 2));
@@ -161,6 +160,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	    } else {
 
+			// Sinon on initialise les horaires à 8h00 et 20h00
 		    heureOuverture = 8;
 		    minuteOuverture = 0;
 
@@ -177,7 +177,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 		    // On récupère les informations de cette journée en cours
 		    journeeCourante = daoJournee.getJourneeEnCours();
-		    textDateHolder.setText(journeeCourante.getDate());
 
 		    // On met à jour chaque champs de l'activité avec la journée courante
 		    miseAJourInputs(journeeCourante);
@@ -189,10 +188,10 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		    canvasDrawer.setVisibility(View.VISIBLE);
 		    buttonPdf.setVisibility(View.INVISIBLE);
 
-		    String date = formatDate(jour, mois, annee);
-
-		    verificationJournee(date);
+		    verificationJournee(dateSelectionnee.getTime());
 	    }
+
+		// Actionne les listenner sur les deux checkbox (lift et pas de vol)
 		checkLms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -212,18 +211,26 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	}
 
 	public void miseAJourInputs(Journee journee, boolean vide) {
-		textDateHolder.setText(journee.getDate());
+		// Date de la journée sélectionnée
+		textDateHolder.setText(Dates.dateToReadable(journee.getDate()));
+		if (journee.getDate() != null) {
+			dateSelectionnee.setTime(journee.getDate());
+		}
+		// Prévisualiser le PDF
 		if(vide) {
 			buttonPdf.setVisibility(View.INVISIBLE);
 		} else {
 			buttonPdf.setVisibility(View.VISIBLE);
 		}
+		// Température
 		if(vide || journee.getTemperature() == 0) {
 			inputTemperature.setText("");
 		} else {
 			inputTemperature.setText(String.valueOf(journee.getTemperature()));
 		}
+		// Validation Quotidienne
 		checkValidation.setChecked(!vide);
+		// Lift
 		if(!vide && journee.getLift() != null && journee.getLift().equals("LMS")) {
 			checkLms.setChecked(true);
 			inputLift.setVisibility(View.INVISIBLE);
@@ -254,7 +261,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			checkPasdeVol.setChecked(false);
 		}
 		togglePasDeVol();
-
 		// Pilote
 		inputPiloteValidation.setText(journee.getPiloteValidation());
 		// Signature
@@ -269,67 +275,38 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			imageSignature.setVisibility(View.INVISIBLE);
 			canvasDrawer.setVisibility(View.VISIBLE);
 		}
-		if (journee.getDate() != null && !journee.getDate().isEmpty()) {
-			final Calendar c = Calendar.getInstance();
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
-				c.setTime(sdf.parse(journee.getDate()));
-			}catch(ParseException e){
-				e.printStackTrace();
-			}
-			annee = c.get(Calendar.YEAR);
-			mois = c.get(Calendar.MONTH);
-			jour = c.get(Calendar.DAY_OF_MONTH);
-		}
 	}
 
     @Click
     void buttonDate() {
-        DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this, annee, mois, jour);
-		long annee = System.currentTimeMillis() / 1000 - 365 * 24 * 60 * 60;
-		date.getDatePicker().setMinDate(annee * 1000);
+		DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this,
+				dateSelectionnee.get(Calendar.YEAR),
+				dateSelectionnee.get(Calendar.MONTH),
+				dateSelectionnee.get(Calendar.DAY_OF_MONTH)
+		);
         date.show();
     }
 
-    public void onDateSet(DatePicker view, int nouvelle_annee, int nouvelle_mois, int nouvelle_jour) {
-        annee = nouvelle_annee;
-        mois = nouvelle_mois;
-        jour = nouvelle_jour;
-
-	    String date = formatDate(jour, mois, annee);
-	    verificationJournee(date);
+    public void onDateSet(DatePicker view, int annee, int mois, int jour) {
+		// On créer une date avec les valeurs entrées
+		Calendar nouvelleDate = Calendar.getInstance();
+		nouvelleDate.set(annee, mois, jour, 0, 0, 0);
+		// On compare cette date avec l'heure actuelle
+		if(nouvelleDate.compareTo(Calendar.getInstance()) > 0) {
+			// Si la date entrée se trouve après maintenant -> donc demain, on interdit
+			message(getString(R.string.envoie_erreur_date));
+			return;
+		}
+		// On indique la nouvelle date sélectionnée
+		dateSelectionnee.set(annee, mois, jour);
+		// On change la journée en conséquence
+	    verificationJournee(dateSelectionnee.getTime());
     }
 
-	@Click
-	void buttonOuverture() {
-		TimePickerQuart dialogueOuverture = new TimePickerQuart(this, new TimePickerDialog.OnTimeSetListener() {
-			@Override
-			public void onTimeSet(TimePicker view, int heure, int minute) {
-				heureOuverture = heure;
-				minuteOuverture = minute;
-				buttonOuverture.setText(formatHeure(heure, minute));
-			}
-		}, heureOuverture, minuteOuverture, true);
-		dialogueOuverture.show();
-	}
-
-	@Click
-	void buttonFermeture() {
-		TimePickerQuart dialogueFermeture = new TimePickerQuart(this, new TimePickerDialog.OnTimeSetListener() {
-			@Override
-			public void onTimeSet(TimePicker view, int heure, int minute) {
-				heureFermeture = heure;
-				minuteFermeture = minute;
-				buttonFermeture.setText(formatHeure(heure, minute));
-			}
-		}, heureFermeture, minuteFermeture, true);
-		dialogueFermeture.show();
-	}
-
-	void verificationJournee(String date) {
+	void verificationJournee(Date date) {
 
 		// On regarde si une journée existe avec cette nouvelle date
-		nouvelleJournee = daoJournee.getJourneeByDate(date);
+		nouvelleJournee = daoJournee.getJourneeByDate(date.getTime());
 
 		// Si elle existe
 		if(nouvelleJournee.getId() != 0) {
@@ -442,7 +419,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			if(changement) {
 
 				nouvelleJournee.setEnCours(1);
-				nouvelleJournee.setDate(dateJournee);
+				nouvelleJournee.setDate(dateSelectionnee.getTime());
 				nouvelleJournee.setTemperature(Integer.valueOf(temperatureJournee));
 				nouvelleJournee.setLift(liftJournee);
 				nouvelleJournee.setHeureOuverture(horaireOuverture);
@@ -475,7 +452,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 			} else if(enCours) {
 
-		        journeeCourante.setDate(dateJournee);
+		        journeeCourante.setDate(dateSelectionnee.getTime());
 		        journeeCourante.setTemperature(Integer.valueOf(temperatureJournee));
 		        journeeCourante.setLift(liftJournee);
 				journeeCourante.setHeureOuverture(horaireOuverture);
@@ -493,7 +470,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	        } else {
 
 				Journee debutJournee = new Journee();
-				debutJournee.setDate(dateJournee);
+				debutJournee.setDate(dateSelectionnee.getTime());
 				debutJournee.setLift(liftJournee);
 				debutJournee.setTemperature(Integer.parseInt(temperatureJournee));
 				debutJournee.setHeureOuverture(horaireOuverture);
@@ -598,31 +575,38 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		startActivity(pdfActivity);
 	}
 
-    private String formatDate(int day, int month, int year) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(0);
-        cal.set(year, month, day, 0, 0, 0);
-        Date date_entree = cal.getTime();
-		Calendar c = Calendar.getInstance();
-		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-		Date date_courante = c.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
-		if(date_entree.compareTo(date_courante) > 0) {
-			message(getString(R.string.envoie_erreur_date));
-			return sdf.format(date_courante);
-		}
-		annee = day;
-		mois = month;
-		jour = year;
-		return sdf.format(date_entree);
-    }
+	@Click
+	void buttonOuverture() {
+		TimePickerQuart dialogueOuverture = new TimePickerQuart(this, new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int heure, int minute) {
+				heureOuverture = heure;
+				minuteOuverture = minute;
+				buttonOuverture.setText(formatHeure(heure, minute));
+			}
+		}, heureOuverture, minuteOuverture, true);
+		dialogueOuverture.show();
+	}
+
+	@Click
+	void buttonFermeture() {
+		TimePickerQuart dialogueFermeture = new TimePickerQuart(this, new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int heure, int minute) {
+				heureFermeture = heure;
+				minuteFermeture = minute;
+				buttonFermeture.setText(formatHeure(heure, minute));
+			}
+		}, heureFermeture, minuteFermeture, true);
+		dialogueFermeture.show();
+	}
 
 	private String formatHeure(int heure, int minute) {
 		return String.format(getString(R.string.vol_heure_holder), ((heure < 10) ? "0" + heure : String.valueOf(heure)), ((minute < 10) ? "0" + minute : String.valueOf(minute)));
 	}
 
 	private void toggleLift() {
-		if(inputLift.getVisibility() == View.VISIBLE) {
+		if(checkLms.isChecked()) {
 			inputLift.setVisibility(View.INVISIBLE);
 			textLift.setVisibility(View.INVISIBLE);
 		} else {
@@ -642,13 +626,14 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			checkLms.setVisibility(View.VISIBLE);
 			textLift.setVisibility(View.VISIBLE);
 			inputLift.setVisibility(View.VISIBLE);
+			toggleLift();
 		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("date", formatDate(jour, mois, annee));
+		outState.putLong("date", dateSelectionnee.getTimeInMillis());
 		outState.putString("lift", inputLift.getText().toString());
 		outState.putString("temperature", inputTemperature.getText().toString());
 		outState.putString("pilote", inputPiloteValidation.getText().toString());
@@ -661,7 +646,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	@Override
 	protected void onRestoreInstanceState(Bundle savedState) {
 		super.onRestoreInstanceState(savedState);
-		verificationJournee(savedState.getString("date"));
+		dateSelectionnee = Calendar.getInstance();
+		dateSelectionnee.setTimeInMillis(savedState.getLong("date"));
+		verificationJournee(dateSelectionnee.getTime());
 		inputLift.setText(savedState.getString("lift"));
 		inputTemperature.setText(savedState.getString("temperature"));
 		inputPiloteValidation.setText(savedState.getString("pilote"));

@@ -3,264 +3,264 @@
 
     <item
         is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="f83b00041ecfba705603fec40363416c7de69719">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_6bb0a5fe42d1523ffa867ee1361d152649725ab5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="bb685b9a368e05e3fc686d21e8aa97a58ff73556">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\instant-run_fcb9b7873dfd50ca5e667eedcef3b026b763864c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.7.2\8b8310381b690e317f5f0574e9b2dd7034778b4c\jackson-core-2.7.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="8b8310381b690e317f5f0574e9b2dd7034778b4c">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\jackson-core-2.7.2_092b9391298411abdc71db6a388f19b1879b802b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.7.2\84ffa765dd258dbab8695963c41308b054f3a1cb\jackson-databind-2.7.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="84ffa765dd258dbab8695963c41308b054f3a1cb">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\jackson-databind-2.7.2_199a6036e455e4515e044aa041c7b473a62198a8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\libs\internal_impl-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_633bce17e74234cbef13df8b181d6be0d0e6dbbe.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.1_e8aa46fb0719f258e19cc29b181c10e3b6fba136.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.0.1_143ad5044bb78042975d46c4146a79ae41098e75.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.0.1_68c1c584e49ccc6dbe54d5e3e5cdc34fee108a57.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.7.2\ce122c3256837d08593ea368882a9c7c69aedb4b\jackson-annotations-2.7.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="ce122c3256837d08593ea368882a9c7c69aedb4b">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\jackson-annotations-2.7.2_82ef2e01edc4b11e838e9b7e294260a6be2c5f74.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\org.springframework.android\spring-android-core\2.0.0.M3\c7e2c60943248bbce5de6cf552592281ed2296b\spring-android-core-2.0.0.M3.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="0c7e2c60943248bbce5de6cf552592281ed2296b">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\spring-android-core-2.0.0.M3_f658d1d7583779a127782acde84d6ea7ee73253d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="297d4bcf6ed4e747a1bf7d0d094a2d911a8d3a8e">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-25.0.1_aae4ef200a457f1f1b51397e85599df0520d056f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\transition\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="c1b6ab157e8e12cb08b9ee82bb5e3c5d22632eb3">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-transition-25.0.1_4e8e45f367a077ade30106c3407bd6b129c00a3a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="f9ade8a63dc60e5d0975163c56274a261039a9ed">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_1fb24a22351793e5e351f5331b26ef30c0c0693c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.1_fe5e6ea502f71eea6747d7f12ea2d5b04e8cf46b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\libs\gradle-wrapper.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="7904162451e758248918509fda5d876e231c2087">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\gradle-wrapper_75efda77359f421c46f6231faca234416081ca66.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.0.1_a847256f59f19bb89b9ea8436c82cbfd1cbb5376.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\org.androidannotations\androidannotations-api\4.1.0\5f9b485312ee0ee95355d517f36890915de1bff0\androidannotations-api-4.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="5f9b485312ee0ee95355d517f36890915de1bff0">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\androidannotations-api-4.1.0_6ca4f0da6e4150172871cb7ca746ff8696ac4757.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\org.androidannotations\rest-spring-api\4.0.0\2fe6e547505201aa34995e87d2231bcd32b83b37\rest-spring-api-4.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="2fe6e547505201aa34995e87d2231bcd32b83b37">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\rest-spring-api-4.0.0_ff312fd5eeac0727a6e4e75c836a378c150fe502.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.0.1_1f6dbb4fcb14e820f7c7fdf32ff68ab67093ee44.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\libs\internal_impl-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_f7e3789e92ba185d62b43b647eb1f531de10e479.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.0.1_56d2bb00bbfffed9bc63c2af0672d64b3adcfe40.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\libs\gson-2.5.jar"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/libs/gson-2.5.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="686c608d1805b6d4d425ec4459e88164ffc85870">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\gson-2.5_92e4b026a8765927e2c832b6a01ad67492a9b507.jar" />
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/gson-2.5_ea37df97d73349e353f420dc2d95aa38b7a0a2f0.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.7.2/8b8310381b690e317f5f0574e9b2dd7034778b4c/jackson-core-2.7.2.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_f388f734bf09c323726e03d7fbef61adc48d786e.jar" />
+        sha1="8b8310381b690e317f5f0574e9b2dd7034778b4c">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/jackson-core-2.7.2_c25a81f92387bc5b07297de11477738b4df9ede4.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.0.1_9696298823318ac4b2b24ebe3a09307d685a0a0d.jar" />
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-25.0.1_27ea8e5508953dc399cd5bc8944caf17ae39c548.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="D:\Programs\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.1_f0a2b64eb1eb3abf465424e9fa32edf4c92ccab2.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.1_c7af54da8b63ffdedcae89b8cea0fb1bee8b1841.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\design\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="3b236883e0df6002cabb01ce57d00a5b1e5de610">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\com.android.support-design-25.0.1_7df1610e0b11013bfa093b6ff6a1fc1bb7bf539a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\libs\internal_impl-25.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_095795b549f0256cb1c063b98616071bcd840056.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Nicolas\.gradle\caches\modules-2\files-2.1\org.springframework.android\spring-android-rest-template\2.0.0.M3\204c594c2a47073b30d3cb14ca69ba1066c4e44c\spring-android-rest-template-2.0.0.M3.jar"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/org.springframework.android/spring-android-rest-template/2.0.0.M3/204c594c2a47073b30d3cb14ca69ba1066c4e44c/spring-android-rest-template-2.0.0.M3.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
         sha1="204c594c2a47073b30d3cb14ca69ba1066c4e44c">
-        <dex dex="D:\Programs\Android\Projects\TestTablette\app\build\intermediates\pre-dexed\debug\spring-android-rest-template-2.0.0.M3_6fcd0bae09f6eb3af0b21a313f2a4ccc5ebde72c.jar" />
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/spring-android-rest-template-2.0.0.M3_3a9c9f2e0e53fb5e36cfe582bc5f9ea06615cda4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/org.androidannotations/rest-spring-api/4.0.0/2fe6e547505201aa34995e87d2231bcd32b83b37/rest-spring-api-4.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="2fe6e547505201aa34995e87d2231bcd32b83b37">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/rest-spring-api-4.0.0_1cddff835aff617df247dfe80ffc8e0e29e23915.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.0.1_ba39abdf654d46da3c628a8d775ed2d5134d0354.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.1/jars/libs/internal_impl-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f83b00041ecfba705603fec40363416c7de69719">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.1_7759b2c04861dffb74569f7407847c49e8261221.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.1/support-annotations-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/support-annotations-25.0.1_387b5eedd0c454140ee58e0783d04d33af5efcf8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/transition/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c1b6ab157e8e12cb08b9ee82bb5e3c5d22632eb3">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.0.1_0fbf057bed9e1d310e5f8073fd151bcd1c01a6b2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/org.springframework.android/spring-android-core/2.0.0.M3/c7e2c60943248bbce5de6cf552592281ed2296b/spring-android-core-2.0.0.M3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="0c7e2c60943248bbce5de6cf552592281ed2296b">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/spring-android-core-2.0.0.M3_d093df72c74202755374af769f9078ac85d3ab06.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="95bdce154a0381ceace762ffad2a106c41795de4">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/instant-run_2788d433f5a71eec9c683fa599ab4f22865c52c8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.0.1_2d3d455fea8fa6b43c889d22a0346774557fd49a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/libs/gradle-wrapper.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="7904162451e758248918509fda5d876e231c2087">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/gradle-wrapper_dba0688f3f17aaa038e3f2f487338ec723adf823.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="a6f01ec7cf9c7da7759bcbeec7b93f02f70b502e">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_3a359208da9a175c9dddc819116ac7414350ecf9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.7.2/84ffa765dd258dbab8695963c41308b054f3a1cb/jackson-databind-2.7.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="84ffa765dd258dbab8695963c41308b054f3a1cb">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/jackson-databind-2.7.2_db82bf82dfbaf0814dfeca71613c4cd22b8ab05b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.1/jars/libs/internal_impl-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.1_171b063fdbac365214124d9ad3725c3e3de3c4d1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.0.1_db2d94504cbb1be45f3ad341722e742c7fddd5b1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/libs/internal_impl-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.1_bc5e9658054c5fd8a52188a53c8b22ccfcd9a96a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.0.1_d8fa1544f1f7851ad77dae651b676aa35f74d634.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-25.0.1_7c84be8c1f41fcfeaf96476a17050104cebc6914.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/design/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="3b236883e0df6002cabb01ce57d00a5b1e5de610">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-design-25.0.1_e16a27edc2ead241f693f5f1d141f16c14665a3d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-25.0.1_e10fb417a4128d12e6d0589ce962299629887d95.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.1/jars/libs/internal_impl-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.1_0c29cc71d061e7a9323ba8d38ec8f095165cbc25.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.7.2/ce122c3256837d08593ea368882a9c7c69aedb4b/jackson-annotations-2.7.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ce122c3256837d08593ea368882a9c7c69aedb4b">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.7.2_47a45d8800f2827b4c7f6d33f95e3f2e846f0afc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/.gradle/caches/modules-2/files-2.1/org.androidannotations/androidannotations-api/4.1.0/5f9b485312ee0ee95355d517f36890915de1bff0/androidannotations-api-4.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="5f9b485312ee0ee95355d517f36890915de1bff0">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/androidannotations-api-4.1.0_41dcfc8250a7ce4aba676b6690a9d000599ed213.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.1/jars/libs/internal_impl-25.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.1_f8a231be03c62a5956e11be7313c4db00d151a4e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-25.0.1_0e60d57ab9211652012758274551d5fd0fd89dde.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="297d4bcf6ed4e747a1bf7d0d094a2d911a8d3a8e">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.0.1_978f6417b1eec50bd7bf2a0dc83083ca81763c10.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="/Users/nicolas/AndroidStudioProjects/a-rophile/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-25.0.1_7888f925813dd995db33be79b7108cf819a606a5.jar" />
     </item>
 
 </items>

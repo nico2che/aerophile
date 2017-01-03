@@ -6,10 +6,10 @@ android {
     //useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.aerophile.app"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
-        versionCode 31
-        versionName "1.6.4"
+        versionCode 32
+        versionName "1.7"
     }
     buildTypes {
         release {

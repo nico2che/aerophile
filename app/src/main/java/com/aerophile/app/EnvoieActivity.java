@@ -21,6 +21,7 @@ import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
+import com.aerophile.app.utils.Dates;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -84,7 +85,7 @@ public class EnvoieActivity extends AppCompatActivity {
 		}
 
 		// Chagement du titre
-		setTitle(String.format(getString(R.string.envoie_titre), journeeCourante.getDate()));
+		setTitle(String.format(getString(R.string.envoie_titre), Dates.dateToReadable(journeeCourante.getDate())));
 	}
 
 	@AfterViews
@@ -92,9 +93,9 @@ public class EnvoieActivity extends AppCompatActivity {
 		// Changement de l'objet du mail
 		SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
 		String immatriculation = reglages.getString("IMMATRICULATION", "?");
-		inputObjetEmail.setText(String.format(getString(R.string.envoie_email_objet_string), immatriculation, journeeCourante.getDate()));
+		inputObjetEmail.setText(String.format(getString(R.string.envoie_email_objet_string), immatriculation, Dates.dateToReadable(journeeCourante.getDate())));
 		if(journeeCourante.getDateEnvoie() != null) {
-			textDateEnvoie.setText(String.format(getString(R.string.envoie_mail_date_envoie_ok), JourneeDAO.dateToStringHuman(journeeCourante.getDateEnvoie())));
+			textDateEnvoie.setText(String.format(getString(R.string.envoie_mail_date_envoie_ok), Dates.dateToReadable(journeeCourante.getDateEnvoie())));
 		} else {
 			textDateEnvoie.setText(getString(R.string.envoie_mail_date_envoie_ko));
 		}
@@ -119,44 +120,38 @@ public class EnvoieActivity extends AppCompatActivity {
 
 	@Background
 	void requete(String type) {
-		if(isOnline()) {
-			MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
-			try {
-				ObjectMapper mapper = new ObjectMapper();
-				String donnees = mapper.writeValueAsString(journeeCourante);
-				SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-				if(type.equals("email")) {
-					data.add("objet_email", inputObjetEmail.getText().toString());
-					if(checkPremiereListe.isChecked())
-						data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
-					if(checkSecondeListe.isChecked())
-						data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
-				}
-				data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
-				data.add("lieu", reglages.getString("LIEU", "?"));
-				data.add("journee", URLEncoder.encode(donnees, "utf-8"));
-				String json = api.post(this, data, type);
-				mapper = new ObjectMapper();
-				JsonNode retour = mapper.readTree(json);
-				if(retour.get("statut").asInt(1) == 0) {
-					if(type.equals("pdf")) {
-						afficherPDF(retour.get("pdf").asText());
-					} else {
-						resultat(0);
-						return;
-					}
+		MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String donnees = mapper.writeValueAsString(journeeCourante);
+			SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
+			if(type.equals("email")) {
+				data.add("objet_email", inputObjetEmail.getText().toString());
+				if(checkPremiereListe.isChecked())
+					data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
+				if(checkSecondeListe.isChecked())
+					data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
+			}
+			data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
+			data.add("lieu", reglages.getString("LIEU", "?"));
+			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
+			String json = api.post(this, data, type);
+			mapper = new ObjectMapper();
+			JsonNode retour = mapper.readTree(json);
+			if(retour.get("statut").asInt(1) == 0) {
+				if(type.equals("pdf")) {
+					afficherPDF(retour.get("pdf").asText());
 				} else {
-					if (pDialog.isShowing())
-						pDialog.dismiss();
-					message(String.format(getString(R.string.envoie_erreur_serveur_details), retour.get("message").asText()));
+					resultat(0);
+					return;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} else {
 				if (pDialog.isShowing())
 					pDialog.dismiss();
-				message(getString(R.string.envoie_erreur_connexion));
+				message(String.format(getString(R.string.envoie_erreur_serveur_details), retour.get("message").asText()));
 			}
-		} else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			if (pDialog.isShowing())
 				pDialog.dismiss();
 			message(getString(R.string.envoie_erreur_connexion));
@@ -236,10 +231,5 @@ public class EnvoieActivity extends AppCompatActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	public boolean isOnline() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
 	}
 }

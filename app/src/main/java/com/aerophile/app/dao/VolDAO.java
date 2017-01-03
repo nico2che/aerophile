@@ -95,9 +95,8 @@ public class VolDAO {
 
 	public List<Vol> getVolsByJournee(long idJournee) {
 		List<Vol> vols = new ArrayList<>();
-
 		Cursor cursor = database.query(DatabaseHandler.VOL_TABLE_NAME,
-				allColumns, DatabaseHandler.VOL_JOURNEE + " = " + idJournee, null, null, null, DatabaseHandler.VOL_DATE_DECOLLAGE + " DESC");
+				allColumns, DatabaseHandler.VOL_JOURNEE + " = " + idJournee, null, null, null, "CASE WHEN time(" + DatabaseHandler.VOL_DATE_DECOLLAGE + ") < time('04:00') THEN 1 ELSE 0 END DESC, " + DatabaseHandler.VOL_DATE_DECOLLAGE + " DESC");
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -105,7 +104,6 @@ public class VolDAO {
 			vols.add(vol);
 			cursor.moveToNext();
 		}
-		// assurez-vous de la fermeture du curseur
 		cursor.close();
 		return vols;
 	}

@@ -61,31 +61,27 @@ public class AccueilActivity extends AppCompatActivity {
                 pDialog.dismiss();
             return;
         }
-        if(isOnline()) {
-            MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
-            data.add("code", codeEntre);
-            String json = api.post(this, data, "code");
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                JsonNode retour = mapper.readTree(json);
-                if (retour.get("statut").asInt(1) == 0) {
-                    SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(AccueilActivity.this);
-                    SharedPreferences.Editor reglages_editor = reglages.edit();
-                    reglages_editor.putString("CODE_SECURITE", codeEntre);
-                    reglages_editor.apply();
-                    if (pDialog.isShowing())
-                        pDialog.dismiss();
-                    Intent ecranReglages = new Intent(AccueilActivity.this, ReglagesActivity_.class);
-                    startActivity(ecranReglages);
-                    finish();
-                } else {
-                   message(getString(R.string.accueil_code_incorrect));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                message(getString(R.string.erreur_connexion));
+        MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
+        data.add("code", codeEntre);
+        String json = api.post(this, data, "code");
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode retour = mapper.readTree(json);
+            if (retour.get("statut").asInt(1) == 0) {
+                SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(AccueilActivity.this);
+                SharedPreferences.Editor reglages_editor = reglages.edit();
+                reglages_editor.putString("CODE_SECURITE", codeEntre);
+                reglages_editor.apply();
+                if (pDialog.isShowing())
+                    pDialog.dismiss();
+                Intent ecranReglages = new Intent(AccueilActivity.this, ReglagesActivity_.class);
+                startActivity(ecranReglages);
+                finish();
+            } else {
+               message(getString(R.string.accueil_code_incorrect));
             }
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             message(getString(R.string.erreur_connexion));
         }
     }
@@ -95,10 +91,5 @@ public class AccueilActivity extends AppCompatActivity {
         if (pDialog.isShowing())
             pDialog.dismiss();
         Toast.makeText(this, texte, Toast.LENGTH_SHORT).show();
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

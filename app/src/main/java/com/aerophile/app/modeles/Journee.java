@@ -18,7 +18,7 @@ public class Journee implements Serializable {
 
     private long id;
     private int enCours;
-    private String date;
+    private Date date;
     private String lift;
     private int temperature;
     private int pasDeVol;
@@ -54,10 +54,10 @@ public class Journee implements Serializable {
         this.enCours = id;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-    public String getDate() {
+    public Date getDate() {
         return this.date;
     }
 
