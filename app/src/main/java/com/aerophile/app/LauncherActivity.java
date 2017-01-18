@@ -189,12 +189,12 @@ public class LauncherActivity extends AppCompatActivity {
     void resultat(int code) {
         if(code == 0) {
             message(getString(R.string.envoie_mail_envoye));
-            journeeAttente.setAttente(0);
-            daoJournee.modifierJournee(journeeAttente);
-	        daoJournee.close();
         } else {
             message(getString(R.string.envoie_erreur_attente_reessayez));
         }
+        journeeAttente.setAttente(0);
+        daoJournee.modifierJournee(journeeAttente);
+        daoJournee.close();
     }
 
     @UiThread

@@ -29,6 +29,12 @@ public class Dates {
         } catch (ParseException e) {
             Log.d("AEROBUG", "Date non parsable");
         }
+        format = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        try {
+            return format.parse(date);
+        } catch (ParseException e) {
+            Log.d("AEROBUG", "Date non parsable");
+        }
         return new Date(Long.valueOf(date));
     }
 

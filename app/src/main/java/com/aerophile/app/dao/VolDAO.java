@@ -128,8 +128,8 @@ public class VolDAO {
 		return vol;
 	}
 
-	public boolean existeVolEnCours(){
-		Cursor cursor = database.query(DatabaseHandler.VOL_TABLE_NAME, new String[]{DatabaseHandler.VOL_KEY}, DatabaseHandler.VOL_ENCOURS + " = 1", null, null, null, null);
+	public boolean existeVolEnCours(long id){
+		Cursor cursor = database.query(DatabaseHandler.VOL_TABLE_NAME, new String[]{DatabaseHandler.VOL_KEY}, DatabaseHandler.VOL_ENCOURS + " = 1 AND " + DatabaseHandler.VOL_JOURNEE + " = " + id, null, null, null, null);
 		cursor.moveToFirst();
 		boolean response = !cursor.isAfterLast();
 		cursor.close();

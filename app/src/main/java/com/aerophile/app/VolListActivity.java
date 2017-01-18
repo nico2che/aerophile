@@ -178,7 +178,7 @@ public class VolListActivity extends AppCompatActivity
 				if(journeeCourante.getPasdeVol() != ancienVol) {
 					togglePasDeVol();
 				}
-				setTitle("Aérophile - " + journeeCourante.getDate());
+				setTitle(Dates.dateToReadable(journeeCourante.getDate()));
 			}
 		}
 		if (requestCode == CALLBACK_APP) {

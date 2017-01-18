@@ -53,7 +53,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 
         journeeCourante = daoJournee.getJourneeEnCours();
 
-	    if(!daoVol.existeVolEnCours()) {
+	    if(!daoVol.existeVolEnCours(journeeCourante.getId())) {
 
 		    // Nouveau vol en haut
 		    Vol nouveauVol = new Vol();
@@ -101,7 +101,7 @@ public class VolListFragment extends ListFragment implements VolDetailFragment.R
 	    long idVol = 0;
 	    if(!vols.isEmpty()) {
             int i = 0;
-		    if(!daoVol.existeVolEnCours()) {
+		    if(!daoVol.existeVolEnCours(journeeCourante.getId())) {
 			    // Nouveau vol en haut
 			    Vol nouveauVol = new Vol();
 			    nouveauVol.setId(0);
