@@ -127,7 +127,7 @@ public class LauncherActivity extends AppCompatActivity {
 
     @UiThread
     void startAerophile(Intent ecranDemarrage, boolean envoieAttente) {
-        if(envoieAttente && daoJournee != null) {
+/*        if(envoieAttente && daoJournee != null) {
             journeeAttente = daoJournee.getJourneeEnAttente();
             if(journeeAttente.getAttente() != 0) {
                 message(getString(R.string.envoie_mail_attente));
@@ -135,7 +135,7 @@ public class LauncherActivity extends AppCompatActivity {
             } else {
                 daoJournee.close();
             }
-        }
+        }*/
         startActivity(ecranDemarrage);
         finish();
     }
