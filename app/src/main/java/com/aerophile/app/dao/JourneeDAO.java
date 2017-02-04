@@ -135,6 +135,13 @@ public class JourneeDAO {
 		return true;
 	}
 
+	public boolean aucuneJourneeEnCours() {
+		ContentValues values = new ContentValues();
+		values.put(DatabaseHandler.JOURNEE_ENCOURS, 0);
+		database.update(DatabaseHandler.JOURNEE_TABLE_NAME, values, null, null);
+		return true;
+	}
+
 	public Journee getDerniereJournee(){
 		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, allColumns, null, null, null, null, DatabaseHandler.JOURNEE_KEY + " DESC");
 		cursor.moveToFirst();

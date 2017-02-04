@@ -418,6 +418,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 			if(changement) {
 
+				// Si il y a changement, alors la journee courante n'est plus en cours
+				daoJournee.aucuneJourneeEnCours();
+
 				nouvelleJournee.setEnCours(1);
 				nouvelleJournee.setDate(dateSelectionnee.getTime());
 				nouvelleJournee.setTemperature(Integer.valueOf(temperatureJournee));
@@ -435,8 +438,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 				if(enCours) {
 
-					// Si il y a changement, alors la journee courante n'est plus en cours
-					journeeCourante.setEnCours(0);
 					// On enregistre
 					daoJournee.modifierJournee(journeeCourante);
 
