@@ -8,8 +8,8 @@ android {
         applicationId "com.aerophile.app"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 34
-        versionName "1.7.2"
+        versionCode 35
+        versionName "1.7.3"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ android {
 }
 
 apply plugin: 'android-apt'
-def AAVersion = '4.1.0'
+def AAVersion = '4.2.0'
 
 buildscript {
     repositories {
@@ -51,10 +51,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:support-v4:25.1.1'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.2'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.2'
