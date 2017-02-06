@@ -41,7 +41,6 @@ public class Api {
                 e.printStackTrace();
             }
             SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(context);
-            Log.d("AEROBUG", reglages.getString("LANGUE", Locale.getDefault().toString()));
             retour = restJournee.envoieJournee(data, typeDonnees, reglages.getString("LANGUE", Locale.getDefault().toString()));
         } else {
             Toast.makeText(context, context.getString(R.string.erreur_connexion), Toast.LENGTH_SHORT).show();
@@ -49,7 +48,7 @@ public class Api {
         return retour;
     }
 
-    private boolean isOnline(Context context) {
+    public boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }

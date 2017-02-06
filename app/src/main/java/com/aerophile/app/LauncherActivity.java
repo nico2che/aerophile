@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,7 +38,6 @@ import java.util.Locale;
 public class LauncherActivity extends AppCompatActivity {
 
     private JourneeDAO daoJournee;
-    private Journee journeeAttente;
 
     private String code;
 
@@ -68,7 +68,7 @@ public class LauncherActivity extends AppCompatActivity {
 
         // On vérifie si le code existe et s'il est correct
         if(code.equals("KO")) {
-            startAerophile(new Intent(this, AccueilActivity_.class), false);
+            startAerophile(new Intent(this, AccueilActivity_.class));
         } else {
             checkCode();
         }
@@ -78,7 +78,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Click(R.id.buttonOffline)
     void checkCode() {
         toggleLayouts(true);
-        if(isOnline()) {
+        if(api.isOnline(this)) {
             MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
             data.add("code", code);
             String json = api.post(this, data, "code");
@@ -88,7 +88,7 @@ public class LauncherActivity extends AppCompatActivity {
                 if (retour.get("statut").asInt(1) == 0) {
                     codeBon();
                 } else {
-                    startAerophile(new Intent(this, AccueilActivity_.class), false);
+                    startAerophile(new Intent(this, AccueilActivity_.class));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,6 +97,32 @@ public class LauncherActivity extends AppCompatActivity {
         } else {
             toggleLayouts(false);
         }
+    }
+
+    void codeBon() {
+        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
+        String lieu = reglages.getString("LIEU", "KO");
+        String immatriculation = reglages.getString("IMMATRICULATION", "KO");
+        daoJournee = new JourneeDAO(this);
+        daoJournee.open();
+        Log.d("AEROBUG", "Journee en cours ?? " + daoJournee.isJourneeEnCours());
+        if(daoJournee.isJourneeEnCours()) {
+            Intent journeeEnCours = new Intent(this, VolListActivity.class);
+            journeeEnCours.putExtra("ID_JOURNEE", daoJournee.getJourneeEnCours().getId());
+            startAerophile(journeeEnCours);
+            return;
+        }
+        if(lieu.equals("KO") || immatriculation.equals("KO")) {
+            startAerophile(new Intent(this, ReglagesActivity_.class));
+            return;
+        }
+        startAerophile(new Intent(this, DemarrageActivity_.class));
+    }
+
+    @UiThread
+    void startAerophile(Intent ecranDemarrage) {
+        startActivity(ecranDemarrage);
+        finish();
     }
 
     @UiThread
@@ -110,100 +136,8 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
-    void codeBon() {
-        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-        String lieu = reglages.getString("LIEU", "KO");
-        String immatriculation = reglages.getString("IMMATRICULATION", "KO");
-        daoJournee = new JourneeDAO(this);
-        daoJournee.open();
-        if(daoJournee.isJourneeEnCours()) {
-            startAerophile(new Intent(this, VolListActivity.class), false);
-        }
-        if(lieu.equals("KO") || immatriculation.equals("KO")) {
-            startAerophile(new Intent(this, ReglagesActivity_.class), false);
-        }
-        startAerophile(new Intent(this, DemarrageActivity_.class), true);
-    }
-
-    @UiThread
-    void startAerophile(Intent ecranDemarrage, boolean envoieAttente) {
-/*        if(envoieAttente && daoJournee != null) {
-            journeeAttente = daoJournee.getJourneeEnAttente();
-            if(journeeAttente.getAttente() != 0) {
-                message(getString(R.string.envoie_mail_attente));
-                requete();
-            } else {
-                daoJournee.close();
-            }
-        }*/
-        startActivity(ecranDemarrage);
-        finish();
-    }
-
-    @Background
-    void requete() {
-        if(isOnline()) {
-	        VolDAO daoVol = new VolDAO(this);
-	        daoVol.open();
-            MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
-	        List<Vol> vols = daoVol.getVolsByJournee(journeeAttente.getId());
-	        for (Vol vol : vols) {
-		        journeeAttente.addVol(vol);
-	        }
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                String donnees = mapper.writeValueAsString(journeeAttente);
-                SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-                data.add("objet_email", journeeAttente.getObjetAttente());
-                data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
-                data.add("lieu", reglages.getString("LIEU", "?"));
-                data.add("journee", URLEncoder.encode(donnees, "utf-8"));
-                if(journeeAttente.getAttente() == 3) {
-                    data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
-                    data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
-                } else if(journeeAttente.getAttente() == 2) {
-                    data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
-                } else if(journeeAttente.getAttente() == 1) {
-                    data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
-                }
-                String json = api.post(this, data, "email");
-                mapper = new ObjectMapper();
-                JsonNode retour = mapper.readTree(json);
-                if(retour.get("statut").asInt(1) == 0) {
-                    resultat(0);
-	                return;
-                } else {
-                    message(String.format(getString(R.string.envoie_erreur_attente_serveur_details), retour.get("message").asText()));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                message(getString(R.string.envoie_erreur_attente_serveur));
-            }
-        } else {
-            message(getString(R.string.envoie_erreur_attente_connexion));
-        }
-        resultat(1);
-    }
-
-    @UiThread
-    void resultat(int code) {
-        if(code == 0) {
-            message(getString(R.string.envoie_mail_envoye));
-        } else {
-            message(getString(R.string.envoie_erreur_attente_reessayez));
-        }
-        journeeAttente.setAttente(0);
-        daoJournee.modifierJournee(journeeAttente);
-        daoJournee.close();
-    }
-
     @UiThread
     void message(String texte) {
         Toast.makeText(this, texte, Toast.LENGTH_SHORT).show();
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
