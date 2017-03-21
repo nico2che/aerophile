@@ -1,35 +1,29 @@
 package com.aerophile.app;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aerophile.app.R;
+import com.aerophile.app.modeles.Preferences_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.Locale;
 
 @EActivity(R.layout.activity_reglages)
 public class ReglagesActivity extends AppCompatActivity {
-
-    private boolean enCours = false;
 
     @ViewById
     EditText inputLieu;
@@ -49,16 +43,15 @@ public class ReglagesActivity extends AppCompatActivity {
     @ViewById
     TextView textVersion;
 
-    public void onBackPressed() {
-        if(enCours)
-            this.finish();
-    }
+    @Pref
+    Preferences_ reglages;
+
+    @Extra("EN_COURS")
+    int idJourneeEnCours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        enCours = (extras != null && extras.getInt("EN_COURS") == 1);
     }
 
     @AfterViews
@@ -70,11 +63,10 @@ public class ReglagesActivity extends AppCompatActivity {
         } catch (Exception e) {
             textVersion.setVisibility(View.INVISIBLE);
         }
-        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-        inputLieu.setText(reglages.getString("LIEU", ""));
-        inputImmatriculation.setText(reglages.getString("IMMATRICULATION", ""));
-        inputPreEmail.setText(reglages.getString("PRE_EMAIL", ""));
-        inputSecEmail.setText(reglages.getString("SEC_EMAIL", ""));
+        inputLieu.setText(reglages.lieu().get());
+        inputImmatriculation.setText(reglages.immatriculation().get());
+        inputPreEmail.setText(reglages.premierEmail().get());
+        inputSecEmail.setText(reglages.secondEmail().get());
         spinnerLangue.setSelection(((ArrayAdapter<String>)spinnerLangue.getAdapter()).getPosition(getString(R.string.reglages_langue)));
     }
 
@@ -93,31 +85,35 @@ public class ReglagesActivity extends AppCompatActivity {
                 langue = "fr";
                 break;
         }
+
         Locale locale = new Locale(langue);
         Locale.setDefault(locale);
         android.content.res.Configuration config = new android.content.res.Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
-        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor reglages_editor = reglages.edit();
-        reglages_editor.putString("LIEU", inputLieu.getText().toString());
-        reglages_editor.putString("IMMATRICULATION", inputImmatriculation.getText().toString());
-        reglages_editor.putString("PRE_EMAIL", inputPreEmail.getText().toString());
-        reglages_editor.putString("SEC_EMAIL", inputSecEmail.getText().toString());
-        reglages_editor.putString("LANGUE", langue);
-        reglages_editor.apply();
+        reglages.edit()
+                .lieu().put(inputLieu.getText().toString())
+                .immatriculation().put(inputImmatriculation.getText().toString())
+                .premierEmail().put(inputPreEmail.getText().toString())
+                .secondEmail().put(inputSecEmail.getText().toString())
+                .langue().put(langue)
+                .apply();
 
         Toast.makeText(ReglagesActivity.this, getString(R.string.demarrage_donnees_enregistrees), Toast.LENGTH_SHORT).show();
 
-	    if(enCours) {
+	    if(idJourneeEnCours != 0) {
 
 		    finish();
 
 	    } else {
 
-		    Intent ecranDemarrage = new Intent(this, DemarrageActivity_.class);
-		    startActivity(ecranDemarrage);
+            DemarrageActivity_.intent(this).start();
 	    }
+    }
+
+    public void onBackPressed() {
+        if(idJourneeEnCours != 0)
+            this.finish();
     }
 }

@@ -112,6 +112,16 @@ public class JourneeDAO {
 		return journee;
 	}
 
+	public Journee get(long id) {
+		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, allColumns, DatabaseHandler.JOURNEE_KEY + " = " + id, null, null, null, null);
+		Journee journee = new Journee();
+		cursor.moveToFirst();
+		if(!cursor.isAfterLast())
+			journee = cursorToJournee(cursor);
+		cursor.close();
+		return journee;
+	}
+
 	public boolean isJourneeEnCours(){
 		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME, new String[] { DatabaseHandler.JOURNEE_KEY }, DatabaseHandler.JOURNEE_ENCOURS + " = 1", null, null, null, null);
 		boolean response = (cursor != null) && (cursor.getCount() > 0);

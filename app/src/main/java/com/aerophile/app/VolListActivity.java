@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,23 +22,28 @@ import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Dates;
 
+import org.androidannotations.annotations.AfterExtras;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.ViewsById;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+@EActivity(R.layout.activity_vol_list)
 public class VolListActivity extends AppCompatActivity
         implements VolListFragment.Callbacks {
 
 	public VolListFragment list;
 
-	View ecranPrincipal;
-	View ecranPasVol;
-
 	private VolDAO daoVol;
 	private Journee journeeCourante;
-	private TextView textPassagers;
 	private JourneeDAO daoJournee;
 	private int pasDeVol = 0;
 
@@ -51,85 +57,96 @@ public class VolListActivity extends AppCompatActivity
 	public final static int CALLBACK_APP = 1;
 	public final static int CALLBACK_ENVOIE = 2;
 
+	@ViewById
+	View ecranPrincipal;
+
+	@ViewById
+	View ecranPasVol;
+
+	@ViewById
+	TextView textBottomPassagers;
+
+	@ViewById
+	Button buttonFinDeJournee;
+
+	@Extra("JOURNEE")
+	long idJournee;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vol_list);
+		super.onCreate(savedInstanceState);
+	}
 
-        if (findViewById(R.id.vol_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
+	@AfterExtras
+	public void extras() {
+		daoVol = new VolDAO(this);
+		daoVol.open();
 
-	        daoVol = new VolDAO(this);
-	        daoVol.open();
+		daoJournee = new JourneeDAO(this);
+		daoJournee.open();
 
-	        daoJournee = new JourneeDAO(this);
-	        daoJournee.open();
+		if(idJournee != 0) {
+			journeeCourante = daoJournee.get(idJournee);
+			Log.d("AEROBUG", "Chargement de la journée via INTENT (" + idJournee + ")");
+		} else {
+			journeeCourante = daoJournee.getJourneeEnCours();
+			Log.d("AEROBUG", "Chargement de la journée via DB (" + journeeCourante.getId() + ")");
+		}
+	}
 
-	        journeeCourante = daoJournee.getJourneeEnCours();
-	        setTitle(Dates.dateToReadable(journeeCourante.getDate()));
+	@AfterViews
+	public void view() {
 
+		setTitle(Dates.dateToReadable(journeeCourante.getDate()));
 
-	        ecranPrincipal = findViewById(R.id.ecranPrincipal);
-	        ecranPasVol = findViewById(R.id.ecranPasVol);
-	        textPassagers = (TextView) findViewById(R.id.textBottomPassagers);
-	        Button finDeJournee = (Button)findViewById(R.id.buttonFinDeJournee);
+		SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
+		TextView textImmatriculation = (TextView) findViewById(R.id.textBottomImmat);
+		if(textImmatriculation != null) {
+			textImmatriculation.setText(String.format(getString(R.string.vol_immatriculation_ballon), reglages.getString("IMMATRICULATION", "?")));
+		}
 
-	        if(finDeJournee != null) {
-		        finDeJournee.setOnClickListener(new View.OnClickListener() {
-			        @Override
-			        public void onClick(View v) {
-				        if(daoVol.getDernierVol(journeeCourante.getId()).getEnCours() == 1) {
-					        Toast.makeText(getApplicationContext(), getString(R.string.vol_vols_erreur), Toast.LENGTH_SHORT).show();
-				        } else {
-					        Intent ecranEnvoie = new Intent(VolListActivity.this, EnvoieActivity_.class);
-					        startActivityForResult(ecranEnvoie, CALLBACK_ENVOIE);
-				        }
-			        }
-		        });
-	        }
+		EditText inputCommentairePasVol = (EditText) findViewById(R.id.inputPasVolCommentaires);
+		if(inputCommentairePasVol != null) {
+			inputCommentairePasVol.setText(journeeCourante.getCommentairePasDeVol());
+		}
 
-	        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-	        TextView textImmatriculation = (TextView) findViewById(R.id.textBottomImmat);
-	        if(textImmatriculation != null) {
-		        textImmatriculation.setText(String.format(getString(R.string.vol_immatriculation_ballon), reglages.getString("IMMATRICULATION", "?")));
-	        }
+		if(inputCommentairePasVol != null) {
+			inputCommentairePasVol.addTextChangedListener(new TextWatcher() {
+				public void afterTextChanged(Editable s) {
+					journeeCourante.setCommentairePasDeVol(s.toString());
+					daoJournee.modifierJournee(journeeCourante);
+				}
 
-	        EditText inputCommentairePasVol = (EditText) findViewById(R.id.inputPasVolCommentaires);
-	        if(inputCommentairePasVol != null) {
-		        inputCommentairePasVol.setText(journeeCourante.getCommentairePasDeVol());
-	        }
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				}
 
-	        if(inputCommentairePasVol != null) {
-		        inputCommentairePasVol.addTextChangedListener(new TextWatcher() {
-			        public void afterTextChanged(Editable s) {
-				        journeeCourante.setCommentairePasDeVol(s.toString());
-				        daoJournee.modifierJournee(journeeCourante);
-			        }
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+				}
+			});
+		}
 
-			        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			        }
+		if(journeeCourante.getPasdeVol() == 1) {
+			togglePasDeVol();
+		}
 
-			        public void onTextChanged(CharSequence s, int start, int before, int count) {
-			        }
-		        });
-	        }
+		refreshBottomPassagers(-1);
 
-	        if(journeeCourante.getPasdeVol() == 1) {
-		        togglePasDeVol();
-	        }
-
-	        refreshBottomPassagers(-1);
-
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            list = (VolListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.vol_list);
-	        list.setActivateOnItemClick(true);
-        }
+		// In two-pane mode, list items should be given the
+		// 'activated' state when touched.
+		list = (VolListFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.vol_list);
+		list.setActivateOnItemClick(true);
     }
+
+	@Click
+	void buttonFinDeJournee() {
+		if(daoVol.getDernierVol(journeeCourante.getId()).getEnCours() == 1) {
+			Toast.makeText(getApplicationContext(), getString(R.string.vol_vols_erreur), Toast.LENGTH_SHORT).show();
+		} else {
+			Intent ecranEnvoie = new Intent(VolListActivity.this, EnvoieActivity_.class);
+			startActivityForResult(ecranEnvoie, CALLBACK_ENVOIE);
+		}
+	}
 
 	public void refreshBottomPassagers(long position) {
 		List<Vol> volsJournee = daoVol.getVolsByJournee(journeeCourante.getId());
@@ -160,7 +177,7 @@ public class VolListActivity extends AppCompatActivity
 			int minute = (temps % 3600) / 60;
 			heures = heure + "h" + ((minute < 10) ? "0" + minute : minute);
 		}
-		textPassagers.setText(String.format(getString(R.string.vol_stats), volsJournee.size(), nombrePassagers, heures));
+		textBottomPassagers.setText(String.format(getString(R.string.vol_stats), volsJournee.size(), nombrePassagers, heures));
 		if(position != -1)
 			itemSelected = position;
 	}
@@ -224,17 +241,18 @@ public class VolListActivity extends AppCompatActivity
 	    }
     }
 
+	// Quand on change l'option "Pas de vol aujourd'hui" dans les réglages de la journée
 	private void togglePasDeVol() {
 		if(pasDeVol == 0) { // Si actuellement il y a des vols
 			ecranPrincipal.setVisibility(View.INVISIBLE);
-			textPassagers.setVisibility(View.INVISIBLE);
+			textBottomPassagers.setVisibility(View.INVISIBLE);
 			ecranPasVol.setVisibility(View.VISIBLE);
 			journeeCourante.setPasDeVol(1);
 			daoJournee.modifierJournee(journeeCourante);
 			pasDeVol = 1;
 		} else { // Si actuellement il n'y a pas de vol
 			ecranPrincipal.setVisibility(View.VISIBLE);
-			textPassagers.setVisibility(View.VISIBLE);
+			textBottomPassagers.setVisibility(View.VISIBLE);
 			ecranPasVol.setVisibility(View.INVISIBLE);
 			journeeCourante.setPasDeVol(0);
 			daoJournee.modifierJournee(journeeCourante);

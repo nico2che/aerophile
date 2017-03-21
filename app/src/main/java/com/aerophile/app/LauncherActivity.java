@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,6 +28,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -39,8 +41,6 @@ public class LauncherActivity extends AppCompatActivity {
 
     private JourneeDAO daoJournee;
 
-    private String code;
-
     @Bean
     Api api;
 
@@ -50,16 +50,30 @@ public class LauncherActivity extends AppCompatActivity {
     @ViewById
     ProgressBar chargement;
 
+    @Pref
+    Preferences_ reglages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // On récupère le code de sécurité
-        code = reglages.getString("CODE_SECURITE", "KO");
+        // TODO: ne pas avoir a retaper le mot de passe
+
+        // ****
+        // TODO: LIGNES A SUPPRIMER APRES LA VERSION 1.8
+        SharedPreferences r = PreferenceManager.getDefaultSharedPreferences(this);
+        reglages.edit()
+                .code().put(r.getString("CODE_SECURITE", ""))
+                .lieu().put(r.getString("LIEU", ""))
+                .immatriculation().put(r.getString("IMMATRICULATION", ""))
+                .premierEmail().put(r.getString("PRE_EMAIL", ""))
+                .secondEmail().put(r.getString("SEC_EMAIL", ""))
+                .langue().put(r.getString("LANGUE", ""))
+                .apply();
+        // ****
 
         // Mise en place de la langue de l'application
-        String langue = reglages.getString("LANGUE", Locale.getDefault().toString());
+        String langue = reglages.langue().getOr(Locale.getDefault().toString());
         Locale locale = new Locale(langue);
         Locale.setDefault(locale);
         android.content.res.Configuration config = new android.content.res.Configuration();
@@ -67,8 +81,8 @@ public class LauncherActivity extends AppCompatActivity {
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
         // On vérifie si le code existe et s'il est correct
-        if(code.equals("KO")) {
-            startAerophile(new Intent(this, AccueilActivity_.class));
+        if(!reglages.code().exists()) {
+            AccueilActivity_.intent(this).start();
         } else {
             checkCode();
         }
@@ -80,7 +94,7 @@ public class LauncherActivity extends AppCompatActivity {
         toggleLayouts(true);
         if(api.isOnline(this)) {
             MultiValueMap<String, Object> data = new LinkedMultiValueMap<>();
-            data.add("code", code);
+            data.add("code", reglages.code().get());
             String json = api.post(this, data, "code");
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -88,7 +102,7 @@ public class LauncherActivity extends AppCompatActivity {
                 if (retour.get("statut").asInt(1) == 0) {
                     codeBon();
                 } else {
-                    startAerophile(new Intent(this, AccueilActivity_.class));
+                    AccueilActivity_.intent(this).start();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -100,29 +114,18 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     void codeBon() {
-        SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-        String lieu = reglages.getString("LIEU", "KO");
-        String immatriculation = reglages.getString("IMMATRICULATION", "KO");
         daoJournee = new JourneeDAO(this);
         daoJournee.open();
         Log.d("AEROBUG", "Journee en cours ?? " + daoJournee.isJourneeEnCours());
         if(daoJournee.isJourneeEnCours()) {
-            Intent journeeEnCours = new Intent(this, VolListActivity.class);
-            journeeEnCours.putExtra("ID_JOURNEE", daoJournee.getJourneeEnCours().getId());
-            startAerophile(journeeEnCours);
+            VolListActivity_.intent(this).idJournee(daoJournee.getJourneeEnCours().getId()).start();
             return;
         }
-        if(lieu.equals("KO") || immatriculation.equals("KO")) {
-            startAerophile(new Intent(this, ReglagesActivity_.class));
+        if(!reglages.lieu().exists() || !reglages.immatriculation().exists()) {
+            ReglagesActivity_.intent(this).start();
             return;
         }
-        startAerophile(new Intent(this, DemarrageActivity_.class));
-    }
-
-    @UiThread
-    void startAerophile(Intent ecranDemarrage) {
-        startActivity(ecranDemarrage);
-        finish();
+        DemarrageActivity_.intent(this).start();
     }
 
     @UiThread

@@ -1,27 +1,28 @@
 package com.aerophile.app.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.aerophile.app.R;
+import com.aerophile.app.modeles.Preferences_;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 @EBean
 public class Api {
+
+    @Pref
+    Preferences_ reglages;
 
     @RestService
     Client restJournee;
@@ -37,11 +38,11 @@ public class Api {
                 data.add("appareil", Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
                 data.add("version", info.versionName);
                 data.add("timezone", tz.getID());
+                retour = restJournee.envoieJournee(data, typeDonnees, reglages.langue().getOr("fr"));
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(context, context.getString(R.string.erreur_connexion), Toast.LENGTH_SHORT).show();
             }
-            SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(context);
-            retour = restJournee.envoieJournee(data, typeDonnees, reglages.getString("LANGUE", Locale.getDefault().toString()));
         } else {
             Toast.makeText(context, context.getString(R.string.erreur_connexion), Toast.LENGTH_SHORT).show();
         }

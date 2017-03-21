@@ -37,7 +37,7 @@
 			android:label="@string/title_activity_demarrage">
 		</activity>
 		<activity
-			android:name=".VolListActivity"
+			android:name=".VolListActivity_"
 			android:label="@string/aerophile"
 			android:windowSoftInputMode="adjustPan">
 		</activity>

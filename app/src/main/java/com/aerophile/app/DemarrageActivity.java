@@ -34,11 +34,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.springframework.util.LinkedMultiValueMap;
@@ -59,6 +61,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	public static int CHANGEMENT = 1;
 	private static int MODIFICATION = 2;
 	public final static int CALLBACK_APP = 1;
+	public final static int CALLBACK_DEMARRAGE = 3;
 
 	private int heureOuverture;
 	private int minuteOuverture;
@@ -125,51 +128,58 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	@ViewById
 	Button buttonSave;
 
+	@Extra("EN_COURS")
+	long idJourneeEnCours;
+
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	    Bundle extras = getIntent().getExtras();
-	    // Si on a une journée en cours on l'indique
-	    enCours = (extras != null && extras.getInt("EN_COURS") == 1);
-	    // On initialise sans changement pour l'instant
-	    changement = false;
     }
+
+	@AfterExtras
+	void extras() {
+
+		// On initialise sans changement pour l'instant
+		changement = false;
+
+		// On récupère la date actuelle
+		dateSelectionnee = Calendar.getInstance();
+		Log.d("AEROBUG", "[AE] " + dateSelectionnee.getTime() + "");
+
+		// On ouvre la base de données
+		daoJournee = new JourneeDAO(this);
+		daoJournee.open();
+
+		// On récupère les informations de la dernière journée
+		Journee derniereJournee = daoJournee.getDerniereJournee();
+
+		// Si on des horaires d'ouverture/fermeture de cette dernière journée, on les applique
+		if(derniereJournee.getHeureOuverture() != null && !derniereJournee.getHeureOuverture().isEmpty()) {
+
+			heureOuverture = Integer.parseInt(derniereJournee.getHeureOuverture().substring(0, 2));
+			minuteOuverture = Integer.parseInt(derniereJournee.getHeureOuverture().substring(3, 5));
+
+			heureFermeture = Integer.parseInt(derniereJournee.getHeureFermeture().substring(0, 2));
+			minuteFermeture = Integer.parseInt(derniereJournee.getHeureFermeture().substring(3, 5));
+
+		} else {
+
+			// Sinon on initialise les horaires à 8h00 et 20h00
+			heureOuverture = 8;
+			minuteOuverture = 0;
+
+			heureFermeture = 20;
+			minuteFermeture = 0;
+		}
+	}
 
     @AfterViews
     void init() {
 
-	    // On récupère la date actuelle
-	    dateSelectionnee = Calendar.getInstance();
-		Log.d("AEROBUG", dateSelectionnee.getTime() + "");
-
-	    // On ouvre la base de données
-	    daoJournee = new JourneeDAO(this);
-	    daoJournee.open();
-
-		// On récupère les informations de la dernière journée
-	    Journee derniereJournee = daoJournee.getDerniereJournee();
-
-		// Si on des horaires d'ouverture/fermeture de cette dernière journée, on les applique
-	    if(derniereJournee.getHeureOuverture() != null && !derniereJournee.getHeureOuverture().isEmpty()) {
-
-		    heureOuverture = Integer.parseInt(derniereJournee.getHeureOuverture().substring(0, 2));
-		    minuteOuverture = Integer.parseInt(derniereJournee.getHeureOuverture().substring(3, 5));
-
-		    heureFermeture = Integer.parseInt(derniereJournee.getHeureFermeture().substring(0, 2));
-		    minuteFermeture = Integer.parseInt(derniereJournee.getHeureFermeture().substring(3, 5));
-
-	    } else {
-
-			// Sinon on initialise les horaires à 8h00 et 20h00
-		    heureOuverture = 8;
-		    minuteOuverture = 0;
-
-		    heureFermeture = 20;
-		    minuteFermeture = 0;
-	    }
+		Log.d("AEROBUG", "[AV] " + idJourneeEnCours);
 
 	    // Si la journée est en cours
-	    if (enCours) {
+	    if (idJourneeEnCours != 0) {
 
 		    // Alors on indique qu'on veut la modifier
 		    setTitle(getString(R.string.demarrage_modifier_journee));
@@ -277,32 +287,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		}
 	}
 
-    @Click
-    void buttonDate() {
-		DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this,
-				dateSelectionnee.get(Calendar.YEAR),
-				dateSelectionnee.get(Calendar.MONTH),
-				dateSelectionnee.get(Calendar.DAY_OF_MONTH)
-		);
-        date.show();
-    }
-
-    public void onDateSet(DatePicker view, int annee, int mois, int jour) {
-		// On créer une date avec les valeurs entrées
-		Calendar nouvelleDate = Calendar.getInstance();
-		nouvelleDate.set(annee, mois, jour, 0, 0, 0);
-		// On compare cette date avec l'heure actuelle
-		if(nouvelleDate.compareTo(Calendar.getInstance()) > 0) {
-			// Si la date entrée se trouve après maintenant -> donc demain, on interdit
-			message(getString(R.string.envoie_erreur_date));
-			return;
-		}
-		// On indique la nouvelle date sélectionnée
-		dateSelectionnee.set(annee, mois, jour);
-		// On change la journée en conséquence
-	    verificationJournee(dateSelectionnee.getTime());
-    }
-
 	void verificationJournee(Date date) {
 
 		// On regarde si une journée existe avec cette nouvelle date
@@ -382,6 +366,32 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	}
 
 	@Click
+	void buttonDate() {
+		DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this,
+				dateSelectionnee.get(Calendar.YEAR),
+				dateSelectionnee.get(Calendar.MONTH),
+				dateSelectionnee.get(Calendar.DAY_OF_MONTH)
+		);
+		date.show();
+	}
+
+	public void onDateSet(DatePicker view, int annee, int mois, int jour) {
+		// On créer une date avec les valeurs entrées
+		Calendar nouvelleDate = Calendar.getInstance();
+		nouvelleDate.set(annee, mois, jour, 0, 0, 0);
+		// On compare cette date avec l'heure actuelle
+		if(nouvelleDate.compareTo(Calendar.getInstance()) > 0) {
+			// Si la date entrée se trouve après maintenant -> donc demain, on interdit
+			message(getString(R.string.envoie_erreur_date));
+			return;
+		}
+		// On indique la nouvelle date sélectionnée
+		dateSelectionnee.set(annee, mois, jour);
+		// On change la journée en conséquence
+		verificationJournee(dateSelectionnee.getTime());
+	}
+
+	@Click
 	void buttonEffacer() {
 		canvasDrawer.clear();
 		imageSignature.setVisibility(View.INVISIBLE);
@@ -446,8 +456,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 				} else {
 
-					Intent ecranVols = new Intent(this, VolListActivity.class);
-					startActivity(ecranVols);
+					VolListActivity_.intent(this).idJournee((int) nouvelleJournee.getId()).start();
 					finish();
 				}
 
@@ -480,7 +489,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 				debutJournee.setSignature(nouvelleSignature);
 				debutJournee.setPasDeVol(pasDeVol);
 				daoJournee.creerJournee(debutJournee);
-				Intent ecranVols = new Intent(this, VolListActivity.class);
+				Intent ecranVols = new Intent(this, VolListActivity_.class);
 				startActivity(ecranVols);
 				finish();
 	        }
