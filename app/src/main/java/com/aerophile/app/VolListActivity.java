@@ -1,9 +1,7 @@
 package com.aerophile.app;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +17,7 @@ import android.widget.Toast;
 import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Dates;
 
@@ -28,7 +27,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.ViewsById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,6 +71,9 @@ public class VolListActivity extends AppCompatActivity
 	@Extra("JOURNEE")
 	long idJournee;
 
+    @Pref
+    Preferences_ reglages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +92,7 @@ public class VolListActivity extends AppCompatActivity
 			Log.d("AEROBUG", "Chargement de la journée via INTENT (" + idJournee + ")");
 		} else {
 			journeeCourante = daoJournee.getJourneeEnCours();
+			idJournee = journeeCourante.getId();
 			Log.d("AEROBUG", "Chargement de la journée via DB (" + journeeCourante.getId() + ")");
 		}
 	}
@@ -99,10 +102,9 @@ public class VolListActivity extends AppCompatActivity
 
 		setTitle(Dates.dateToReadable(journeeCourante.getDate()));
 
-		SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
 		TextView textImmatriculation = (TextView) findViewById(R.id.textBottomImmat);
 		if(textImmatriculation != null) {
-			textImmatriculation.setText(String.format(getString(R.string.vol_immatriculation_ballon), reglages.getString("IMMATRICULATION", "?")));
+			textImmatriculation.setText(String.format(getString(R.string.vol_immatriculation_ballon), reglages.immatriculation().get()));
 		}
 
 		EditText inputCommentairePasVol = (EditText) findViewById(R.id.inputPasVolCommentaires);
@@ -143,8 +145,7 @@ public class VolListActivity extends AppCompatActivity
 		if(daoVol.getDernierVol(journeeCourante.getId()).getEnCours() == 1) {
 			Toast.makeText(getApplicationContext(), getString(R.string.vol_vols_erreur), Toast.LENGTH_SHORT).show();
 		} else {
-			Intent ecranEnvoie = new Intent(VolListActivity.this, EnvoieActivity_.class);
-			startActivityForResult(ecranEnvoie, CALLBACK_ENVOIE);
+			EnvoieActivity_.intent(this).idJournee(idJournee).startForResult(CALLBACK_ENVOIE);
 		}
 	}
 
@@ -199,9 +200,7 @@ public class VolListActivity extends AppCompatActivity
 			}
 		}
 		if (requestCode == CALLBACK_APP) {
-			Intent restartVols = new Intent();
-			restartVols.setClass(this, this.getClass());
-			startActivity(restartVols);
+			VolListActivity_.intent(this).idJournee(idJournee).start();
 			finish();
 		}
 		if (requestCode == CALLBACK_ENVOIE) {
@@ -209,8 +208,7 @@ public class VolListActivity extends AppCompatActivity
 				finish();
 			}
 			if(resultCode == EnvoieActivity.QUITTER) {
-				Intent ecranDemarrageJournee = new Intent(this, DemarrageActivity_.class);
-				startActivity(ecranDemarrageJournee);
+				DemarrageActivity_.intent(this).start();
 				finish();
 			}
 		}
@@ -221,12 +219,13 @@ public class VolListActivity extends AppCompatActivity
 	    switch (item.getItemId()) {
 		    case R.id.menu_action_application:
 			    Intent ecranParametreApplication = new Intent(this, ReglagesActivity_.class);
-			    ecranParametreApplication.putExtra("EN_COURS", 1);
+				Log.d("AEROBUG", "idJournee : " + idJournee);
+			    ecranParametreApplication.putExtra("EN_COURS", idJournee);
 			    startActivityForResult(ecranParametreApplication, CALLBACK_APP);
 			    return true;
 		    case R.id.menu_action_journee:
 			    Intent ecranParametreJournee = new Intent(this, DemarrageActivity_.class);
-			    ecranParametreJournee.putExtra("EN_COURS", 1);
+			    ecranParametreJournee.putExtra("EN_COURS", idJournee);
 			    startActivityForResult(ecranParametreJournee, CALLBACK_JOURNEE);
 			    return true;
 		    case R.id.menu_action_apercu:

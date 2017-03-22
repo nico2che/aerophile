@@ -4,6 +4,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -47,7 +48,7 @@ public class ReglagesActivity extends AppCompatActivity {
     Preferences_ reglages;
 
     @Extra("EN_COURS")
-    int idJourneeEnCours;
+    long idJourneeEnCours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class ReglagesActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
+        Log.d("AEROBUG", "idJourneeee : " + idJourneeEnCours);
         try {
             PackageManager manager = this.getPackageManager();
             PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);

@@ -2,14 +2,11 @@ package com.aerophile.app;
 
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,6 +16,7 @@ import android.widget.Toast;
 import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
 import com.aerophile.app.utils.Dates;
@@ -30,8 +28,10 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -65,6 +65,12 @@ public class EnvoieActivity extends AppCompatActivity {
 	@ViewById
 	TextView textDateEnvoie;
 
+	@Extra("JOURNEE")
+	long idJournee;
+
+	@Pref
+	Preferences_ reglages;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,11 +81,12 @@ public class EnvoieActivity extends AppCompatActivity {
 
 		daoJournee = new JourneeDAO(this);
 		daoJournee.open();
-		journeeCourante = daoJournee.getJourneeEnCours();
+		Log.d("AEROBUG", "idJournee : " + idJournee);
+		journeeCourante = daoJournee.get(idJournee);
 
 		VolDAO daoVol = new VolDAO(this);
 		daoVol.open();
-		List<Vol> vols = daoVol.getVolsByJournee(journeeCourante.getId());
+		List<Vol> vols = daoVol.getVolsByJournee(idJournee);
 		for (Vol vol : vols) {
 			journeeCourante.addVol(vol);
 		}
@@ -91,9 +98,7 @@ public class EnvoieActivity extends AppCompatActivity {
 	@AfterViews
 	void initialise() {
 		// Changement de l'objet du mail
-		SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-		String immatriculation = reglages.getString("IMMATRICULATION", "?");
-		inputObjetEmail.setText(String.format(getString(R.string.envoie_email_objet_string), immatriculation, Dates.dateToReadable(journeeCourante.getDate())));
+		inputObjetEmail.setText(String.format(getString(R.string.envoie_email_objet_string), reglages.immatriculation().get(), Dates.dateToReadable(journeeCourante.getDate())));
 		if(journeeCourante.getDateEnvoie() != null) {
 			textDateEnvoie.setText(String.format(getString(R.string.envoie_mail_date_envoie_ok), Dates.dateToReadable(journeeCourante.getDateEnvoie())));
 		} else {
@@ -112,8 +117,7 @@ public class EnvoieActivity extends AppCompatActivity {
 
 	@Click
 	void buttonQuitter() {
-		journeeCourante.setEnCours(0);
-		daoJournee.modifierJournee(journeeCourante);
+		daoJournee.aucuneJourneeEnCours();
         setResult(QUITTER);
         finish();
 	}
@@ -124,16 +128,15 @@ public class EnvoieActivity extends AppCompatActivity {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String donnees = mapper.writeValueAsString(journeeCourante);
-			SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
 			if(type.equals("email")) {
 				data.add("objet_email", inputObjetEmail.getText().toString());
 				if(checkPremiereListe.isChecked())
-					data.add("premiere_liste_emails", reglages.getString("PRE_EMAIL", ""));
+					data.add("premiere_liste_emails", reglages.premierEmail().get());
 				if(checkSecondeListe.isChecked())
-					data.add("seconde_liste_emails", reglages.getString("SEC_EMAIL", ""));
+					data.add("seconde_liste_emails", reglages.secondEmail().get());
 			}
-			data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
-			data.add("lieu", reglages.getString("LIEU", "?"));
+			data.add("immatriculation", reglages.immatriculation().get());
+			data.add("lieu", reglages.lieu().get());
 			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
 			String json = api.post(this, data, type);
 			mapper = new ObjectMapper();
@@ -206,8 +209,8 @@ public class EnvoieActivity extends AppCompatActivity {
 			journeeCourante.setAttente(code);
 			message(getString(R.string.envoie_erreur_attente_email));
 		}
-		journeeCourante.setEnCours(0);
 		daoJournee.modifierJournee(journeeCourante);
+		daoJournee.aucuneJourneeEnCours();
 
 		if (pDialog.isShowing())
 			pDialog.dismiss();
@@ -220,14 +223,7 @@ public class EnvoieActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				Intent upIntent = NavUtils.getParentActivityIntent(this);
-				if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-					TaskStackBuilder.create(this)
-							.addNextIntentWithParentStack(upIntent)
-							.startActivities();
-				} else {
-					NavUtils.navigateUpTo(this, upIntent);
-				}
+				finish();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -7,9 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +25,7 @@ import android.widget.Toast;
 import com.aerophile.app.dao.JourneeDAO;
 import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
+import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
 import com.aerophile.app.utils.Dates;
@@ -43,17 +42,15 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @EActivity(R.layout.activity_demarrage)
 public class DemarrageActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -73,7 +70,6 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	private Journee journeeCourante;
 	private JourneeDAO daoJournee;
-	private boolean enCours;
 	private boolean changement;
 
 	private Calendar dateSelectionnee;
@@ -97,6 +93,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	@ViewById
 	EditText inputLift;
+
+	@ViewById
+	Button buttonDate;
 
 	@ViewById
 	Button buttonPdf;
@@ -130,6 +129,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	@Extra("EN_COURS")
 	long idJourneeEnCours;
+
+	@Pref
+	Preferences_ reglages;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,10 +188,13 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		    buttonSave.setText(getString(R.string.demarrage_modifier_journee));
 
 		    // On récupère les informations de cette journée en cours
-		    journeeCourante = daoJournee.getJourneeEnCours();
+		    journeeCourante = daoJournee.get(idJourneeEnCours);
 
 		    // On met à jour chaque champs de l'activité avec la journée courante
 		    miseAJourInputs(journeeCourante);
+
+			// On interdit le changement de date !
+			buttonDate.setVisibility(View.INVISIBLE);
 
 	    } else {
 
@@ -197,6 +202,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		    imageSignature.setVisibility(View.INVISIBLE);
 		    canvasDrawer.setVisibility(View.VISIBLE);
 		    buttonPdf.setVisibility(View.INVISIBLE);
+
+			// On autorise le changement de date
+			buttonDate.setVisibility(View.VISIBLE);
 
 		    verificationJournee(dateSelectionnee.getTime());
 	    }
@@ -295,7 +303,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		// Si elle existe
 		if(nouvelleJournee.getId() != 0) {
 
-			if(enCours) {
+			if(idJourneeEnCours != 0) {
 
 				if(nouvelleJournee.getId() != journeeCourante.getId()) {
 
@@ -342,7 +350,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			changement = false;
 
 			// Seulement si la journée est en cours
-			if(enCours) {
+			if(idJourneeEnCours != 0) {
 
 				setTitle(getString(R.string.demarrage_modifier_journee));
 				buttonSave.setText(getString(R.string.demarrage_modifier_journee));
@@ -367,6 +375,11 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 	@Click
 	void buttonDate() {
+		// On interdit de changer de date si une journée est en cours
+		if(idJourneeEnCours != 0) {
+			message("Modification de date impossible lorsqu'une journée est en cours");
+			return;
+		}
 		DatePickerDialog date = new DatePickerDialog(DemarrageActivity.this, this,
 				dateSelectionnee.get(Calendar.YEAR),
 				dateSelectionnee.get(Calendar.MONTH),
@@ -376,6 +389,11 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	}
 
 	public void onDateSet(DatePicker view, int annee, int mois, int jour) {
+		// On interdit de changer de date si une journée est en cours
+		if(idJourneeEnCours != 0) {
+			message("Modification de date impossible lorsqu'une journée est en cours");
+			return;
+		}
 		// On créer une date avec les valeurs entrées
 		Calendar nouvelleDate = Calendar.getInstance();
 		nouvelleDate.set(annee, mois, jour, 0, 0, 0);
@@ -446,7 +464,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 
 				Toast.makeText(DemarrageActivity.this, getString(R.string.demarrage_chargement_effectue), Toast.LENGTH_SHORT).show();
 
-				if(enCours) {
+				if(idJourneeEnCours != 0) {
 
 					// On enregistre
 					daoJournee.modifierJournee(journeeCourante);
@@ -460,9 +478,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 					finish();
 				}
 
-			} else if(enCours) {
+			} else if(idJourneeEnCours != 0) {
 
-		        journeeCourante.setDate(dateSelectionnee.getTime());
+		        //journeeCourante.setDate(dateSelectionnee.getTime());
 		        journeeCourante.setTemperature(Integer.valueOf(temperatureJournee));
 		        journeeCourante.setLift(liftJournee);
 				journeeCourante.setHeureOuverture(horaireOuverture);
@@ -488,9 +506,8 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 				debutJournee.setPiloteValidation(piloteValidation);
 				debutJournee.setSignature(nouvelleSignature);
 				debutJournee.setPasDeVol(pasDeVol);
-				daoJournee.creerJournee(debutJournee);
-				Intent ecranVols = new Intent(this, VolListActivity_.class);
-				startActivity(ecranVols);
+				Journee nouvelleJournee = daoJournee.creerJournee(debutJournee);
+				VolListActivity_.intent(this).idJournee(nouvelleJournee.getId()).start();
 				finish();
 	        }
 
@@ -517,7 +534,7 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		Journee journeeEnvoie;
 		if(changement) {
 			journeeEnvoie = nouvelleJournee;
-		} else if(enCours) {
+		} else if(idJourneeEnCours != 0) {
 			journeeEnvoie = journeeCourante;
 		} else {
 			message(getString(R.string.envoie_erreur_journee_existe_pas));
@@ -547,9 +564,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String donnees = mapper.writeValueAsString(journeeEnvoie);
-			SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(this);
-			data.add("immatriculation", reglages.getString("IMMATRICULATION", "?"));
-			data.add("lieu", reglages.getString("LIEU", "?"));
+
+			data.add("immatriculation", reglages.immatriculation().get());
+			data.add("lieu", reglages.lieu().get());
 			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
 			String json = api.post(this, data, "pdf");
 			mapper = new ObjectMapper();
@@ -643,6 +660,9 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		// On sauvegarde une journée en cours si elle existe
+		outState.putLong("idJourneeEnCours", idJourneeEnCours);
+
 		outState.putLong("date", dateSelectionnee.getTimeInMillis());
 		outState.putString("lift", inputLift.getText().toString());
 		outState.putString("temperature", inputTemperature.getText().toString());
@@ -656,16 +676,34 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 	@Override
 	protected void onRestoreInstanceState(Bundle savedState) {
 		super.onRestoreInstanceState(savedState);
-		dateSelectionnee = Calendar.getInstance();
-		dateSelectionnee.setTimeInMillis(savedState.getLong("date"));
-		verificationJournee(dateSelectionnee.getTime());
-		inputLift.setText(savedState.getString("lift"));
-		inputTemperature.setText(savedState.getString("temperature"));
-		inputPiloteValidation.setText(savedState.getString("pilote"));
-		buttonOuverture.setText(savedState.getString("heureOuverture"));
-		buttonFermeture.setText(savedState.getString("heureFermeture"));
-		checkPasdeVol.setChecked(savedState.getInt("pasdevol") == 1);
-		canvasDrawer.setVisibility((savedState.getInt("signature") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE));
+
+		idJourneeEnCours = savedState.getLong("idJourneeEnCours");
+		// Si il y a une journée en cours
+		if(idJourneeEnCours != 0) {
+
+			// On récupère les informations de cette journée en cours
+			journeeCourante = daoJournee.get(idJourneeEnCours);
+
+			// On met à jour chaque champs de l'activité avec la journée courante
+			miseAJourInputs(journeeCourante);
+
+			// On interdit le changement de date !
+			buttonDate.setVisibility(View.INVISIBLE);
+
+		} else {
+
+			buttonDate.setVisibility(View.VISIBLE);
+			dateSelectionnee = Calendar.getInstance();
+			dateSelectionnee.setTimeInMillis(savedState.getLong("date"));
+			verificationJournee(dateSelectionnee.getTime());
+			inputLift.setText(savedState.getString("lift"));
+			inputTemperature.setText(savedState.getString("temperature"));
+			inputPiloteValidation.setText(savedState.getString("pilote"));
+			buttonOuverture.setText(savedState.getString("heureOuverture"));
+			buttonFermeture.setText(savedState.getString("heureFermeture"));
+			checkPasdeVol.setChecked(savedState.getInt("pasdevol") == 1);
+			canvasDrawer.setVisibility((savedState.getInt("signature") == View.VISIBLE ? View.VISIBLE : View.INVISIBLE));
+		}
 	}
 
 	public boolean isOnline() {

@@ -1,17 +1,13 @@
 package com.aerophile.app;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +18,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -38,6 +35,9 @@ public class AccueilActivity extends AppCompatActivity {
 
     @ViewById
     Button valider;
+
+    @Pref
+    Preferences_ reglages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +68,10 @@ public class AccueilActivity extends AppCompatActivity {
         try {
             JsonNode retour = mapper.readTree(json);
             if (retour.get("statut").asInt(1) == 0) {
-                SharedPreferences reglages = PreferenceManager.getDefaultSharedPreferences(AccueilActivity.this);
-                SharedPreferences.Editor reglages_editor = reglages.edit();
-                reglages_editor.putString("CODE_SECURITE", codeEntre);
-                reglages_editor.apply();
+                reglages.code().put(codeEntre);
                 if (pDialog.isShowing())
                     pDialog.dismiss();
-                Intent ecranReglages = new Intent(AccueilActivity.this, ReglagesActivity_.class);
-                startActivity(ecranReglages);
+                ReglagesActivity_.intent(this).start();
                 finish();
             } else {
                message(getString(R.string.accueil_code_incorrect));

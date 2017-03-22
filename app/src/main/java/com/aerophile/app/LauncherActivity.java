@@ -1,9 +1,6 @@
 package com.aerophile.app;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aerophile.app.dao.JourneeDAO;
-import com.aerophile.app.dao.VolDAO;
-import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Preferences_;
-import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +26,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.net.URLEncoder;
-import java.util.List;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_launcher)
@@ -57,19 +49,22 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: ne pas avoir a retaper le mot de passe
-
         // ****
         // TODO: LIGNES A SUPPRIMER APRES LA VERSION 1.8
         SharedPreferences r = PreferenceManager.getDefaultSharedPreferences(this);
-        reglages.edit()
-                .code().put(r.getString("CODE_SECURITE", ""))
-                .lieu().put(r.getString("LIEU", ""))
-                .immatriculation().put(r.getString("IMMATRICULATION", ""))
-                .premierEmail().put(r.getString("PRE_EMAIL", ""))
-                .secondEmail().put(r.getString("SEC_EMAIL", ""))
-                .langue().put(r.getString("LANGUE", ""))
-                .apply();
+        if(!r.getString("CODE_SECURITE", "").isEmpty()) {
+            reglages.edit()
+                    .code().put(r.getString("CODE_SECURITE", ""))
+                    .lieu().put(r.getString("LIEU", ""))
+                    .immatriculation().put(r.getString("IMMATRICULATION", ""))
+                    .premierEmail().put(r.getString("PRE_EMAIL", ""))
+                    .secondEmail().put(r.getString("SEC_EMAIL", ""))
+                    .langue().put(r.getString("LANGUE", Locale.getDefault().toString()))
+                    .apply();
+            SharedPreferences.Editor reglages_editor = r.edit();
+            reglages_editor.putString("CODE_SECURITE", "");
+            reglages_editor.apply();
+        }
         // ****
 
         // Mise en place de la langue de l'application
@@ -83,6 +78,7 @@ public class LauncherActivity extends AppCompatActivity {
         // On vérifie si le code existe et s'il est correct
         if(!reglages.code().exists()) {
             AccueilActivity_.intent(this).start();
+            finish();
         } else {
             checkCode();
         }
