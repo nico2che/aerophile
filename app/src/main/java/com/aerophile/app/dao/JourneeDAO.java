@@ -40,7 +40,7 @@ public class JourneeDAO {
 			DatabaseHandler.JOURNEE_DATE_ENVOIE };
 
 	public JourneeDAO(Context context) {
-		dbHelper = new DatabaseHandler(context);
+		dbHelper = DatabaseHandler.getInstance(context);
 	}
 
 	public void open() throws SQLException {

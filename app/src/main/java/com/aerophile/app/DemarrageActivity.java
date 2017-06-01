@@ -569,6 +569,11 @@ public class DemarrageActivity extends AppCompatActivity implements DatePickerDi
 			data.add("lieu", reglages.lieu().get());
 			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
 			String json = api.post(this, data, "pdf");
+			if(json.isEmpty()) {
+				if (pDialog.isShowing())
+					pDialog.dismiss();
+				return;
+			}
 			mapper = new ObjectMapper();
 			JsonNode retour = mapper.readTree(json);
 			if(retour.get("statut").asInt(1) == 0) {

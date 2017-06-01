@@ -15,6 +15,8 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+	private static DatabaseHandler mInstance = null;
+
 	private static final String DATABASE_NAME = "aerophile.db";
 	private static final int DATABASE_VERSION = 20;
 
@@ -81,8 +83,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					VOL_VITESSE_VENT + " INTEGER, " +
 					VOL_TIME_DECOLLAGE + " TEXT);";
 
-	public DatabaseHandler(Context context) {
+	private DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	public static DatabaseHandler getInstance(Context ctx) {
+
+		// Use the application context, which will ensure that you
+		// don't accidentally leak an Activity's context.
+		// See this article for more information: http://bit.ly/6LRzfx
+		if (mInstance == null) {
+			mInstance = new DatabaseHandler(ctx.getApplicationContext());
+		}
+		return mInstance;
 	}
 
 	@Override

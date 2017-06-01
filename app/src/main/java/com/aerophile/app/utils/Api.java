@@ -11,6 +11,7 @@ import com.aerophile.app.R;
 import com.aerophile.app.modeles.Preferences_;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.util.MultiValueMap;
@@ -27,9 +28,12 @@ public class Api {
     @RestService
     Client restJournee;
 
+    Context ctx;
+
     public String post(Context context, MultiValueMap<String, Object> data, String typeDonnees) {
+        ctx = context;
         String retour = "";
-        if(isOnline(context)) {
+        if(isOnline(ctx)) {
             try {
                 Calendar cal = Calendar.getInstance();
                 TimeZone tz = cal.getTimeZone();
@@ -41,10 +45,10 @@ public class Api {
                 retour = restJournee.envoieJournee(data, typeDonnees, reglages.langue().getOr("fr"));
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(context, context.getString(R.string.erreur_connexion), Toast.LENGTH_SHORT).show();
+                message(ctx.getString(R.string.erreur_connexion));
             }
         } else {
-            Toast.makeText(context, context.getString(R.string.erreur_connexion), Toast.LENGTH_SHORT).show();
+            message(ctx.getString(R.string.erreur_connexion));
         }
         return retour;
     }
@@ -52,5 +56,10 @@ public class Api {
     public boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    @UiThread
+    void message(String texte) {
+        Toast.makeText(ctx, texte, Toast.LENGTH_SHORT).show();
     }
 }

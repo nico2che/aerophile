@@ -139,6 +139,11 @@ public class EnvoieActivity extends AppCompatActivity {
 			data.add("lieu", reglages.lieu().get());
 			data.add("journee", URLEncoder.encode(donnees, "utf-8"));
 			String json = api.post(this, data, type);
+			if(json.isEmpty()) {
+				if (pDialog.isShowing())
+					pDialog.dismiss();
+				return;
+			}
 			mapper = new ObjectMapper();
 			JsonNode retour = mapper.readTree(json);
 			if(retour.get("statut").asInt(1) == 0) {
@@ -159,14 +164,14 @@ public class EnvoieActivity extends AppCompatActivity {
 				pDialog.dismiss();
 			message(getString(R.string.envoie_erreur_connexion));
 		}
-		if(type.equals("email")) {
+/*		if(type.equals("email")) {
 			if(checkPremiereListe.isChecked() && checkSecondeListe.isChecked())
 				resultat(3);
 			else if(checkPremiereListe.isChecked())
 				resultat(1);
 			else if(checkSecondeListe.isChecked())
 				resultat(2);
-		}
+		}*/
 	}
 
 	@UiThread

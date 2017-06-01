@@ -31,7 +31,7 @@ public class VolDAO {
 			DatabaseHandler.VOL_TIME_DECOLLAGE };
 
 	public VolDAO(Context context) {
-		dbHelper = new DatabaseHandler(context);
+		dbHelper = DatabaseHandler.getInstance(context);
 	}
 
 	public void open() throws SQLException {
