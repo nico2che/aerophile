@@ -11,7 +11,7 @@ import org.springframework.util.MultiValueMap;
 /**
  * Created by Nicolas on 11/01/2016.
  */
-@Rest(rootUrl = "http://www.fev.aerophile.com", converters = { FormHttpMessageConverter.class, StringHttpMessageConverter.class } )
+@Rest(rootUrl = "https://www.fev.aerophile.com", converters = { FormHttpMessageConverter.class, StringHttpMessageConverter.class } )
 public interface Client {
 
     @Post("/index.php?{typeDonnees}&lang={langue}")
