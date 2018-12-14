@@ -15,6 +15,7 @@ import com.aerophile.app.modeles.Preferences_;
 import com.aerophile.app.utils.Api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -31,6 +32,7 @@ import java.util.Locale;
 @EActivity(R.layout.activity_launcher)
 public class LauncherActivity extends AppCompatActivity {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
     private JourneeDAO daoJournee;
 
     @Bean
@@ -48,6 +50,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // ****
         // TODO: LIGNES A SUPPRIMER APRES LA VERSION 1.8
@@ -74,6 +77,10 @@ public class LauncherActivity extends AppCompatActivity {
         android.content.res.Configuration config = new android.content.res.Configuration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, locale.getCountry());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         // On vérifie si le code existe et s'il est correct
         if(!reglages.code().exists()) {

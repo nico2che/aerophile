@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "156793052169",
+    "firebase_url": "https://aerophile-b086c.firebaseio.com",
+    "project_id": "aerophile-b086c",
+    "storage_bucket": "aerophile-b086c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156793052169:android:82e04ecc4f9da678",
+        "android_client_info": {
+          "package_name": "com.aerophile.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156793052169-obtd6jrkei5l6m1afo1afu6oqe9k7bkr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEsa1A6-kdFEJtD39KDy4yXS5I9c3ldIM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
