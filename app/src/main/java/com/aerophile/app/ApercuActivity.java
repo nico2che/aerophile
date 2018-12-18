@@ -1,10 +1,7 @@
 package com.aerophile.app;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +11,7 @@ import com.aerophile.app.dao.VolDAO;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.modeles.Vol;
 import com.aerophile.app.utils.Dates;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -51,6 +49,15 @@ public class ApercuActivity extends AppCompatActivity {
 		// On ouvre la base de données
 		JourneeDAO daoJournee = new JourneeDAO(this);
 		daoJournee.open();
+
+		// >>> DEBUG
+		Integer counter = daoJournee.getCountOfJourneeEnCours();
+		FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+		Bundle bundle = new Bundle();
+		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(counter));
+		mFirebaseAnalytics.logEvent("count_journee_en_cours", bundle);
+		// <<<
+
 		Journee journeeCourante = daoJournee.getJourneeEnCours();
 
 		VolDAO daoVol = new VolDAO(this);

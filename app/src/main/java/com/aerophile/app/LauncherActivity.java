@@ -32,7 +32,6 @@ import java.util.Locale;
 @EActivity(R.layout.activity_launcher)
 public class LauncherActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     private JourneeDAO daoJournee;
 
     @Bean
@@ -50,7 +49,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // ****
         // TODO: LIGNES A SUPPRIMER APRES LA VERSION 1.8
@@ -79,7 +78,7 @@ public class LauncherActivity extends AppCompatActivity {
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
         Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, locale.getCountry());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(reglages.code().exists()));
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         // On vérifie si le code existe et s'il est correct

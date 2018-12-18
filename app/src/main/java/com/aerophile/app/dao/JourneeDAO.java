@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.aerophile.app.DatabaseHandler;
 import com.aerophile.app.modeles.Journee;
 import com.aerophile.app.utils.Dates;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,6 +82,14 @@ public class JourneeDAO {
 			journee = cursorToJournee(cursor);
 		cursor.close();
 		return journee;
+	}
+
+	public Integer getCountOfJourneeEnCours() {
+		Cursor cursor = database.query(DatabaseHandler.JOURNEE_TABLE_NAME,
+				allColumns, DatabaseHandler.JOURNEE_ENCOURS + " = 1", null, null, null, null);
+		Integer counter = cursor.getCount();
+		cursor.close();
+		return counter;
 	}
 
 	public Journee getJourneeEnCours() {
