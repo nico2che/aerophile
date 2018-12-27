@@ -26,6 +26,8 @@ import java.util.Locale;
 @EActivity(R.layout.activity_apercu)
 public class ApercuActivity extends AppCompatActivity {
 
+	private FirebaseAnalytics mFirebaseAnalytics;
+
 	@ViewById
 	ListView listView;
 
@@ -41,6 +43,7 @@ public class ApercuActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 	}
 
 	@AfterViews
@@ -52,9 +55,8 @@ public class ApercuActivity extends AppCompatActivity {
 
 		// >>> DEBUG
 		Integer counter = daoJournee.getCountOfJourneeEnCours();
-		FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		Bundle bundle = new Bundle();
-		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, String.valueOf(counter));
+		bundle.putString("counter", String.valueOf(counter));
 		mFirebaseAnalytics.logEvent("count_journee_en_cours", bundle);
 		// <<<
 
