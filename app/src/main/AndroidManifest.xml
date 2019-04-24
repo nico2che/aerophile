@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.aerophile.app"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aerophile.app">
 
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-	<application
-		android:allowBackup="true"
-		android:icon="@drawable/aerophile_icon"
-		android:label="@string/aerophile"
-		android:theme="@style/Theme.AppCompat.Light">
-		<activity
-			android:name=".LauncherActivity_"
-			android:label="@string/aerophile"
-			android:noHistory="true">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".AccueilActivity_"
-			android:label="@string/aerophile"
-			android:noHistory="true"
-			android:windowSoftInputMode="adjustPan">
-		</activity>
-		<activity
-			android:name=".ReglagesActivity_"
-			android:label="@string/reglages_titre"
-			android:noHistory="true">
-		</activity>
-		<activity
-			android:name=".DemarrageActivity_"
-			android:label="@string/title_activity_demarrage">
-		</activity>
-		<activity
-			android:name=".VolListActivity_"
-			android:label="@string/aerophile"
-			android:windowSoftInputMode="adjustPan">
-		</activity>
-		<activity
-			android:name=".EnvoieActivity_"
-			android:label="@string/title_activity_envoie"
-			android:parentActivityName=".VolListActivity">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.aerophile.app.VolListActivity"/>
-		</activity>
-		<activity android:name=".PdfActivity_">
-		</activity>
-		<activity android:name=".ApercuActivity_">
-		</activity>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/aerophile_icon"
+        android:label="@string/aerophile"
+        android:theme="@style/Theme.AppCompat.Light">
+        <activity
+            android:name=".PrivacyActivity_"
+            android:label="@string/privacy"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".LauncherActivity_"
+            android:label="@string/aerophile"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AccueilActivity_"
+            android:label="@string/aerophile"
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".ReglagesActivity_"
+            android:label="@string/reglages_titre"
+            android:noHistory="true"></activity>
+        <activity
+            android:name=".DemarrageActivity_"
+            android:label="@string/title_activity_demarrage"></activity>
+        <activity
+            android:name=".VolListActivity_"
+            android:label="@string/aerophile"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".EnvoieActivity_"
+            android:label="@string/title_activity_envoie"
+            android:parentActivityName=".VolListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.aerophile.app.VolListActivity" />
+        </activity>
+        <activity android:name=".PdfActivity_"></activity>
+        <activity android:name=".ApercuActivity_"></activity>
     </application>
 
 </manifest>

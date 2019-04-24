@@ -9,7 +9,7 @@
     <string name="non">Non</string>
 
     <!-- AccueilActivity -->
-    <string name="accueil_code">Entrez le code de sécurité :</string>
+    <string name="accueil_code">En validant le code de sécurité, vous acceptez les règles de confidentialité.</string>
     <string name="accueil_valider">Valider</string>
     <string name="accueil_code_incorrect">Code de sécurité incorrect</string>
     <string name="title_activity_reglages" translatable="false">ReglagesActivity</string>
@@ -147,5 +147,6 @@ Vérifiez votre connexion internet</string>
 
     <string name="pdf_titre">Pré-visualisation du PDF</string>
     <string name="pdf_chargement">Chargement du PDF…</string>
+    <string name="privacy">Règles de confidentialité</string>
 
 </resources>

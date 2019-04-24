@@ -1,7 +1,7 @@
 <resources>
     <string name="accueil_valider">Validate</string>
     <string name="apercu_commentaires">Comments</string>
-    <string name="accueil_code">Enter the password</string>
+    <string name="accueil_code">By validating the security code, you agree to the privacy policies.</string>
     <string name="apercu_footer_heures">%s flight hours</string>
     <string name="apercu_footer_passagers">%d passengers</string>
     <string name="apercu_heures">Hours</string>
@@ -115,4 +115,5 @@
     <string name="erreur_connexion">Unable to connect to the internet.\nPlease check your connection and try again.</string>
     <string name="reessayer">Try again</string>
     <string name="chargement">Loading…</string>
+    <string name="privacy">Privacy Policy</string>
 </resources>
